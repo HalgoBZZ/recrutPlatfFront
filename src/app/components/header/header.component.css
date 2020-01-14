@@ -1,0 +1,9 @@
+.login-title span {
+  padding: 10px 20px;
+  display: inline-block;
+  margin-bottom: 20px;
+  text-shadow: -1px 1px 1px rgba(108, 83, 54, 0.3);
+}
+.login-title span strong {
+  color: #f0ad4e;
+}

@@ -1,0 +1,260 @@
+<div class="parent" *ngIf="!choose">
+  <div class="container ">
+    <div class="row">
+      <div class="login-container col-lg-4 col-md-6 col-sm-8 col-xs-12">
+        <div class="login-title text-center">
+          <h2><span style="color: #27367f;">My<strong>JOB</strong></span></h2>
+        </div>
+        <div class="login-content">
+          <div class="login-header ">
+            <h5>Choisir le type de votre compte.</h5>
+          </div>
+          <div class="login-body">
+
+            <div class="form-group">
+              <button type="button" class="btn btn-warning form-control"
+                (click)="chooseTypeCompte('employeur')"><strong>Employeur</strong></button>
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-warning form-control"
+                (click)="chooseTypeCompte('candidat')"><strong>Candidat</strong></button>
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-warning form-control" (click)="back()"><strong>Retour</strong></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--*****************************************************************Employeur**********************************-->
+
+<div class="parent" *ngIf="cmptEmployeur && choose">
+  <div class="container ">
+    <div class="row">
+      <div class="login-container col-lg-4 col-md-6 col-sm-8 col-xs-12">
+        <div class="login-title text-center">
+          <h2><span style="color: #27367f;">My<strong>JOB</strong></span></h2>
+        </div>
+        <div class="login-content" style="width: 900px; margin-left: -250px;">
+          <div class="login-body">
+
+            <!-- <form role="form" action="" method="post" class="login-form"> -->
+            <div id="part1" style="display: inline-block; margin-right:70px; width:45%;">
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="nom" type="text" name="nom" placeholder="Nom" class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <textarea name="presentation" placeholder="Présentation" id="presentation"
+                    class="form-username form-control" rows="4"></textarea>
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="site" type="url" name="site" placeholder="Site web" class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="adresse" type="text" name="adresse" placeholder="Adresse"
+                    class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="taille" type="text" name="taille" placeholder="Taille de l'entreprise"
+                    class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="type" type="text" name="type" placeholder="Type de l'entreprise"
+                    class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-warning form-control" (click)="back()"><strong>Retour</strong></button>
+              </div>
+            </div>
+            <div id="part2" style="display: inline-block; width:45%;">
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="type" type="text" name="type" placeholder="Type de l'entreprise"
+                    class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="fondation" type="text" name="fondation" placeholder="Fondation de l'entreprise"
+                    class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <select class="form-username form-control">
+                    <option selected disabled>Pays</option>
+                    <option *ngFor="let pays of paysList">{{pays}}</option>
+                  </select>
+                  <!-- <input id="pays" type="text" name="pays" placeholder="Type de l'entreprise" class="form-username form-control"> -->
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="form-username" type="email" name="form-username" placeholder="Email"
+                    class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="pos-r">
+                  <input id="form-password" type="password" name="form-password" placeholder="Mot de passe"
+                    class="form-password form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="pos-r">
+                  <input id="confirmation" type="confirmation" name="form-password"
+                    placeholder="Confirmation mot de passe" class="form-password form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="pos-r">
+                  <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo"
+                    class="form-password form-control" style="display: none;">
+                  <label id="upload-photo-label" for="photo">LOGO</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-warning form-control"
+                  (click)="inscriptionEmployeur()"><strong>S'inscrire</strong></button>
+              </div>
+
+            </div>
+            <!-- </form> -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--*****************************************************************Candidat**********************************-->
+
+<div class="parent" *ngIf="cmptCandidat && choose">
+  <div class="container ">
+    <div class="row">
+      <div class="login-container col-lg-4 col-md-6 col-sm-8 col-xs-12">
+        <div class="login-title text-center">
+          <h2><span style="color: #27367f;">My<strong>JOB</strong></span></h2>
+        </div>
+        <div class="login-content" style="width: 900px; margin-left: -250px;">
+          <div class="login-body">
+            <div id="part1" style="display: inline-block; margin-right:70px; width:45%;">
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="nom" type="text" name="nom" placeholder="Nom" class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input type="text" name="prenom" placeholder="Prénom" id="prenom"
+                    class="form-username form-control" rows="5">
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="datenaissance" type="text" onfocus="(this.type='date')" name="datenaissance" placeholder="Date de naissance" class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="adresse" type="text" name="adresse" placeholder="Adresse" class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="tel" type="tel" name="tel" placeholder="Numéro de telephone"
+                    class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="diplome" type="text" name="diplome" placeholder="Diplome"
+                    class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="pos-r">
+                  <input id="pj" type="file" name="pj" placeholder="CV"
+                    class="form-password form-control" style="display: none;">
+                  <label id="upload-photo-label" for="pj">CV en piéce jointe</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-warning form-control" (click)="back()"><strong>Retour</strong></button>
+              </div>
+            </div>
+            <div id="part2" style="display: inline-block; width:45%;">
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="titre" type="text" name="titre" placeholder="Titre"
+                    class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <select class="form-username form-control">
+                    <option selected disabled>Nationnalité</option>
+                    <option *ngFor="let pays of paysList">{{pays}}</option>
+                  </select>
+                  <!-- <input id="pays" type="text" name="pays" placeholder="Type de l'entreprise" class="form-username form-control"> -->
+                </div>
+              </div>
+              <div class="form-group ">
+                <div class="pos-r">
+                  <input id="form-username" type="email" name="form-username" placeholder="Email"
+                    class="form-username form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="pos-r">
+                  <input id="form-password" type="password" name="form-password" placeholder="Mot de passe"
+                    class="form-password form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="pos-r">
+                  <input id="confirmation" type="confirmation" name="form-password"
+                    placeholder="Confirmation mot de passe" class="form-password form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="pos-r">
+                  <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo"
+                    class="form-password form-control" style="display: none;">
+                  <label id="upload-photo-label" for="photo">PHOTO</label>
+
+                </div>
+              </div>
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-warning form-control"
+                  (click)="inscriptionEmployeur()"><strong>S'inscrire</strong></button>
+              </div>
+
+            </div>
+            <!-- </form> -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
