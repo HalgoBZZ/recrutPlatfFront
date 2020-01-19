@@ -75,12 +75,15 @@
       </li> -->
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown" aria-expanded="false">
-          <img src="../../../assets/images/faces/face21.jpg" alt="profile">
+
+            <!-- <img alt="" src="../../../assets/img/avatar1_small.jpg"> -->
+            <img src="data:image/jpg;base64,{{ loggedUser.photo }}" *ngIf="loggedUser.photo" style="width:30px; height:30px;">
+            <img src="../../../assets/images/faces/face21.jpg" *ngIf="!loggedUser.photo" style="width:30px; height:30px;">
         </a>
       </li>
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown" aria-expanded="false">
-          Hafedh Baazouzi
+          {{loggedUser.prenom}} {{loggedUser.nom}}
         </a>
       </li>
 
