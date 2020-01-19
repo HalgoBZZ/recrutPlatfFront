@@ -17,6 +17,10 @@ import { CategoriesComponent } from './components/categories/categories.componen
 import { MesOffresComponent } from './components/mes-offres/mes-offres.component';
 import { NewPassComponent } from './components/new-pass/new-pass.component';
 import { VerifCodeComponent } from './components/verif-code/verif-code.component';
+import { ModalModule } from 'ngx-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -39,7 +43,15 @@ import { VerifCodeComponent } from './components/verif-code/verif-code.component
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true
+    }),
+    ModalModule.forRoot()
 
   ],
   providers: [],
