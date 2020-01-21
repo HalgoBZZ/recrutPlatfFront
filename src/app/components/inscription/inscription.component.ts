@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Employeur } from 'src/app/modals/Employeur.';
+import { EmployeurService } from 'src/app/services/EmployeurService';
+import { CandidatService } from 'src/app/services/CandidatService';
 
 @Component({
   selector: 'app-inscription',
@@ -12,13 +15,13 @@ export class InscriptionComponent implements OnInit {
   choose = false;
   paysList = ['Afrique du Sud', 'Afghanistan', 'Albanie', 'Algérie', 'Allemagne', 'Andorre', 'Angola',
     'Antigua-et-Barbuda', 'Arabie Saoudite', 'Argentine', 'Arménie', 'Australie', 'Autriche', 'Azerbaïdjan',
-    'Bahamas',  'Bahreïn',  'Bangladesh',  'Barbade',  'Belgique',  'Belize',  'Bénin',  'Bhoutan',  'Biélorussie',
-    'Birmanie',  'Bolivie',  'Bosnie-Herzégovine',  'Botswana',  'Brésil',  'Brunei',  'Bulgarie',  'Burkina Faso',
-    'Burundi',  'Cambodge',  'Cameroun',  'Canada',  'Cap-Vert',  'Chili',  'Chine',  'Chypre',  'Colombie',  'Comores',
-    'Corée du Nord',  'Corée du Sud',  'Costa Rica',  'Côte d’Ivoire',  'Croatie',  'Cuba',  'Danemark',  'Djibouti',
-    'Dominique', 'Égypte',  'Émirats arabes unis',  'Équateur',  'Érythrée',  'Espagne',  'Eswatini',  'Estonie',
-    'États-Unis',  'Éthiopie',  'Fidji',  'Finlande',  'France',  'Gabon	',  'Gambie',  'Géorgie',  'Ghana',  'Grèce',
-    'Grenade', 'Guatemala', 'Guinée',  'Guinée équatoriale',  'Guinée-Bissau',  'Guyana',  'Haïti',  'Honduras',  'Hongrie',
+    'Bahamas', 'Bahreïn', 'Bangladesh', 'Barbade', 'Belgique', 'Belize', 'Bénin', 'Bhoutan', 'Biélorussie',
+    'Birmanie', 'Bolivie', 'Bosnie-Herzégovine', 'Botswana', 'Brésil', 'Brunei', 'Bulgarie', 'Burkina Faso',
+    'Burundi', 'Cambodge', 'Cameroun', 'Canada', 'Cap-Vert', 'Chili', 'Chine', 'Chypre', 'Colombie', 'Comores',
+    'Corée du Nord', 'Corée du Sud', 'Costa Rica', 'Côte d’Ivoire', 'Croatie', 'Cuba', 'Danemark', 'Djibouti',
+    'Dominique', 'Égypte', 'Émirats arabes unis', 'Équateur', 'Érythrée', 'Espagne', 'Eswatini', 'Estonie',
+    'États-Unis', 'Éthiopie', 'Fidji', 'Finlande', 'France', 'Gabon	', 'Gambie', 'Géorgie', 'Ghana', 'Grèce',
+    'Grenade', 'Guatemala', 'Guinée', 'Guinée équatoriale', 'Guinée-Bissau', 'Guyana', 'Haïti', 'Honduras', 'Hongrie',
     'Îles Cook', 'Îles Marshall',
     'Inde',
     'Indonésie',
@@ -138,8 +141,13 @@ export class InscriptionComponent implements OnInit {
     'Yémen',
     'Zambie	',
     'Zimbabwe'];
-
-  constructor(private router: Router) { }
+  candidat: any;
+  employeur = new Employeur();
+  pwdConfirmation;
+  employeInscrit: boolean;
+  inscritError: boolean;
+  pwdConfirm: boolean;
+  constructor(private router: Router, private employeurService: EmployeurService, private candidatService: CandidatService) { }
 
   ngOnInit() {
   }
@@ -156,10 +164,39 @@ export class InscriptionComponent implements OnInit {
       this.choose = true;
     }
   }
+  inscription() {
+    console.log('** cmptCandidat ****', this.cmptCandidat)
+    console.log('*** cmptEmployeur ***', this.cmptEmployeur)
+
+    if (this.cmptCandidat) {
+      if (this.pwdConfirm == this.candidat.password) {
+        this.pwdConfirm = true;
+        this.candidatService.inscription(this.candidat);
+      }else{
+        this.pwdConfirm = false;
+      }
+
+    } else if (this.cmptEmployeur) {
+      console.log('***----***', this.employeur)
+      if (this.pwdConfirm == this.employeur.password) {
+        this.pwdConfirm = true;
+        this.employeurService.inscription(this.employeur).subscribe(result => {
+          this.employeInscrit = true;
+        }, error => {
+          this.employeInscrit = false;
+          this.inscritError = true;
+        });
+      }else{
+        this.pwdConfirm = false;
+      }
+    }
+  }
+
+
 
   back() {
     if (!this.choose) {
-    this.router.navigate(['/login']);
+      this.router.navigate(['/login']);
     } else {
       this.choose = false;
     }
