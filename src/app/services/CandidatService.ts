@@ -8,6 +8,7 @@ export class CandidatService {
     headers = new HttpHeaders();
     constructor(private http: HttpClient) { }
     inscription(candidat) {
+        console.log('*-*-*',candidat)
         this.headers.append('Accept', 'application/json;charset=UTF-8');
         const options = { headers: this.headers };
         return this.http.post(this.uri + 'save/', candidat, options);

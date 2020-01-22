@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { Employeur } from 'src/app/modals/Employeur.';
 import { EmployeurService } from 'src/app/services/EmployeurService';
 import { CandidatService } from 'src/app/services/CandidatService';
+import { UtilisateurService } from 'src/app/services/UtilisateurService';
+import { Candidat } from 'src/app/modals/Candidat';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-inscription',
@@ -141,15 +144,17 @@ export class InscriptionComponent implements OnInit {
     'Yémen',
     'Zambie	',
     'Zimbabwe'];
-  candidat: any;
+  candidat = new Candidat();;
   employeur = new Employeur();
   pwdConfirmation;
   employeInscrit: boolean;
   inscritError: boolean;
-  pwdConfirm: boolean;
-  constructor(private router: Router, private employeurService: EmployeurService, private candidatService: CandidatService) { }
+  pwdConfirm;
+  usedMail = false;
+  constructor(private router: Router, private toastr: ToastrService, private utilisateurService: UtilisateurService, private employeurService: EmployeurService, private candidatService: CandidatService) { }
 
   ngOnInit() {
+
   }
 
   chooseTypeCompte(entry) {
@@ -165,35 +170,63 @@ export class InscriptionComponent implements OnInit {
     }
   }
   inscription() {
-    console.log('** cmptCandidat ****', this.cmptCandidat)
-    console.log('*** cmptEmployeur ***', this.cmptEmployeur)
 
     if (this.cmptCandidat) {
-      if (this.pwdConfirm == this.candidat.password) {
-        this.pwdConfirm = true;
-        this.candidatService.inscription(this.candidat);
-      }else{
-        this.pwdConfirm = false;
-      }
+      this.checkUsedMail();
+      this.checkPwdConfirmation(this.candidat);
+      console.log('this.usedMail ', this.usedMail)
+      console.log('this.pwdConfirm ', this.pwdConfirm)
 
-    } else if (this.cmptEmployeur) {
-      console.log('***----***', this.employeur)
-      if (this.pwdConfirm == this.employeur.password) {
-        this.pwdConfirm = true;
-        this.employeurService.inscription(this.employeur).subscribe(result => {
-          this.employeInscrit = true;
+      if (!this.usedMail && this.pwdConfirm) {
+        this.candidatService.inscription(this.candidat).subscribe(result => {
+          if (result != null) {
+            this.toastr.success('votre inscription a bien été enregistrée');
+            this.router.navigate(['/login']);
+          }
         }, error => {
           this.employeInscrit = false;
           this.inscritError = true;
+          this.toastr.error('Oops il y a une problème');
         });
-      }else{
-        this.pwdConfirm = false;
       }
+    } else if (this.cmptEmployeur) {
+      this.checkUsedMail();
+      this.checkPwdConfirmation(this.candidat);
+      if ( ! this.usedMail && this.pwdConfirm) {
+        this.employeurService.inscription(this.employeur).subscribe(result => {
+          if (result != null) {
+            this.toastr.success('votre inscription a bien été enregistrée');
+            this.router.navigate(['/login']);
+          }
+        }, error => {
+          this.employeInscrit = false;
+          this.inscritError = true;
+          this.toastr.error('Oops il y a une problème');
+        });
+      }
+
     }
   }
 
-
-
+  checkUsedMail() {
+    this.utilisateurService.getByLogin(this.employeur.email).subscribe(result => {
+      if (result == null) {
+        this.usedMail = false;
+      } else {
+        this.usedMail = true;
+      }
+    }, error => {
+      this.employeInscrit = false;
+      this.inscritError = true;
+    });
+  }
+  checkPwdConfirmation(user) {
+    if (this.pwdConfirmation == user.password) {
+      this.pwdConfirm = true;
+    } else {
+      this.pwdConfirm = false;
+    }
+  }
   back() {
     if (!this.choose) {
       this.router.navigate(['/login']);

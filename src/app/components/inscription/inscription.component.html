@@ -20,7 +20,8 @@
                 (click)="chooseTypeCompte('candidat')"><strong>Candidat</strong></button>
             </div>
             <div class="form-group">
-              <button type="button" class="btn btn-warning form-control" (click)="back()"><strong>Retour</strong></button>
+              <button type="button" class="btn btn-warning form-control"
+                (click)="back()"><strong>Retour</strong></button>
             </div>
           </div>
         </div>
@@ -31,8 +32,154 @@
 </div>
 
 <!--*****************************************************************Employeur**********************************-->
-<form name="employeurForm" >
-<div class="parent" *ngIf="cmptEmployeur && choose">
+<form name="employeurForm">
+  <div class="parent" *ngIf="cmptEmployeur && choose">
+    <div class="container ">
+      <div class="row">
+        <div class="login-container col-lg-4 col-md-6 col-sm-8 col-xs-12">
+          <div class="login-title text-center">
+            <h2><span style="color: #27367f;">My<strong>JOB</strong></span></h2>
+          </div>
+          <div class="login-content" style="width: 900px; margin-left: -250px;">
+            <div class="login-body">
+
+              <!-- <form role="form" action="" method="post" class="login-form"> -->
+              <div id="part1" style="display: inline-block; margin-right:70px; width:45%;">
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="nom" type="text" name="nom" placeholder="Nom" required #nom="ngModel"
+                      [(ngModel)]="employeur.nom" [ngModelOptions]="{standalone: true}"
+                      class="form-username form-control">
+                    <div *ngIf="nom.errors && (nom.dirty || nom.touched)" class="alert alert-danger">
+                      <div ng-show="form.nom.$dirty && form.nom.$error.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <textarea name="presentation" placeholder="Présentation" id="presentation"
+                      [(ngModel)]="employeur.presentation" [ngModelOptions]="{standalone: true}"
+                      class="form-username form-control" rows="4"></textarea>
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="site" type="url" name="site" placeholder="Site web" [(ngModel)]="employeur.site"
+                      [ngModelOptions]="{standalone: true}" class="form-username form-control">
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="adresse" type="text" name="adresse" placeholder="Adresse" [(ngModel)]="employeur.adresse"
+                      [ngModelOptions]="{standalone: true}" class="form-username form-control">
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="taille" type="text" name="taille" placeholder="Taille de l'entreprise"
+                      [(ngModel)]="employeur.taille" [ngModelOptions]="{standalone: true}"
+                      class="form-username form-control">
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="type" type="text" name="type" placeholder="Type de l'entreprise"
+                      [(ngModel)]="employeur.type" [ngModelOptions]="{standalone: true}"
+                      class="form-username form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <button type="button" class="btn btn-warning form-control"
+                    (click)="back()"><strong>Retour</strong></button>
+                </div>
+              </div>
+              <div id="part2" style="display: inline-block; width:45%;">
+
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="fondation" type="text" name="fondation" placeholder="Fondation de l'entreprise"
+                      [(ngModel)]="employeur.fondation" [ngModelOptions]="{standalone: true}"
+                      class="form-username form-control">
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <select [(ngModel)]="employeur.pays" [ngModelOptions]="{standalone: true}"
+                      class="form-username form-control">
+                      <option selected disabled>Pays</option>
+                      <option *ngFor="let pays of paysList">{{pays}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="email" type="email" name="email" placeholder="Email" required #email="ngModel"
+                      [(ngModel)]="employeur.email" [ngModelOptions]="{standalone: true}"
+                      class="form-username form-control">
+                    <div *ngIf="usedMail" class="alert alert-danger">
+                      <div>
+                        L'email est déja utilisé!
+                      </div>
+                    </div>
+                    <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert alert-danger">
+                      <div ng-show="form.email.$dirty && form.email.$error.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="pos-r">
+                    <input id="form-password" type="password" name="form-password" placeholder="Mot de passe"
+                      [(ngModel)]="employeur.password" [ngModelOptions]="{standalone: true}"
+                      class="form-password form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="pos-r">
+                    <input id="confirmation" type="text" name="confirmation" required #confirmation="ngModel"
+                      [(ngModel)]="pwdConfirmation" [ngModelOptions]="{standalone: true}"
+                      placeholder="Confirmation mot de passe" class="form-password form-control">
+                    <div *ngIf="confirmation.errors && (confirmation.dirty || confirmation.touched) || pwdConfirm"
+                      class="alert alert-danger">
+                      <div ng-show="pwdConfirm">
+                        vos mots de passe ne sont pas compatibles veuillez vérifier!
+                      </div>
+                      <div ng-show="form.confirmation.$dirty && form.confirmation.$error.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="pos-r">
+                    <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo"
+                      [(ngModel)]="employeur.photo" [ngModelOptions]="{standalone: true}"
+                      class="form-password form-control" style="display: none;">
+                    <label id="upload-photo-label" for="photo">LOGO</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-warning form-control" 
+                    (click)="inscription()"><strong>S'inscrire</strong></button>
+                </div>
+
+              </div>
+              <!-- </form> -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!--*****************************************************************Candidat**********************************-->
+<form name="candidatForm">
+<div class="parent" *ngIf="cmptCandidat && choose">
   <div class="container ">
     <div class="row">
       <div class="login-container col-lg-4 col-md-6 col-sm-8 col-xs-12">
@@ -41,102 +188,110 @@
         </div>
         <div class="login-content" style="width: 900px; margin-left: -250px;">
           <div class="login-body">
-
-            <!-- <form role="form" action="" method="post" class="login-form"> -->
             <div id="part1" style="display: inline-block; margin-right:70px; width:45%;">
               <div class="form-group ">
                 <div class="pos-r">
-                  <input id="nom" type="text" name="nom" placeholder="Nom" required #nom="ngModel"   [(ngModel)]="employeur.nom"
-                  [ngModelOptions]="{standalone: true}" class="form-username form-control">
-                  <div *ngIf="nom.errors && (nom.dirty || nom.touched)" class="alert alert-danger">
-                    <div  ng-show="form.nom.$dirty && form.nom.$error.required">
-                        Champ obligatoire!
-                    </div>
-                </div>
+                  <input id="nom" type="text" name="nom" placeholder="Nom" required #nom="ngModel"
+                  [(ngModel)]="candidat.nom" [ngModelOptions]="{standalone: true}" class="form-username form-control">
                 </div>
               </div>
               <div class="form-group ">
                 <div class="pos-r">
-                  <textarea name="presentation" placeholder="Présentation" id="presentation" [(ngModel)]="employeur.presentation"
-                  [ngModelOptions]="{standalone: true}"
-                    class="form-username form-control" rows="4"></textarea>
+                  <input type="text" name="prenom" placeholder="Prénom" id="prenom" required #prenom="ngModel"
+                  [(ngModel)]="candidat.prenom"  class="form-username form-control"
+                    rows="5">
                 </div>
               </div>
               <div class="form-group ">
                 <div class="pos-r">
-                  <input id="site" type="url" name="site" placeholder="Site web" [(ngModel)]="employeur.site"
-                  [ngModelOptions]="{standalone: true}" class="form-username form-control">
+                  <input id="datenaissance" type="text" onfocus="(this.type='date')" name="datenaissance"
+                  required #nodatenaissancem="ngModel" [(ngModel)]="candidat.dateNaissance"  placeholder="Date de naissance" 
+                  class="form-username form-control">
                 </div>
               </div>
               <div class="form-group ">
                 <div class="pos-r">
-                  <input id="adresse" type="text" name="adresse" placeholder="Adresse" [(ngModel)]="employeur.adresse"
-                  [ngModelOptions]="{standalone: true}"
+                  <input id="adresse" type="text" name="adresse" placeholder="Adresse" required #adresse="ngModel"
+                  [(ngModel)]="candidat.adresse" 
                     class="form-username form-control">
                 </div>
               </div>
               <div class="form-group ">
                 <div class="pos-r">
-                  <input id="taille" type="text" name="taille" placeholder="Taille de l'entreprise" [(ngModel)]="employeur.taille"
-                  [ngModelOptions]="{standalone: true}"   class="form-username form-control">
+                  <input id="tel" type="tel" name="tel" placeholder="Numéro de telephone" required #tel="ngModel"
+                  [(ngModel)]="candidat.tel" 
+                    class="form-username form-control">
                 </div>
               </div>
               <div class="form-group ">
                 <div class="pos-r">
-                  <input id="type" type="text" name="type" placeholder="Type de l'entreprise" [(ngModel)]="employeur.type"
-                  [ngModelOptions]="{standalone: true}"  class="form-username form-control">
+                  <input id="diplome" type="text" name="diplome" placeholder="Diplome" required #diplome="ngModel"
+                  [(ngModel)]="candidat.diplome" 
+                    class="form-username form-control">
                 </div>
               </div>
               <div class="form-group">
-                <button type="button" class="btn btn-warning form-control" (click)="back()"><strong>Retour</strong></button>
+                <div class="pos-r">
+                  <input id="pj" type="file" name="pj" placeholder="CV" class="form-password form-control" required #pj="ngModel"
+                  [(ngModel)]="candidat.piece_jointe" 
+                    style="display: none;">
+                  <label id="upload-photo-label" for="pj">CV en piéce jointe</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-warning form-control"
+                  (click)="back()"><strong>Retour</strong></button>
               </div>
             </div>
             <div id="part2" style="display: inline-block; width:45%;">
-
               <div class="form-group ">
                 <div class="pos-r">
-                  <input id="fondation" type="text" name="fondation" placeholder="Fondation de l'entreprise" [(ngModel)]="employeur.fondation"
-                  [ngModelOptions]="{standalone: true}" class="form-username form-control">
+                  <input id="titre" type="text" name="titre" placeholder="Titre" required #titre="ngModel"
+                  [(ngModel)]="candidat.titre"  class="form-username form-control">
                 </div>
               </div>
               <div class="form-group ">
                 <div class="pos-r">
-                  <select [(ngModel)]="employeur.pays"  [ngModelOptions]="{standalone: true}"class="form-username form-control">
-                    <option selected disabled>Pays</option>
+                  <select [(ngModel)]="candidat.pays" [ngModelOptions]="{standalone: true}" class="form-username form-control">
+                    <option selected disabled>Nationnalité</option>
                     <option *ngFor="let pays of paysList">{{pays}}</option>
                   </select>
+                  <!-- <input id="pays" type="text" name="pays" placeholder="Type de l'entreprise" class="form-username form-control"> -->
                 </div>
               </div>
               <div class="form-group ">
                 <div class="pos-r">
-                  <input id="form-username" type="email" name="form-username" placeholder="Email"[(ngModel)]="employeur.email"
-                  [ngModelOptions]="{standalone: true}"
+                  <input id="email" type="email" name="email" placeholder="Email" required #email="ngModel"
+                  [(ngModel)]="candidat.email" 
                     class="form-username form-control">
                 </div>
               </div>
               <div class="form-group">
                 <div class="pos-r">
-                  <input id="form-password" type="password" name="form-password" placeholder="Mot de passe" [(ngModel)]="employeur.password"
-                  [ngModelOptions]="{standalone: true}"
+                  <input id="password" type="password" name="password"  required #password="ngModel"
+                  [(ngModel)]="candidat.password"  placeholder="Mot de passe"
                     class="form-password form-control">
                 </div>
               </div>
               <div class="form-group">
                 <div class="pos-r">
-                  <input id="confirmation" type="confirmation" name="form-password" [(ngModel)]="pwdConfirmation"
-                  [ngModelOptions]="{standalone: true}"  placeholder="Confirmation mot de passe" class="form-password form-control">
+                  <input id="confirmation" type="text" name="confirmation" required #confirmation="ngModel"
+                  [(ngModel)]="pwdConfirmation" 
+                    placeholder="Confirmation mot de passe" class="form-password form-control">
                 </div>
               </div>
               <div class="form-group">
                 <div class="pos-r">
-                  <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo" [(ngModel)]="employeur.photo"
-                  [ngModelOptions]="{standalone: true}"
+                  <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo" required #photo="ngModel"
+                  [(ngModel)]="candidat.photo" 
                     class="form-password form-control" style="display: none;">
-                  <label id="upload-photo-label" for="photo">LOGO</label>
+                  <label id="upload-photo-label" for="photo">PHOTO</label>
+
                 </div>
               </div>
+
               <div class="form-group">
-                <button type="submit" class="btn btn-warning form-control"  
+                <button type="submit" class="btn btn-warning form-control"
                   (click)="inscription()"><strong>S'inscrire</strong></button>
               </div>
 
@@ -150,117 +305,3 @@
   </div>
 </div>
 </form>
-
-<!--*****************************************************************Candidat**********************************-->
-
-<div class="parent" *ngIf="cmptCandidat && choose">
-  <div class="container ">
-    <div class="row">
-      <div class="login-container col-lg-4 col-md-6 col-sm-8 col-xs-12">
-        <div class="login-title text-center">
-          <h2><span style="color: #27367f;">My<strong>JOB</strong></span></h2>
-        </div>
-        <div class="login-content" style="width: 900px; margin-left: -250px;">
-          <div class="login-body">
-            <div id="part1" style="display: inline-block; margin-right:70px; width:45%;">
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="nom" type="text" name="nom" placeholder="Nom" class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input type="text" name="prenom" placeholder="Prénom" id="prenom"
-                    class="form-username form-control" rows="5">
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="datenaissance" type="text" onfocus="(this.type='date')" name="datenaissance" placeholder="Date de naissance" class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="adresse" type="text" name="adresse" placeholder="Adresse" class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="tel" type="tel" name="tel" placeholder="Numéro de telephone"
-                    class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="diplome" type="text" name="diplome" placeholder="Diplome"
-                    class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="pos-r">
-                  <input id="pj" type="file" name="pj" placeholder="CV"
-                    class="form-password form-control" style="display: none;">
-                  <label id="upload-photo-label" for="pj">CV en piéce jointe</label>
-                </div>
-              </div>
-              <div class="form-group">
-                <button type="button" class="btn btn-warning form-control" (click)="back()"><strong>Retour</strong></button>
-              </div>
-            </div>
-            <div id="part2" style="display: inline-block; width:45%;">
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="titre" type="text" name="titre" placeholder="Titre"
-                    class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <select class="form-username form-control">
-                    <option selected disabled>Nationnalité</option>
-                    <option *ngFor="let pays of paysList">{{pays}}</option>
-                  </select>
-                  <!-- <input id="pays" type="text" name="pays" placeholder="Type de l'entreprise" class="form-username form-control"> -->
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="form-username" type="email" name="form-username" placeholder="Email"
-                    class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="pos-r">
-                  <input id="form-password" type="password" name="form-password" placeholder="Mot de passe"
-                    class="form-password form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="pos-r">
-                  <input id="confirmation" type="confirmation" name="form-password"
-                    placeholder="Confirmation mot de passe" class="form-password form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="pos-r">
-                  <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo"
-                    class="form-password form-control" style="display: none;">
-                  <label id="upload-photo-label" for="photo">PHOTO</label>
-
-                </div>
-              </div>
-
-              <div class="form-group">
-                <button type="submit" class="btn btn-warning form-control"
-                  (click)="inscriptionEmployeur()"><strong>S'inscrire</strong></button>
-              </div>
-
-            </div>
-            <!-- </form> -->
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
