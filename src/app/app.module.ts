@@ -18,13 +18,15 @@ import { MesOffresComponent } from './components/mes-offres/mes-offres.component
 import { NewPassComponent } from './components/new-pass/new-pass.component';
 import { VerifCodeComponent } from './components/verif-code/verif-code.component';
 import { ModalModule } from 'ngx-bootstrap';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
+    
     HeaderComponent,
     NavComponent,
     BodyComponent,
@@ -45,10 +47,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule, ReactiveFormsModule,
+    HttpClientModule,
     FormsModule,
     ToastrModule.forRoot({
-      timeOut: 5000,
+      timeOut: 1000,
       positionClass: 'toast-bottom-right',
+      progressAnimation:'increasing',
       preventDuplicates: true
     }),
     ModalModule.forRoot()
