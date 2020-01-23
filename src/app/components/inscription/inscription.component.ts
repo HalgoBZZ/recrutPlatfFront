@@ -154,7 +154,12 @@ export class InscriptionComponent implements OnInit {
   constructor(private router: Router, private toastr: ToastrService, private utilisateurService: UtilisateurService, private employeurService: EmployeurService, private candidatService: CandidatService) { }
 
   ngOnInit() {
+    this.pwdConfirmation=false;
+    this.employeInscrit=false;
 
+    this.inscritError=false;
+    this.pwdConfirm;
+    this.usedMail = false;
   }
 
   chooseTypeCompte(entry) {
@@ -181,7 +186,9 @@ export class InscriptionComponent implements OnInit {
         this.candidatService.inscription(this.candidat).subscribe(result => {
           if (result != null) {
             this.toastr.success('votre inscription a bien été enregistrée');
-            this.router.navigate(['/login']);
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 3000);
           }
         }, error => {
           this.employeInscrit = false;
@@ -196,8 +203,9 @@ export class InscriptionComponent implements OnInit {
         this.employeurService.inscription(this.employeur).subscribe(result => {
           if (result != null) {
             this.toastr.success('votre inscription a bien été enregistrée');
-            this.router.navigate(['/login']);
-          }
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 2000);          }
         }, error => {
           this.employeInscrit = false;
           this.inscritError = true;
