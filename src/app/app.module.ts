@@ -51,7 +51,7 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     FormsModule,
     ToastrModule.forRoot({
-      timeOut: 1000,
+      timeOut: 1500,
       positionClass: 'toast-bottom-right',
       progressAnimation:'increasing',
       preventDuplicates: true
