@@ -19,4 +19,15 @@ export class EmployeurService {
         return this.http.post('http://localhost:8080/api/employeur/save' , employeur, options);
     }
 
+    uploadFile(file,mail,id) {
+        this.headers.append('Accept', 'application/json;charset=UTF-8');
+        this.headers.append( "Content-Type","multipart/form-data" );
+        const options = { headers: this.headers };
+        let formData = new FormData();
+        formData.append('file', file);
+        formData.append('id', id);
+        formData.append('mail', mail);
+
+        return this.http.post(this.uri + 'uploadfile/', formData, options);
+    }
 }

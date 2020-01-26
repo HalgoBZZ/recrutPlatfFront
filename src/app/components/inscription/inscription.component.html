@@ -140,7 +140,7 @@
                 <div class="form-group">
                   <div class="pos-r">
                     <input id="confirmation" type="text" name="confirmation" required #confirmation="ngModel"
-                      [(ngModel)]="pwdConfirmation" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="pwdConfirm" [ngModelOptions]="{standalone: true}"
                       placeholder="Confirmation mot de passe" class="form-password form-control">
                     <div *ngIf="confirmation.errors && (confirmation.dirty || confirmation.touched) || pwdConfirm"
                       class="alert alert-danger">
@@ -156,7 +156,7 @@
                 <div class="form-group">
                   <div class="pos-r">
                     <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo"
-                      [(ngModel)]="employeur.photo" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="employeur.photo" [ngModelOptions]="{standalone: true}" (change)="handleImageEmployeurInput($event.target.files)"
                       class="form-password form-control" style="display: none;">
                     <label id="upload-photo-label" for="photo">LOGO</label>
                   </div>
@@ -233,7 +233,7 @@
               <div class="form-group">
                 <div class="pos-r">
                   <input id="pj" type="file" name="pj" placeholder="CV" class="form-password form-control" required #pj="ngModel"
-                  [(ngModel)]="candidat.piece_jointe" 
+                  [(ngModel)]="candidat.piece_jointe" (change)="handleCVCandidatInput($event.target.files)"
                     style="display: none;">
                   <label id="upload-photo-label" for="pj">CV en piéce jointe</label>
                 </div>
@@ -262,7 +262,7 @@
               <div class="form-group ">
                 <div class="pos-r">
                   <input id="email" type="email" name="email" placeholder="Email" required #email="ngModel"
-                  [(ngModel)]="candidat.email" 
+                  [(ngModel)]="candidat.email"  (change)="checkUsedMail()"
                     class="form-username form-control">
                 </div>
               </div>
@@ -276,14 +276,14 @@
               <div class="form-group">
                 <div class="pos-r">
                   <input id="confirmation" type="text" name="confirmation" required #confirmation="ngModel"
-                  [(ngModel)]="pwdConfirmation" 
+                  [(ngModel)]="pwdConfirmation"   (change)="checkPwdConfirmation()"
                     placeholder="Confirmation mot de passe" class="form-password form-control">
                 </div>
               </div>
               <div class="form-group">
                 <div class="pos-r">
                   <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo" required #photo="ngModel"
-                  [(ngModel)]="candidat.photo" 
+                  [(ngModel)]="candidat.photo" (change)="handleImageCandidatInput($event.target.files)"
                     class="form-password form-control" style="display: none;">
                   <label id="upload-photo-label" for="photo">PHOTO</label>
 
