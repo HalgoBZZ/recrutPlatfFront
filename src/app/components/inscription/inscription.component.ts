@@ -144,20 +144,26 @@ export class InscriptionComponent implements OnInit {
     'Yémen',
     'Zambie	',
     'Zimbabwe'];
-  candidat = new Candidat();;
+  candidat = new Candidat();
   employeur = new Employeur();
   pwdConfirmation;
   employeInscrit: boolean;
   inscritError: boolean;
   pwdConfirm;
   usedMail = false;
+  savedFile;
+  fileToUpload: File = null;
+  pathfile;
+  data;
+  fileToUploadCVCandidat: File = null;
+  fileToUploadEmployeur: File = null;
   constructor(private router: Router, private toastr: ToastrService, private utilisateurService: UtilisateurService, private employeurService: EmployeurService, private candidatService: CandidatService) { }
 
   ngOnInit() {
-    this.pwdConfirmation=false;
-    this.employeInscrit=false;
+    this.pwdConfirmation = false;
+    this.employeInscrit = false;
 
-    this.inscritError=false;
+    this.inscritError = false;
     this.pwdConfirm;
     this.usedMail = false;
   }
@@ -177,45 +183,56 @@ export class InscriptionComponent implements OnInit {
   inscription() {
 
     if (this.cmptCandidat) {
-      this.checkUsedMail();
-      this.checkPwdConfirmation(this.candidat);
-      console.log('this.usedMail ', this.usedMail)
-      console.log('this.pwdConfirm ', this.pwdConfirm)
-
       if (!this.usedMail && this.pwdConfirm) {
         this.candidatService.inscription(this.candidat).subscribe(result => {
+          this.data = result;
           if (result != null) {
-            this.toastr.success('votre inscription a bien été enregistrée');
-            setTimeout(() => {
-              this.router.navigate(['/login']);
-            }, 3000);
+            this.saveImageCandidat(this.data.id);
+            if (this.savedFile != null) {
+              this.successInscritpion();
+            } else {
+              this.errorInscription();
+            }
           }
         }, error => {
-          this.employeInscrit = false;
-          this.inscritError = true;
-          this.toastr.error('Oops il y a une problème');
+          this.errorInscription();
         });
       }
     } else if (this.cmptEmployeur) {
-      this.checkUsedMail();
-      this.checkPwdConfirmation(this.candidat);
-      if ( ! this.usedMail && this.pwdConfirm) {
-        this.employeurService.inscription(this.employeur).subscribe(result => {
+      console.log('this.------------------')
+      console.log('this.usedMail', this.usedMail)
+      console.log('this.pwdConfirm', this.pwdConfirm)
+      if (!this.usedMail && this.pwdConfirm) {
+        console.log('this.usedMail', this.usedMail)
+        console.log('this.pwdConfirm', this.pwdConfirm)
+      this.employeurService.inscription(this.employeur).subscribe(result => {
+          this.data = result;
           if (result != null) {
-            this.toastr.success('votre inscription a bien été enregistrée');
-            setTimeout(() => {
-              this.router.navigate(['/login']);
-            }, 2000);          }
+            this.saveImageEmployeur(this.data.id);
+            if (this.savedFile != null) {
+              this.successInscritpion();
+            } else {
+              this.errorInscription();
+            }
+          }
         }, error => {
-          this.employeInscrit = false;
-          this.inscritError = true;
-          this.toastr.error('Oops il y a une problème');
+          this.errorInscription();
         });
       }
 
     }
   }
-
+  errorInscription() {
+    this.employeInscrit = false;
+    this.inscritError = true;
+    this.toastr.error('Oops il y a une problème');
+  }
+  successInscritpion() {
+    this.toastr.success('votre inscription a bien été enregistrée');
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 3000);
+  }
   checkUsedMail() {
     this.utilisateurService.getByLogin(this.employeur.email).subscribe(result => {
       if (result == null) {
@@ -228,8 +245,8 @@ export class InscriptionComponent implements OnInit {
       this.inscritError = true;
     });
   }
-  checkPwdConfirmation(user) {
-    if (this.pwdConfirmation == user.password) {
+  checkPwdConfirmation() {
+    if (this.pwdConfirmation == this.candidat.password) {
       this.pwdConfirm = true;
     } else {
       this.pwdConfirm = false;
@@ -242,5 +259,66 @@ export class InscriptionComponent implements OnInit {
       this.choose = false;
     }
   }
+  handleImageCandidatInput(files: FileList) {
+    this.fileToUpload = files.item(0);
+  }
+  handleImageEmployeurInput(files: FileList) {
+    this.fileToUploadEmployeur = files.item(0);
+  }
 
+  handleCVCandidatInput(files: FileList) {
+    this.fileToUploadCVCandidat = files.item(0);
+  }
+  saveImageCandidat(id) {
+    console.log('this.candidat.email', this.candidat.email)
+    console.log('this.fileToUpload', this.fileToUpload)
+
+    if(this.fileToUpload != null){
+      this.candidatService.uploadFile(this.fileToUpload, this.candidat.email, id).subscribe(result => {
+        console.log('this.result', result)
+  
+        if (result != null) {
+          this.pathfile = result;
+          this.savedFile = true;
+        }
+      }, error => {
+        this.pathfile = null;
+        this.savedFile = false;
+        this.toastr.error('Oops il y a une problème');
+      });
+    }
+    if(this.fileToUploadCVCandidat != null) {
+      this.candidatService.uploadFile(this.fileToUploadCVCandidat, this.candidat.email, id).subscribe(result => {
+        console.log('this.result', result)
+  
+        if (result != null) {
+          this.pathfile = result;
+          this.savedFile = true;
+        }
+      }, error => {
+        this.pathfile = null;
+        this.savedFile = false;
+        this.toastr.error('Oops il y a une problème');
+      });
+    }
+    
+
+  }
+
+  saveImageEmployeur(id) {
+    console.log('this.fgfggfgf')
+
+    this.employeurService.uploadFile(this.fileToUploadEmployeur, this.employeur.email, id).subscribe(result => {
+      console.log('this.result', result)
+
+      if (result != null) {
+        this.pathfile = result;
+        this.savedFile = true;
+      }
+    }, error => {
+      this.pathfile = null;
+      this.savedFile = false;
+      this.toastr.error('Oops il y a une problème');
+    });
+  }
 }
