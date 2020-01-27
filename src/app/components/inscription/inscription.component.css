@@ -176,6 +176,8 @@
 .inputfile + label:hover {
     background-color: red;
 }
+
+
 #pic {
     height: 0;
     width: 0;
@@ -191,5 +193,3 @@
 #upload-photo-label:active{
     background:#ccc;
 }
-
-
