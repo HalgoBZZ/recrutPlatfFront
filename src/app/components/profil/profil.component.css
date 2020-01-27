@@ -1,0 +1,15 @@
+#pic {
+  height: 0;
+  width: 0;
+}
+
+#upload-photo-label {
+  border: 1px solid #ffffff;
+  padding: 5px 30px;
+  font-family:arial;
+  font-size: 13px;
+  border-radius: 2px;
+}
+#upload-photo-label:active{
+  background: #ffffff;
+}

@@ -82,8 +82,8 @@
         </a>
       </li>
       <li class="nav-item nav-profile dropdown">
-        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown" aria-expanded="false">
-          {{loggedUser.prenom}} {{loggedUser.nom}}
+        <a class="nav-link dropdown-toggle" [routerLink]="['/principal', {outlets: {child1: ['profil']}}]" href="#" data-toggle="dropdown" id="profileDropdown" aria-expanded="false">
+          Hafedh Baazouzi
         </a>
       </li>
 

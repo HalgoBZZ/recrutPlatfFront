@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -17,16 +16,18 @@ import { CategoriesComponent } from './components/categories/categories.componen
 import { MesOffresComponent } from './components/mes-offres/mes-offres.component';
 import { NewPassComponent } from './components/new-pass/new-pass.component';
 import { VerifCodeComponent } from './components/verif-code/verif-code.component';
-import { ModalModule } from 'ngx-bootstrap';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ModalModule, AccordionModule, RatingModule } from 'ngx-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { ChartModule } from 'angular-highcharts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { TooltipModule } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
     AppComponent,
-    
     HeaderComponent,
     NavComponent,
     BodyComponent,
@@ -40,7 +41,8 @@ import { HttpClientModule } from '@angular/common/http';
     CategoriesComponent,
     MesOffresComponent,
     NewPassComponent,
-    VerifCodeComponent
+    VerifCodeComponent,
+   // HighchartsChartComponent
   ],
   imports: [
     BrowserModule,
@@ -50,14 +52,18 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule, ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
+    ChartModule,
+    AccordionModule.forRoot(),
+    TooltipModule.forRoot(),
+    RatingModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 1500,
       positionClass: 'toast-bottom-right',
       progressAnimation:'increasing',
       preventDuplicates: true
     }),
-    ModalModule.forRoot()
-
+    ModalModule.forRoot(),
+    HighchartsChartModule
   ],
   providers: [],
   bootstrap: [AppComponent]

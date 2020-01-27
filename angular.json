@@ -30,7 +30,10 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "src/assets/js/accessibility.js",
+              "src/assets/js/exporting.js",
+              "src/assets/js/highcharts.js"
             ]
           },
           "configurations": {

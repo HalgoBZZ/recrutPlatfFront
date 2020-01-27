@@ -54,4 +54,5 @@ export class CategoriesComponent implements OnInit {
     this.toastr.error('Error!', 'Error toast');
   }
 
+
 }

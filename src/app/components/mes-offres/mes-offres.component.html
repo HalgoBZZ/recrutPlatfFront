@@ -1,1 +1,464 @@
-<p>mes-offres works!</p>
+<!-- <h2>La liste des employeurs</h2> -->
+<div style="float: right;">
+  <div style="display: inline-block; margin-right: 10px;">
+    <input type="text" class="form-control form-control-md" placeholder="Recherche" aria-label="Recherche">
+  </div>
+  <div style="display: inline-block; margin-right: 10px;">
+    <button class="btn btn-secondary" (click)="showFilterModal(filterTemplate)">Filtre<span
+        class="ti-filter"></span></button>
+  </div>
+  <div style="display: inline-block; margin-right: 10px;">
+    <button class="btn btn-success" (click)="showAddModal(addTemplate)">Ajouter Offre</button>
+  </div>
+  <div style="display: inline-block; ">
+    <button class="btn btn-dark" (click)="openAll()">
+      <span [ngClass]="{'ti-angle-double-down': !isAllOpen, 'ti-angle-double-up': isAllOpen}"></span>
+    </button>
+  </div>
+</div>
+<div style="width:100%; margin-top: 50px;">
+  <accordion [isAnimated]="true">
+    <accordion-group class="acordion-group" [isOpen]="isOpen[0]" (click)="openOrClose(0)">
+      <div accordion-heading style="width:100%;">
+        <!-- <div style="display: inline-block;">
+          <img src='../../../assets/images/entreprises/e1.jpg' class='offre-pic'>
+        </div> -->
+        <div style="display: inline-block; margin-left: 20px; vertical-align: middle;">
+          <h6>Offre No 1</h6>
+        </div>
+        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
+          <span [ngClass]="{'ti-angle-up': isOpen[0], 'ti-angle-down': !isOpen[0]}"></span>
+        </div>
+      </div>
+      <div style="display: block;">
+        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
+          <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
+            (click)="showUpdateModal(updateTemplate)"></span>
+          <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
+            (click)="showDeleteModal(deleteTemplate)"></span>
+        </div>
+        <h2>Aide soignant / Préposé aux bénéficiaires</h2>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Salaire</h4>
+        2500 DT.<br>
+        <hr>
+        <h4>Horaire</h4>
+        40H/Semaine
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>
+          Domaine</h4>
+        Secteur de santé.<br>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <div style="display: block;">
+          Lorem Ipsum is simply dummy text of the printing
+          and typesetting industry. Lorem Ipsum has been the industry's
+          standard dummy text ever since the 1500s, when an unknown printer took a
+          galley of type and scrambled it to make a type specimen book. It has survived not only five
+          centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was
+          popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br>
+          <hr>
+        </div>
+      </div>
+      <div style="display: block;">
+        <div style="display: block;">
+          <h4>Niveau d’expérience</h4>
+          2 ans.
+          <hr>
+        </div>
+      </div>
+      <div style="display: block;">
+        <h4>Niveau d'études</h4>
+        Bac + 2.
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Compétences techniques</h4>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>Java</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>JavaScript</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>HTML</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>CSS</b></div>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Langues</h4>
+        Anglais: <rating [(ngModel)]="fr" [max]="max" [readonly]="true"></rating><br>
+        Français: <rating [(ngModel)]="ang" [max]="max" [readonly]="true"></rating>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Liste des candidats</h4>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>
+                <ng-container>Photo</ng-container>
+              </th>
+              <th>
+                Nom
+              </th>
+              <th>Prénom
+              </th>
+              <th>
+                Titre
+              </th>
+              <th>
+                Diplome
+              </th>
+              <th>Adresse
+              </th>
+              <th>Date de naissance
+              </th>
+              <th>
+                Email
+              </th>
+              <th>
+                Numéro de telephone
+              </th>
+              <th>
+                Nationalité
+              </th>
+              <th>CV
+              </th>
+              <th> Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="py-1">
+                <img src="../../../assets/images/faces/face1.jpg" alt="image" class="zoom">
+              </td>
+              <td>Baazouzi</td>
+              <td>Hafedh</td>
+              <td>Ingénieur developpeur</td>
+              <td>Diplome d'ingénieur</td>
+              <td class="py-1">Cité el khadhra</td>
+              <td class="py-1">15-05-1990</td>
+              <td class="py-1">hafedh.baazouzi@gmail.com</td>
+              <td>+21656457898</td>
+              <td class="py-1">Tunisie</td>
+              <td class="py-1"><a href="#"><i class="fa fa-file-pdf-o"></i></a></td>
+              <td>
+                <span title="Accepter" class="fa fa-check" style="cursor: pointer; margin-right: 20px;color: green;"
+                  (click)="showDeleteModal(deleteTemplate)"></span>
+                  <span title="Refuser" class="fa fa-close" style="cursor: pointer; margin-right: 20px;color: red;"
+                  (click)="showDeleteModal(deleteTemplate)"></span>
+                <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
+                  (click)="showInfoModal(infoTemplate)"></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="py-1">
+                <img src="../../../assets/images/faces/face2.jpg" alt="image" class="zoom">
+              </td>
+              <td>Baazouzi</td>
+              <td>Hafedh</td>
+              <td>Ingénieur developpeur</td>
+              <td>Diplome d'ingénieur</td>
+              <td class="py-1">Cité el khadhra</td>
+              <td class="py-1">15-05-1990</td>
+              <td class="py-1">hafedh.baazouzi@gmail.com</td>
+              <td>+21656457898</td>
+              <td class="py-1">Tunisie</td>
+              <td class="py-1"><a href="#"><i class="fa fa-file-pdf-o"></i></a></td>
+              <td>
+                <span title="Accepter" class="fa fa-check" style="cursor: pointer; margin-right: 20px;color: green;"
+                (click)="showDeleteModal(deleteTemplate)"></span>
+                <span title="Refuser" class="fa fa-close" style="cursor: pointer; margin-right: 20px;color: red;"
+                (click)="showDeleteModal(deleteTemplate)"></span>
+                <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
+                  (click)="showInfoModal(infoTemplate)"></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </accordion-group>
+    <accordion-group class="acordion-group" [isOpen]="isOpen[1]" (click)="openOrClose(1)">
+      <div accordion-heading style="width:100%;">
+        <!-- <div style="display: inline-block;">
+          <img src='../../../assets/images/entreprises/e3.jpg' class='offre-pic'>
+        </div> -->
+        <div style="display: inline-block; margin-left: 20px; vertical-align: middle;">
+          <h6>Offre No 1</h6>
+        </div>
+        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
+          <span [ngClass]="{'ti-angle-up': isOpen[1], 'ti-angle-down': !isOpen[1]}"></span>
+        </div>
+      </div>
+      <div style="display: block;">
+        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
+          <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
+            (click)="showUpdateModal(updateTemplate)"></span>
+          <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
+            (click)="showDeleteModal(deleteTemplate)"></span>
+        </div>
+        <h2>Aide soignant / Préposé aux bénéficiaires</h2>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Salaire</h4>
+        2500 DT.<br>
+        <hr>
+        <h4>Horaire</h4>
+        40H/Semaine
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>
+          Domaine</h4>
+        Secteur de santé.<br>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <div style="display: block;">
+          Lorem Ipsum is simply dummy text of the printing
+          and typesetting industry. Lorem Ipsum has been the industry's
+          standard dummy text ever since the 1500s, when an unknown printer took a
+          galley of type and scrambled it to make a type specimen book. It has survived not only five
+          centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was
+          popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br>
+          <hr>
+        </div>
+      </div>
+      <div style="display: block;">
+        <div style="display: block;">
+          <h4>Niveau d’expérience</h4>
+          2 ans.
+          <hr>
+        </div>
+      </div>
+      <div style="display: block;">
+        <h4>Niveau d'études</h4>
+        Bac + 2.
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Compétences techniques</h4>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>Java</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>JavaScript</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>HTML</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>CSS</b></div>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Langues</h4>
+        Anglais: <rating [(ngModel)]="fr" [max]="max" [readonly]="true"></rating><br>
+        Français: <rating [(ngModel)]="ang" [max]="max" [readonly]="true"></rating>
+      </div>
+      <!---------------------------------------------------update modal*******************************-->
+<ng-template #updateTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modification de l'offre (Offre1)</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input type="text" class="form-control form-control-sm" placeholder="Poste" aria-label="Poste" style="margin-bottom: 15px;">
+    <textarea class="form-control form-control-sm" placeholder="Description" rows="6" style="margin-bottom: 15px;"></textarea>
+    <select class="form-control form-control-sm" style="margin-bottom: 15px;">
+      <option selected disabled>Domaine</option>
+      <option>Domaine1</option>
+      <option>Domaine2</option>
+      <option>domaine3</option>
+    </select>
+    <ng-template #tolTemplateAddEtude>BAC + {{ etude }}</ng-template>
+    <label>Niveau d'études demandé</label>
+      <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateAddEtude" triggers="focus" >
+    <ng-template #tolTemplateAddHor>{{ heure}} Heure/Semaine</ng-template>
+    <label>Horaire par semaine</label>
+      <input type="range" min="0" max="50" [(ngModel)]="heure" class="slider" id="myRange" [tooltip]="tolTemplateAddHor" triggers="focus" >
+    <ng-template #tolTemplateAdd>{{ salaire }} DT</ng-template>
+    <label>Salaire mensuel</label>
+      <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplateAdd" triggers="focus" >
+    <ng-template #tolTemplateExpAdd>{{ experience }} ans</ng-template>
+    <label>Experience demandée</label><br>
+      <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange" [tooltip]="tolTemplateExpAdd" triggers="focus" >
+    <label>Compétences techniques demandées</label><br>
+    <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+      <b>CSS</b></div>
+    <br>
+    <div class="btn btn-success btn-rounded btn-fw" style="display: inline-block;" (click)="addCompetence()">
+      <span class="ti-plus"></span></div>
+    <div style="margin-left: 20px; display: inline-block;" *ngIf="addComp">
+      <input type="text" class="form-control form-control-sm" placeholder="Compétence" aria-label="Min"
+        style="width: 100%; margin-bottom: 10px;">
+    </div>
+    <br/>
+    <label>Langues</label><br>
+    Français <rating [(ngModel)]="rateFr" [max]="max" [readonly]="isReadonly"></rating><br>
+    Anglais <rating [(ngModel)]="rateAng" [max]="max" [readonly]="isReadonly"></rating>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="updateOffre()">Modifier</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------delete modal*******************************-->
+<ng-template #deleteTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Suppression de l'offre (offre1)</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Vous étes sure de supprimer l'offre (Offre 1)?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="deleteOffre()">OUI</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">NON</button>
+  </div>
+</ng-template>
+<!--****************************************Add modal**********************************-->
+<ng-template #addTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Ajout d'un nouvel offre</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input type="text" class="form-control form-control-sm" placeholder="Poste" aria-label="Poste" style="margin-bottom: 15px;">
+    <textarea class="form-control form-control-sm" placeholder="Description" rows="6" style="margin-bottom: 15px;"></textarea>
+    <select class="form-control form-control-sm" style="margin-bottom: 15px;">
+      <option selected disabled>Domaine</option>
+      <option>Domaine1</option>
+      <option>Domaine2</option>
+      <option>domaine3</option>
+    </select>
+    <ng-template #tolTemplateAddEtude>BAC + {{ etude }}</ng-template>
+    <label>Niveau d'études demandé</label>
+      <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateAddEtude" triggers="focus" >
+    <ng-template #tolTemplateAddHor>{{ heure}} Heure/Semaine</ng-template>
+    <label>Horaire par semaine</label>
+      <input type="range" min="0" max="50" [(ngModel)]="heure" class="slider" id="myRange" [tooltip]="tolTemplateAddHor" triggers="focus" >
+    <ng-template #tolTemplateAdd>{{ salaire }} DT</ng-template>
+    <label>Salaire mensuel</label>
+      <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplateAdd" triggers="focus" >
+    <ng-template #tolTemplateExpAdd>{{ experience }} ans</ng-template>
+    <label>Experience demandée</label><br>
+      <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange" [tooltip]="tolTemplateExpAdd" triggers="focus" >
+    <label>Compétences techniques demandées</label><br>
+    <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+      <b>CSS</b></div>
+    <br>
+    <div class="btn btn-success btn-rounded btn-fw" style="display: inline-block;" (click)="addCompetence()">
+      <span class="ti-plus"></span></div>
+    <div style="margin-left: 20px; display: inline-block;" *ngIf="addComp">
+      <input type="text" class="form-control form-control-sm" placeholder="Compétence" aria-label="Min"
+        style="width: 100%; margin-bottom: 10px;">
+    </div>
+    <br/>
+    <label>Langues</label><br>
+    Français <rating [(ngModel)]="rateFr" [max]="max" [readonly]="isReadonly"></rating><br>
+    Anglais <rating [(ngModel)]="rateAng" [max]="max" [readonly]="isReadonly"></rating>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="addOffre()">Ajouter</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------info modal*******************************-->
+<ng-template #infoTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Détails de Candidat Hafedh Baazouzi</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container py-3" style="width:100%;">
+      <div class="card">
+        <div class="row ">
+          <div class="col-md-5">
+            <img src="../../../assets/images/faces/face10.jpg" class="w-100" style="height: 100%;">
+          </div>
+          <div class="col-md-7 px-3">
+            <div class="card-block px-3">
+              <b>Nom: </b>Baazouzi<br>
+              <b>Prénom: </b>Hafedh<br>
+              <b>Titre: </b>Ingénieur<br>
+              <b>Diplome: </b>Ingénieur<br>
+              <b>Adresse: </b>Tunis cité el khadhra<br>
+              <b>Numéro de telephone: </b>+201625353654<br>
+              <b>Date de naissance: </b>15-05-1999<br>
+              <b>Email: </b>hafedh.baazouzi@gmail.com<br>
+              <b>Nationalité: </b>Tunisie<br>
+              <b>Ajouté le: </b>12-12-2019<br>
+              <b>Dérniére modification: </b>12-01-2020<br>
+              <b>CV: </b><a href="#"><i class="fa fa-file-pdf-o"></i></a><br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!--*******************************************filtre model**********************************-->
+<ng-template #filterTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Filtre des offres</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label>Domaines</label>
+    <select class="form-control form-control-sm">
+      <option>Tous</option>
+      <option>Domaine1</option>
+      <option>Domaine2</option>
+      <option>domaine3</option>
+    </select>
+    <hr>
+    <ng-template #tolTemplateEtude>BAC + {{ etude }}</ng-template>
+    <label>Etudes</label>
+      <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateEtude" triggers="focus" >
+    <hr>
+      <ng-template #tolTemplate>{{ salaire }} DT</ng-template>
+    <label>Salaire</label>
+      <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplate" triggers="focus" >
+    <hr>
+    <ng-template #tolTemplateExp>{{ experience }} ans</ng-template>
+    <label>Experience</label><br>
+      <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange" [tooltip]="tolTemplateExp" triggers="focus" >
+    <hr>
+    <label>Compétences techniques</label><br>
+    <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+      <b>CSS</b></div>
+    <br>
+    <div class="btn btn-success btn-rounded btn-fw" style="display: inline-block;" (click)="addCompetence()">
+      <span class="ti-plus"></span></div>
+    <div style="margin-left: 20px; display: inline-block;" *ngIf="addComp">
+      <input type="text" class="form-control form-control-sm" placeholder="Compétence" aria-label="Min"
+        style="width: 100%; margin-bottom: 10px;">
+    </div>
+    <hr>
+    <label>Langues</label><br>
+    Français <rating [(ngModel)]="rateFr" [max]="max" [readonly]="isReadonly"></rating><br>
+    Anglais <rating [(ngModel)]="rateAng" [max]="max" [readonly]="isReadonly"></rating>
+    <hr>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="submitSearch()">Filtrer</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
+  </div>
+

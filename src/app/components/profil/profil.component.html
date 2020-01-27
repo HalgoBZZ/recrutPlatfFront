@@ -1,1 +1,164 @@
-<p>profil works!</p>
+<!--*****************************************************************Employeur info**********************************-->
+<div style="float: right; display: block; display: block;" *ngIf="!update">
+  <div style="display: inline-block; margin-right: 10px;">
+    <button class="btn btn-success" (click)="showFormUpdate()">Mettre à jour mes informations <span class="ti-pencil-alt"></span></button>
+  </div>
+  </div>
+<div *ngIf="employeur && !update" style="width: 90%">
+    <div style="margin-top: 80px;">
+        <div class="card" style="box-shadow: none; ">
+          <div class="row" style="background-color: #dddce1;">
+            <div class="col-md-4">
+              <img src="../../../assets/images/faces/face10.jpg" class="w-100" style="border-radius: 15px;">
+            </div>
+            <div class="col-md-7 px-3">
+              <div class="card-block px-3">
+                <b>Nom: </b>Baazouzi<br>
+                <b>Prénom: </b>Hafedh<br>
+                <b>Titre: </b>Ingénieur<br>
+                <b>Diplome: </b>Ingénieur<br>
+                <b>Adresse: </b>Tunis cité el khadhra<br>
+                <b>Numéro de telephone: </b>+201625353654<br>
+                <b>Date de naissance: </b>15-05-1999<br>
+                <b>Email: </b>hafedh.baazouzi@gmail.com<br>
+                <b>Nationalité: </b>Tunisie<br>
+                <b>Ajouté le: </b>12-12-2019<br>
+                <b>Dérniére modification: </b>12-01-2020<br>
+                <b>CV: </b><a href="#"><i class="fa fa-file-pdf-o"></i></a><br>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+<!--*****************************************************************Employeur**********************************-->
+<div *ngIf="employeur && update" style="width: 90%">
+  <input id="nom" type="text" name="nom" placeholder="Nom" class="form-username form-control"
+    style="margin-bottom: 15px;">
+  <textarea name="presentation" placeholder="Présentation" id="presentation" class="form-username form-control" rows="4"
+    style="margin-bottom: 15px;"></textarea>
+  <input id="site" type="url" name="site" placeholder="Site web" class="form-username form-control"
+    style="margin-bottom: 15px;">
+  <input id="adresse" type="text" name="adresse" placeholder="Adresse" class="form-username form-control"
+    style="margin-bottom: 15px;">
+  <input id="taille" type="text" name="taille" placeholder="Taille de l'entreprise" class="form-username form-control"
+    style="margin-bottom: 15px;">
+  <input id="type" type="text" name="type" placeholder="Type de l'entreprise" class="form-username form-control"
+    style="margin-bottom: 15px;">
+  <input id="fondation" type="text" name="fondation" placeholder="Fondation de l'entreprise"
+    class="form-username form-control" style="margin-bottom: 15px;">
+  <select class="form-username form-control" style="margin-bottom: 15px;">
+    <option selected disabled>Pays</option>
+    <option *ngFor="let pays of paysList">{{pays}}</option>
+  </select>
+  <input id="form-username" type="email" name="form-username" placeholder="Email" class="form-username form-control"
+    style="margin-bottom: 15px;">
+  <input id="form-password" type="password" name="form-password" placeholder="Mot de passe"
+    class="form-password form-control" style="margin-bottom: 15px;">
+  <input id="confirmation" type="confirmation" name="form-password" placeholder="Confirmation mot de passe"
+    class="form-password form-control" style="margin-bottom: 15px;">
+
+  <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo" class="form-password form-control"
+    style="display: none;" style="margin-bottom: 15px;" hidden>
+  <label id="upload-photo-label" for="photo">LOGO</label>
+  <button type="submit" class="btn btn-success form-control" style="margin-bottom: 15px;"
+    (click)="modifierMonCompteEmployeur()"><strong>Modifier</strong></button>
+  <button type="button" class="btn btn-danger form-control"
+    (click)="annulerModification()"><strong>Annuler</strong></button>
+
+</div>
+
+
+<!--*****************************************************************Candidat info**********************************-->
+<div *ngIf="candidat && !update" style="width: 90%">
+  <div style="margin-top: 80px;">
+      <div class="card" style="box-shadow: none; ">
+        <div class="row" style="background-color: #dddce1;">
+          <div class="col-md-4">
+            <img src="../../../assets/images/faces/face10.jpg" class="w-100" style="border-radius: 15px;">
+          </div>
+          <div class="col-md-7 px-3">
+            <div class="card-block px-3">
+              <b>Nom: </b>Baazouzi<br>
+              <b>Prénom: </b>Hafedh<br>
+              <b>Titre: </b>Ingénieur<br>
+              <b>Diplome: </b>Ingénieur<br>
+              <b>Adresse: </b>Tunis cité el khadhra<br>
+              <b>Numéro de telephone: </b>+201625353654<br>
+              <b>Date de naissance: </b>15-05-1999<br>
+              <b>Email: </b>hafedh.baazouzi@gmail.com<br>
+              <b>Nationalité: </b>Tunisie<br>
+              <b>Ajouté le: </b>12-12-2019<br>
+              <b>Dérniére modification: </b>12-01-2020<br>
+              <b>CV: </b><a href="#"><i class="fa fa-file-pdf-o"></i></a><br>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--*****************************************************************Candidat update form**********************************-->
+<div *ngIf="candidat" style="width: 90%">
+  <input id="nom" type="text" name="nom" placeholder="Nom" class="form-username form-control" style="margin-bottom: 15px;">
+  <input type="text" name="prenom" placeholder="Prénom" id="prenom" class="form-username form-control" style="margin-bottom: 15px;">
+  <input id="datenaissance" type="text" onfocus="(this.type='date')" name="datenaissance"
+    placeholder="Date de naissance" class="form-username form-control" style="margin-bottom: 15px;">
+  <input id="adresse" type="text" name="adresse" placeholder="Adresse" class="form-username form-control" style="margin-bottom: 15px;">
+  <input id="tel" type="tel" name="tel" placeholder="Numéro de telephone" class="form-username form-control" style="margin-bottom: 15px;">
+
+  <input id="diplome" type="text" name="diplome" placeholder="Diplome" class="form-username form-control" style="margin-bottom: 15px;">
+
+  <input id="pj" type="file" name="pj" placeholder="CV" class="form-password form-control" style="display: none; margin-bottom: 15px;">
+  <label id="upload-photo-label" for="pj">CV en piéce jointe</label>
+
+  <input id="titre" type="text" name="titre" placeholder="Titre" class="form-username form-control" style="margin-bottom: 15px;">
+  <select class="form-username form-control" style="margin-bottom: 15px;">
+    <option selected disabled>Nationnalité</option>
+    <option *ngFor="let pays of paysList">{{pays}}</option>
+  </select>
+  <input id="form-username" type="email" name="form-username" placeholder="Email" class="form-username form-control" style="margin-bottom: 15px;">
+  <input id="form-password" type="password" name="form-password" placeholder="Mot de passe"
+    class="form-password form-control" style="margin-bottom: 15px;">
+  <input id="confirmation" type="confirmation" name="form-password" placeholder="Confirmation mot de passe"
+    class="form-password form-control" style="margin-bottom: 15px;">
+  <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo" class="form-password form-control"
+    style="display: none; margin-bottom: 15px;">
+  <label id="upload-photo-label" for="photo">PHOTO</label>
+  <button type="submit" class="btn btn-success form-control" style="margin-bottom: 15px;"
+    (click)="modifierMonCompteEmployeur()"><strong>Modifier</strong></button>
+  <button type="button" class="btn btn-danger form-control"
+    (click)="annulerModification()"><strong>Annuler</strong></button>
+</div>
+
+
+
+
+
+<!--*****************************************************************Admin info**********************************-->
+<div *ngIf="admin && !update" style="width: 90%">
+  <div style="margin-top: 80px;">
+      <div class="card" style="box-shadow: none; ">
+        <div class="row" style="background-color: #dddce1;">
+          <div class="col-md-7 px-3">
+            <div class="card-block px-3">
+              <b>Email: </b>hafedh.baazouzi@gmail.com<br>
+              <b>Ajouté le: </b>12-12-2019<br>
+              <b>Dérniére modification: </b>12-01-2020<br>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--*****************************************************************Candidat info**********************************-->
+<div *ngIf="admin && update" style="width: 90%">
+  <input id="form-username" type="email" name="form-username" placeholder="Email" class="form-username form-control" style="margin-bottom: 15px;">
+  <input id="form-password" type="password" name="form-password" placeholder="Mot de passe"
+    class="form-password form-control" style="margin-bottom: 15px;">
+  <input id="confirmation" type="confirmation" name="form-password" placeholder="Confirmation mot de passe"
+    class="form-password form-control" style="margin-bottom: 15px;">
+  <button type="submit" class="btn btn-success form-control" style="margin-bottom: 15px;"
+    (click)="modifierMonCompteEmployeur()"><strong>Modifier</strong></button>
+  <button type="button" class="btn btn-danger form-control"
+    (click)="annulerModification()"><strong>Annuler</strong></button>
+
+</div>
