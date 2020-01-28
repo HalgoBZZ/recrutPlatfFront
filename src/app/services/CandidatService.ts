@@ -5,7 +5,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class CandidatService {
 
-
     private uri = 'http://localhost:8080/api/candidat/';
     headers = new HttpHeaders();
 
@@ -28,4 +27,11 @@ export class CandidatService {
 
         return this.http.post(this.uri + 'uploadfile/', formData, options);
     }
+    getAll() {
+        this.headers.append('Accept', 'application/json;charset=UTF-8');
+        const options = { headers: this.headers };
+        return this.http.get(this.uri + 'get/', options);     
+     }
+    
+    
 }

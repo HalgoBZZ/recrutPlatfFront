@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { CandidatService } from 'src/app/services/CandidatService';
 
 @Component({
   selector: 'app-candidats',
@@ -24,10 +25,24 @@ export class CandidatsComponent implements OnInit {
   showPhoto = true;
   showModification = false;
   bsModalRef: BsModalRef;
-
-  constructor(private modalService: BsModalService, private toastr: ToastrService) { }
+  data;
+  listCandidat;
+  constructor(private modalService: BsModalService, private toastr: ToastrService,
+    private candidatService : CandidatService) { }
 
   ngOnInit() {
+    this.candidatService.getAll().subscribe(result => {
+      console.log('dd ==>',result)
+      if (result == null) {
+        this.data = false;
+      } else {
+        this.listCandidat=result;
+        this.data = true;
+      }
+    }, error => {
+      this.data = true;
+      ;
+    });
   }
 
   showAddModal(template) {

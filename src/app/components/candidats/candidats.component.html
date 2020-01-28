@@ -62,26 +62,28 @@
           <ng-container *ngIf="!filter">Date de modification</ng-container>
           <ng-container *ngIf="filter"><input type="text" placeholder="Date de modification"></ng-container>
         </th>
-        <th> Action</th>
+        <th> Action{{showNom}}</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr *ngFor="let candidat of listCandidat">
         <td class="py-1" *ngIf="showPhoto">
-          <img src="../../../assets/images/faces/face1.jpg" alt="image" class="zoom">
+          <img  *ngIf="candidat.photo" [src]="candidat.photo | safe" alt="image" class="zoom">
+
+          <img  *ngIf="!candidat.photo" src="../../../assets/images/faces/face1.jpg" alt="image" class="zoom">
         </td>
-        <td *ngIf="showNom">Baazouzi</td>
-        <td *ngIf="showPrenom">Hafedh</td>
-        <td *ngIf="showTitre">Ingénieur developpeur</td>
-        <td *ngIf="showDiplome">Diplome d'ingénieur</td>
-        <td class="py-1" *ngIf="showAdresse">Cité el khadhra</td>
-        <td class="py-1" *ngIf="showDateNaiss">15-05-1990</td>
-        <td class="py-1" *ngIf="showEmail">hafedh.baazouzi@gmail.com</td>
-        <td *ngIf="showTel">+21656457898</td>
-        <td class="py-1" *ngIf="showNationalite">Tunisie</td>
-        <td class="py-1" *ngIf="showCV"><a href="#"><i class="fa fa-file-pdf-o"></i></a></td>
-        <td *ngIf="showAjout">12-12-2019</td>
-        <td *ngIf="showModification">12-12-2019</td>
+        <td *ngIf="showNom">{{candidat.nom}}</td>
+        <td *ngIf="showPrenom">{{candidat.prenom}}</td>
+        <td *ngIf="showTitre">{{candidat.titre}}</td>
+        <td *ngIf="showDiplome">{{candidat.diplome}}</td>
+        <td class="py-1" *ngIf="showAdresse">{{candidat.adresse}}</td>
+        <td class="py-1" *ngIf="showDateNaiss">{{candidat.dateNaissance}}</td>
+        <td class="py-1" *ngIf="showEmail">h{{candidat.email}}</td>
+        <td *ngIf="showTel">{{candidat.tel}}</td>
+        <td class="py-1" *ngIf="showNationalite">{{candidat.nationalite}}</td>
+        <td class="py-1" *ngIf="showCV"><a href="#"><i class="fa fa-file-pdf-o"></i>{{candidat.piece_jointe}}</a></td>
+        <td *ngIf="showAjout">{{candidat.nom}}</td>
+        <td *ngIf="showModification">{{candidat.nom}}</td>
         <td>
           <span title="Supprimer" class="ti-trash" style="cursor: pointer; margin-right: 20px;color: red;"
             (click)="showDeleteModal(deleteTemplate)"></span>
@@ -89,52 +91,7 @@
             (click)="showInfoModal(infoTemplate)"></span>
         </td>
       </tr>
-      <tr>
-        <td class="py-1" *ngIf="showPhoto">
-          <img src="../../../assets/images/faces/face2.jpg" alt="image" class="zoom">
-        </td>
-        <td *ngIf="showNom">Baazouzi</td>
-        <td *ngIf="showPrenom">Hafedh</td>
-        <td *ngIf="showTitre">Ingénieur developpeur</td>
-        <td *ngIf="showDiplome">Diplome d'ingénieur</td>
-        <td class="py-1" *ngIf="showAdresse">Cité el khadhra</td>
-        <td class="py-1" *ngIf="showDateNaiss">15-05-1990</td>
-        <td class="py-1" *ngIf="showEmail">hafedh.baazouzi@gmail.com</td>
-        <td *ngIf="showTel">+21656457898</td>
-        <td class="py-1" *ngIf="showNationalite">Tunisie</td>
-        <td class="py-1" *ngIf="showCV"><a href="#"><i class="fa fa-file-pdf-o"></i></a></td>
-        <td *ngIf="showAjout">12-12-2019</td>
-        <td *ngIf="showModification">12-12-2019</td>
-        <td>
-          <span title="Supprimer" class="ti-trash" style="cursor: pointer; margin-right: 20px;color: red;"
-            (click)="showDeleteModal(deleteTemplate)"></span>
-          <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
-            (click)="showInfoModal(infoTemplate)"></span>
-        </td>
-      </tr>
-      <tr>
-        <td class="py-1" *ngIf="showPhoto">
-          <img src="../../../assets/images/faces/face3.jpg" alt="image" class="zoom">
-        </td>
-        <td *ngIf="showNom">Baazouzi</td>
-        <td *ngIf="showPrenom">Hafedh</td>
-        <td *ngIf="showTitre">Ingénieur developpeur</td>
-        <td *ngIf="showDiplome">Diplome d'ingénieur</td>
-        <td class="py-1" *ngIf="showAdresse">Cité el khadhra</td>
-        <td class="py-1" *ngIf="showDateNaiss">15-05-1990</td>
-        <td class="py-1" *ngIf="showEmail">hafedh.baazouzi@gmail.com</td>
-        <td *ngIf="showTel">+21656457898</td>
-        <td class="py-1" *ngIf="showNationalite">Tunisie</td>
-        <td class="py-1" *ngIf="showCV"><a href="#"><i class="fa fa-file-pdf-o"></i></a></td>
-        <td *ngIf="showAjout">12-12-2019</td>
-        <td *ngIf="showModification">12-12-2019</td>
-        <td>
-          <span title="Supprimer" class="ti-trash" style="cursor: pointer; margin-right: 20px;color: red;"
-            (click)="showDeleteModal(deleteTemplate)"></span>
-          <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
-            (click)="showInfoModal(infoTemplate)"></span>
-        </td>
-      </tr>
+
     </tbody>
   </table>
 </div>
