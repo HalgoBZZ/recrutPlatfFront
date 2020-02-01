@@ -3,10 +3,13 @@ import { Utilisateur } from './Utilisateur';
 export class Candidat extends Utilisateur {
     nom;
     prenom;
-    photo;
+    photoPath;
+    photo = File;
+
     dateNaissance;
     diplome;
-    piece_jointe;
+    piece_jointePath;
+    piece_jointe = File;
     tel;
     titre;
     adresse;

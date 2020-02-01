@@ -68,9 +68,10 @@
     <tbody>
       <tr *ngFor="let candidat of listCandidat">
         <td class="py-1" *ngIf="showPhoto">
-          <img  *ngIf="candidat.photo" [src]="candidat.photo | safe" alt="image" class="zoom">
+          <img  *ngIf="candidat.photo" src="data:image/jpg;base64,{{ candidat.photo }}" alt="image" class="zoom">
 
           <img  *ngIf="!candidat.photo" src="../../../assets/images/faces/face1.jpg" alt="image" class="zoom">
+
         </td>
         <td *ngIf="showNom">{{candidat.nom}}</td>
         <td *ngIf="showPrenom">{{candidat.prenom}}</td>

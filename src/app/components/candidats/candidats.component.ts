@@ -41,7 +41,6 @@ export class CandidatsComponent implements OnInit {
       }
     }, error => {
       this.data = true;
-      ;
     });
   }
 
