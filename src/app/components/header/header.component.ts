@@ -18,7 +18,6 @@ export class HeaderComponent implements OnInit {
     this.utilisateurService.getByLogin(login).subscribe(data => {
       this.loggedUser = data;
       console.log('loggedUser  ==>',this.loggedUser)
-
     }, error => {
       this.router.navigate(['/login']);
     });

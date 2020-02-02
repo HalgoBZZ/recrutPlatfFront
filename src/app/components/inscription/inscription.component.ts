@@ -276,7 +276,7 @@ export class InscriptionComponent implements OnInit {
     if (this.fileToUpload != null) {
       console.log('this.fileToUpload', this.fileToUpload);
 
-      this.candidatService.uploadFile(this.fileToUpload, this.candidat.email, id).subscribe(result => {
+      this.candidatService.uploadFile(this.fileToUpload, this.candidat.email, id,"PHOTO").subscribe(result => {
         console.log('eee', result);
         if (result == true) {
           this.pathfile = result;
@@ -294,7 +294,7 @@ export class InscriptionComponent implements OnInit {
     if (this.fileToUploadCVCandidat != null) {
       console.log('this.fileToUploadCVCandidat', this.fileToUploadCVCandidat);
 
-      this.candidatService.uploadFile(this.fileToUploadCVCandidat, this.candidat.email, id).subscribe(result => {
+      this.candidatService.uploadFile(this.fileToUploadCVCandidat, this.candidat.email, id,"CV").subscribe(result => {
         console.log('esssssee', result);
         if (result == true) {
           this.pathfile = result;
