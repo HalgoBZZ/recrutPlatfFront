@@ -160,9 +160,7 @@ export class InscriptionComponent implements OnInit {
   constructor(private router: Router, private toastr: ToastrService, private utilisateurService: UtilisateurService, private employeurService: EmployeurService, private candidatService: CandidatService) { }
 
   ngOnInit() {
-    this.pwdConfirmation = false;
     this.employeInscrit = false;
-
     this.inscritError = false;
     this.pwdConfirm;
     this.usedMail = false;
@@ -188,32 +186,27 @@ export class InscriptionComponent implements OnInit {
           this.data = result;
           if (result != null) {
             this.saveImageCandidat(this.data.id);
-            if (this.savedFile != null) {
-              this.successInscritpion();
-            } else {
-              this.errorInscription();
-            }
+            this.successInscritpion();
+          } else {
+            this.errorInscription();
           }
         }, error => {
+          console.log('this.errorInscription')
+
           this.errorInscription();
         });
       }
     } else if (this.cmptEmployeur) {
-      console.log('this.------------------')
-      console.log('this.usedMail', this.usedMail)
-      console.log('this.pwdConfirm', this.pwdConfirm)
       if (!this.usedMail && this.pwdConfirm) {
         console.log('this.usedMail', this.usedMail)
         console.log('this.pwdConfirm', this.pwdConfirm)
-      this.employeurService.inscription(this.employeur).subscribe(result => {
+        this.employeurService.inscription(this.employeur).subscribe(result => {
           this.data = result;
           if (result != null) {
             this.saveImageEmployeur(this.data.id);
-            if (this.savedFile != null) {
-              this.successInscritpion();
-            } else {
-              this.errorInscription();
-            }
+            this.successInscritpion();
+          } else {
+            this.errorInscription();
           }
         }, error => {
           this.errorInscription();
@@ -246,11 +239,20 @@ export class InscriptionComponent implements OnInit {
     });
   }
   checkPwdConfirmation() {
-    if (this.pwdConfirmation == this.candidat.password) {
-      this.pwdConfirm = true;
-    } else {
-      this.pwdConfirm = false;
+    if (this.cmptCandidat) {
+      if (this.pwdConfirmation == this.candidat.password) {
+        this.pwdConfirm = true;
+      } else {
+        this.pwdConfirm = false;
+      }
+    } else if (this.cmptEmployeur) {
+      if (this.pwdConfirmation == this.employeur.password) {
+        this.pwdConfirm = true;
+      } else {
+        this.pwdConfirm = false;
+      }
     }
+
   }
   back() {
     if (!this.choose) {
@@ -270,55 +272,59 @@ export class InscriptionComponent implements OnInit {
     this.fileToUploadCVCandidat = files.item(0);
   }
   saveImageCandidat(id) {
-    console.log('this.candidat.email', this.candidat.email)
-    console.log('this.fileToUpload', this.fileToUpload)
 
-    if(this.fileToUpload != null){
-      this.candidatService.uploadFile(this.fileToUpload, this.candidat.email, id).subscribe(result => {
-        console.log('this.result', result)
-  
-        if (result != null) {
+    if (this.fileToUpload != null) {
+      console.log('this.fileToUpload', this.fileToUpload);
+
+      this.candidatService.uploadFile(this.fileToUpload, this.candidat.email, id,"PHOTO").subscribe(result => {
+        console.log('eee', result);
+        if (result == true) {
           this.pathfile = result;
           this.savedFile = true;
+          this.successInscritpion();
         }
       }, error => {
         this.pathfile = null;
         this.savedFile = false;
-        this.toastr.error('Oops il y a une problème');
+        this.errorInscription();
       });
+    } else {
+      this.savedFile = true;
     }
-    if(this.fileToUploadCVCandidat != null) {
-      this.candidatService.uploadFile(this.fileToUploadCVCandidat, this.candidat.email, id).subscribe(result => {
-        console.log('this.result', result)
-  
-        if (result != null) {
+    if (this.fileToUploadCVCandidat != null) {
+      console.log('this.fileToUploadCVCandidat', this.fileToUploadCVCandidat);
+
+      this.candidatService.uploadFile(this.fileToUploadCVCandidat, this.candidat.email, id,"CV").subscribe(result => {
+        console.log('esssssee', result);
+        if (result == true) {
           this.pathfile = result;
           this.savedFile = true;
+          this.successInscritpion();
         }
       }, error => {
         this.pathfile = null;
         this.savedFile = false;
-        this.toastr.error('Oops il y a une problème');
+        this.errorInscription();
       });
+    } else {
+      this.savedFile = true;
     }
-    
+
 
   }
 
   saveImageEmployeur(id) {
-    console.log('this.fgfggfgf')
-
     this.employeurService.uploadFile(this.fileToUploadEmployeur, this.employeur.email, id).subscribe(result => {
-      console.log('this.result', result)
 
       if (result != null) {
         this.pathfile = result;
         this.savedFile = true;
+        this.successInscritpion();
       }
     }, error => {
       this.pathfile = null;
       this.savedFile = false;
-      this.toastr.error('Oops il y a une problème');
+      this.errorInscription();
     });
   }
 }
