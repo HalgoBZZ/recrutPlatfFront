@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { CandidatService } from 'src/app/services/CandidatService';
+import { CandidatService } from 'src/app/services/candidat.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { saveAs } from 'file-saver';
 @Component({
@@ -40,7 +40,6 @@ export class CandidatsComponent implements OnInit {
   }
   getAll() {
     this.candidatService.getAll().subscribe(result => {
-      console.log('dd ==>', result)
       if (result == null) {
         this.data = false;
       } else {
@@ -70,8 +69,6 @@ export class CandidatsComponent implements OnInit {
   }
   showInfoModal(template, candidat) {
     this.candidatDetail = candidat;
-    console.log(' this.candidatDetail ==>', this.candidatDetail)
-
     this.bsModalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 

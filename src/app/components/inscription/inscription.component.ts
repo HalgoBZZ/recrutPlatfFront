@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Employeur } from 'src/app/modals/Employeur.';
-import { EmployeurService } from 'src/app/services/EmployeurService';
-import { CandidatService } from 'src/app/services/CandidatService';
-import { UtilisateurService } from 'src/app/services/UtilisateurService';
+import { EmployeurService } from 'src/app/services/employeur.service';
+import { CandidatService } from 'src/app/services/candidat.service';
+import { UtilisateurService } from 'src/app/services/utilisateur.service';
 import { Candidat } from 'src/app/modals/Candidat';
 import { ToastrService } from 'ngx-toastr';
 
@@ -191,15 +191,11 @@ export class InscriptionComponent implements OnInit {
             this.errorInscription();
           }
         }, error => {
-          console.log('this.errorInscription')
-
           this.errorInscription();
         });
       }
     } else if (this.cmptEmployeur) {
       if (!this.usedMail && this.pwdConfirm) {
-        console.log('this.usedMail', this.usedMail)
-        console.log('this.pwdConfirm', this.pwdConfirm)
         this.employeurService.inscription(this.employeur).subscribe(result => {
           this.data = result;
           if (result != null) {
@@ -274,10 +270,8 @@ export class InscriptionComponent implements OnInit {
   saveImageCandidat(id) {
 
     if (this.fileToUpload != null) {
-      console.log('this.fileToUpload', this.fileToUpload);
 
       this.candidatService.uploadFile(this.fileToUpload, this.candidat.email, id,"PHOTO").subscribe(result => {
-        console.log('eee', result);
         if (result == true) {
           this.pathfile = result;
           this.savedFile = true;
@@ -292,10 +286,8 @@ export class InscriptionComponent implements OnInit {
       this.savedFile = true;
     }
     if (this.fileToUploadCVCandidat != null) {
-      console.log('this.fileToUploadCVCandidat', this.fileToUploadCVCandidat);
 
       this.candidatService.uploadFile(this.fileToUploadCVCandidat, this.candidat.email, id,"CV").subscribe(result => {
-        console.log('esssssee', result);
         if (result == true) {
           this.pathfile = result;
           this.savedFile = true;

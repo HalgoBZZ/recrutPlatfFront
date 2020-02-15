@@ -10,4 +10,6 @@ export class Offre {
     dateModif;
     domaine;
     langues ;
+    employeur;
+    poste;
 }

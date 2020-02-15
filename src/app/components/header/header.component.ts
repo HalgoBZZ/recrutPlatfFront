@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilisateurService } from 'src/app/services/UtilisateurService';
+import { UtilisateurService } from 'src/app/services/utilisateur.service';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 

@@ -24,12 +24,15 @@ import { ChartModule } from 'angular-highcharts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { TooltipModule } from 'ngx-bootstrap';
-import { SafePipe } from './pipes/SafePipe';
-
+import { OffreSalairePipePipe } from './pipes/offre-salaire-pipe.pipe';
+import { OffreExperiencePipePipe } from './pipes/offre-experience-pipe.pipe';
+import { OffreDomainePipePipe } from './pipes/offre-domaine-pipe.pipe';
+import { OffreLanguePipePipe } from './pipes/offre-langue-pipe.pipe';
+import { OffreCompetencePipePipe } from './pipes/offre-competence-pipe.pipe';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 @NgModule({
   declarations: [
     AppComponent,
-    SafePipe,
     HeaderComponent,
     NavComponent,
     BodyComponent,
@@ -44,6 +47,11 @@ import { SafePipe } from './pipes/SafePipe';
     MesOffresComponent,
     NewPassComponent,
     VerifCodeComponent,
+    OffreSalairePipePipe,
+    OffreExperiencePipePipe,
+    OffreDomainePipePipe,
+    OffreLanguePipePipe,
+    OffreCompetencePipePipe,
    // HighchartsChartComponent
   ],
   imports: [
@@ -58,6 +66,7 @@ import { SafePipe } from './pipes/SafePipe';
     AccordionModule.forRoot(),
     TooltipModule.forRoot(),
     RatingModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 1500,
       positionClass: 'toast-bottom-right',
