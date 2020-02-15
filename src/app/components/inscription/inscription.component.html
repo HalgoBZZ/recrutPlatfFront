@@ -140,9 +140,9 @@
                 <div class="form-group">
                   <div class="pos-r">
                     <input id="confirmation" type="text" name="confirmation" required #confirmation="ngModel"
-                      [(ngModel)]="pwdConfirmation" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="pwdConfirm" [ngModelOptions]="{standalone: true}"
                       placeholder="Confirmation mot de passe" class="form-password form-control">
-                    <!-- <div *ngIf="confirmation.errors && (confirmation.dirty || confirmation.touched) || pwdConfirm"
+                    <div *ngIf="confirmation.errors && (confirmation.dirty || confirmation.touched) || pwdConfirm"
                       class="alert alert-danger">
                       <div ng-show="pwdConfirm">
                         vos mots de passe ne sont pas compatibles veuillez vérifier!
@@ -150,13 +150,13 @@
                       <div ng-show="form.confirmation.$dirty && form.confirmation.$error.required">
                         Champ obligatoire!
                       </div>
-                    </div> -->
+                    </div>
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="pos-r">
                     <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo"
-                      (change)="handleImageEmployeurInput($event.target.files)"
+                      [(ngModel)]="employeur.photo" [ngModelOptions]="{standalone: true}" (change)="handleImageEmployeurInput($event.target.files)"
                       class="form-password form-control" style="display: none;">
                     <label id="upload-photo-label" for="photo">LOGO</label>
                   </div>
@@ -232,7 +232,8 @@
               </div>
               <div class="form-group">
                 <div class="pos-r">
-                  <input id="pj" type="file" name="pj" placeholder="CV" class="form-password form-control" required  (change)="handleCVCandidatInput($event.target.files)"
+                  <input id="pj" type="file" name="pj" placeholder="CV" class="form-password form-control" required #pj="ngModel"
+                  [(ngModel)]="candidat.piece_jointe" (change)="handleCVCandidatInput($event.target.files)"
                     style="display: none;">
                   <label id="upload-photo-label" for="pj">CV en piéce jointe</label>
                 </div>
@@ -281,7 +282,8 @@
               </div>
               <div class="form-group">
                 <div class="pos-r">
-                  <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo" required  (change)="handleImageCandidatInput($event.target.files)"
+                  <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo" required #photo="ngModel"
+                  [(ngModel)]="candidat.photo" (change)="handleImageCandidatInput($event.target.files)"
                     class="form-password form-control" style="display: none;">
                   <label id="upload-photo-label" for="photo">PHOTO</label>
 

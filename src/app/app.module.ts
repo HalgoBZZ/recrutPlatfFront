@@ -24,12 +24,10 @@ import { ChartModule } from 'angular-highcharts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { TooltipModule } from 'ngx-bootstrap';
-import { SafePipe } from './pipes/SafePipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SafePipe,
     HeaderComponent,
     NavComponent,
     BodyComponent,
