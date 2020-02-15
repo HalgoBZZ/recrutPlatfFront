@@ -1,0 +1,321 @@
+<h2>La liste des employeurs</h2>
+<div style="float: right;">
+  <div style="display: inline-block; margin-right: 10px;">
+    <button class="btn btn-secondary" (click)="showFilter()">Filtre<span class="ti-filter"></span></button>
+  </div>
+  <div style="display: inline-block;">
+    <button class="btn btn-warning" (click)="changeSettings(reglageTemplate)">Réglage <span
+        class="ti-settings"></span></button>
+  </div>
+</div>
+<div style="width:100%; margin-top: 50px;">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th *ngIf="showLogo">
+          <ng-container>Logo</ng-container>
+        </th>
+        <th *ngIf="showNom">
+          <ng-container *ngIf="!filter">Nom</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Nom"></ng-container>
+        </th>
+        <th *ngIf="showPresentation">
+          <ng-container *ngIf="!filter">Présentation</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Présentation"></ng-container>
+        </th>
+        <th *ngIf="showSite">
+          <ng-container *ngIf="!filter">Site web</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Site web"></ng-container>
+        </th>
+        <th *ngIf="showTaille">
+          <ng-container *ngIf="!filter">Taille</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Taille"></ng-container>
+        </th>
+        <th *ngIf="showAdresse">
+          <ng-container *ngIf="!filter">Adresse</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Adresse"></ng-container>
+        </th>
+        <th *ngIf="showType">
+          <ng-container *ngIf="!filter">Type</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Type"></ng-container>
+        </th>
+        <th *ngIf="showEmail">
+          <ng-container *ngIf="!filter">Email</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Email"></ng-container>
+        </th>
+        <th *ngIf="showTel">
+          <ng-container *ngIf="!filter">Numéro de telephone</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="numéro de telephone"></ng-container>
+        </th>
+        <th *ngIf="showPays">
+          <ng-container *ngIf="!filter">Pays</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Pays"></ng-container>
+        </th>
+        <th *ngIf="showFondation">
+          <ng-container *ngIf="!filter">Fondation</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Fondation"></ng-container>
+        </th>
+        <th *ngIf="showAjout">
+          <ng-container *ngIf="!filter">Date d'ajout</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Date d'ajout"></ng-container>
+        </th>
+        <th *ngIf="showModification">
+          <ng-container *ngIf="!filter">Date de modification</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Date de modification"></ng-container>
+        </th>
+        <th> Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="py-1" *ngIf="showLogo">
+          <img src="../../../assets/images/entreprises/e1.jpg" class="zoom">
+        </td>
+        <td *ngIf="showNom">IHM Informatique</td>
+        <td *ngIf="showPresentation">presentation</td>
+        <td *ngIf="showSite">www.site.com</td>
+        <td *ngIf="showTaille">SARL</td>
+        <td class="py-1" *ngIf="showAdresse">Cité el khadhra</td>
+        <td class="py-1" *ngIf="showType">SARL</td>
+        <td class="py-1" *ngIf="showEmail">hafedh.baazouzi@gmail.com</td>
+        <td *ngIf="showTel">+21656457898</td>
+        <td class="py-1" *ngIf="showPays">Tunisie</td>
+        <td class="py-1" *ngIf="showFondation">Fondation</td>
+        <td *ngIf="showAjout">12-12-2019</td>
+        <td *ngIf="showModification">12-12-2019</td>
+        <td>
+          <span title="Supprimer" class="ti-trash" style="cursor: pointer; margin-right: 20px;color: red;"
+            (click)="showDeleteModal(deleteTemplate)"></span>
+          <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
+            (click)="showInfoModal(infoTemplate)"></span>
+        </td>
+      </tr>
+      <tr>
+        <td class="py-1" *ngIf="showLogo">
+          <img src="../../../assets/images/entreprises/e3.jpg" class="zoom">
+        </td>
+        <td *ngIf="showNom">IHM Informatique</td>
+        <td *ngIf="showPresentation">presentation</td>
+        <td *ngIf="showSite">www.site.com</td>
+        <td *ngIf="showTaille">SARL</td>
+        <td class="py-1" *ngIf="showAdresse">Cité el khadhra</td>
+        <td class="py-1" *ngIf="showType">SARL</td>
+        <td class="py-1" *ngIf="showEmail">hafedh.baazouzi@gmail.com</td>
+        <td *ngIf="showTel">+21656457898</td>
+        <td class="py-1" *ngIf="showPays">Tunisie</td>
+        <td class="py-1" *ngIf="showFondation">Fondation</td>
+        <td *ngIf="showAjout">12-12-2019</td>
+        <td *ngIf="showModification">12-12-2019</td>
+        <td>
+          <span title="Supprimer" class="ti-trash" style="cursor: pointer; margin-right: 20px;color: red;"
+            (click)="showDeleteModal(deleteTemplate)"></span>
+          <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
+            (click)="showInfoModal(infoTemplate)"></span>
+        </td>
+      </tr>
+      <tr>
+        <td class="py-1" *ngIf="showLogo">
+          <img src="../../../assets/images/entreprises/3S.jpg" class="zoom">
+        </td>
+        <td *ngIf="showNom">IHM Informatique</td>
+        <td *ngIf="showPresentation">presentation</td>
+        <td *ngIf="showSite">www.site.com</td>
+        <td *ngIf="showTaille">SARL</td>
+        <td class="py-1" *ngIf="showAdresse">Cité el khadhra</td>
+        <td class="py-1" *ngIf="showType">SARL</td>
+        <td class="py-1" *ngIf="showEmail">hafedh.baazouzi@gmail.com</td>
+        <td *ngIf="showTel">+21656457898</td>
+        <td class="py-1" *ngIf="showPays">Tunisie</td>
+        <td class="py-1" *ngIf="showFondation">Fondation</td>
+        <td *ngIf="showAjout">12-12-2019</td>
+        <td *ngIf="showModification">12-12-2019</td>
+        <td>
+          <span title="Supprimer" class="ti-trash" style="cursor: pointer; margin-right: 20px;color: red;"
+            (click)="showDeleteModal(deleteTemplate)"></span>
+          <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
+            (click)="showInfoModal(infoTemplate)"></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!--****************************************Add modal**********************************-->
+<ng-template #addTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Ajout d'un domaine</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input type="text" class="form-control form-control-sm" placeholder="Intitulé" aria-label="Intitulé">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="addCandidat()">Ajouter</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------update modal*******************************-->
+<ng-template #updateTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modification de domaine (domaine1)</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input type="text" class="form-control form-control-sm" placeholder="Intitulé" aria-label="Intitulé">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="updateCandidat()">Modifier</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------delete modal*******************************-->
+<ng-template #deleteTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Suppression de domaine (domaine1)</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Vous étes sure de supprimer le domaine (domaine1)?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="deleteCandidat()">OUI</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">NON</button>
+  </div>
+</ng-template>
+
+<!---------------------------------------------------info modal*******************************-->
+<ng-template #infoTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Détails de l'employeur IHM informatique</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container py-3" style="width:100%;">
+      <div class="card">
+        <div class="row ">
+          <div class="col-md-5">
+            <img src="../../../assets/images/entreprises/e1.jpg" class="w-100" style="height: 100%;">
+          </div>
+          <div class="col-md-7 px-3">
+            <div class="card-block px-3">
+              <b>Nom: </b>IHM informatique<br>
+              <b>Présentation: </b>presentation<br>
+              <b>Site web: </b>www.ihm.com<br>
+              <b>Taille: </b>SARL<br>
+              <b>Adresse: </b>Tunis cité el khadhra<br>
+              <b>Numéro de telephone: </b>+201625353654<br>
+              <b>Type: </b>SARL<br>
+              <b>Fondation: </b><br>
+              <b>Email: </b>hafedh.baazouzi@gmail.com<br>
+              <b>Pays: </b>Tunisie<br>
+              <b>Ajouté le: </b>12-12-2019<br>
+              <b>Dérniére modification: </b>12-01-2020<br>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!---------------------------------------------------reglage modal*******************************-->
+<ng-template #reglageTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Selectionnez les colonnes à afficher dans la table</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showLogo" [ngModelOptions]="{standalone: true}">
+        Logo
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showNom" [ngModelOptions]="{standalone: true}">
+        Nom
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showPresentation" [ngModelOptions]="{standalone: true}">
+        Présentation
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showSite" [ngModelOptions]="{standalone: true}">
+        Site web
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showTaille" [ngModelOptions]="{standalone: true}">
+        Taille
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showAdresse" [ngModelOptions]="{standalone: true}">
+        Adresse
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showType"
+          [ngModelOptions]="{standalone: true}">
+        Type
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showEmail" [ngModelOptions]="{standalone: true}">
+        Email
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showTel" [ngModelOptions]="{standalone: true}">
+        Numéro de télephone
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showPays"
+          [ngModelOptions]="{standalone: true}">
+        Pays
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showFondation" [ngModelOptions]="{standalone: true}">
+        Fondation
+        <i class="input-helper"></i></label>
+    </div>
+
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showAjout" [ngModelOptions]="{standalone: true}">
+        Date d'ajout
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showModification"
+          [ngModelOptions]="{standalone: true}">
+        Date de modification
+        <i class="input-helper"></i></label>
+    </div>
+  </div>
+</ng-template>

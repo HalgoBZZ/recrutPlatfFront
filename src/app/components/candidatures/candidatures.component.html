@@ -1,0 +1,323 @@
+<!-- <h2>La liste des employeurs</h2> -->
+<div style="float: right;">
+  <div style="display: inline-block; margin-right: 10px;">
+    <input type="text" class="form-control form-control-md" placeholder="Recherche" aria-label="Recherche">
+  </div>
+  <div style="display: inline-block; margin-right: 10px;">
+    <button class="btn btn-secondary" (click)="showFilterModal(filterTemplate)">Filtre<span
+        class="ti-filter"></span></button>
+  </div>
+  <!-- <div style="display: inline-block; margin-right: 10px;">
+    <button class="btn btn-warning" (click)="changeSettings(reglageTemplate)">Réglage <span
+        class="ti-settings"></span></button>
+  </div> -->
+  <div style="display: inline-block; ">
+    <button class="btn btn-dark" (click)="openAll()">
+      <span [ngClass]="{'ti-angle-double-down': !isAllOpen, 'ti-angle-double-up': isAllOpen}"></span>
+    </button>
+  </div>
+</div>
+<div style="width:100%; margin-top: 50px;">
+  <accordion [isAnimated]="true">
+    <accordion-group class="acordion-group" [isOpen]="isOpen[0]" (click)="openOrClose(0)">
+      <div accordion-heading style="width:100%;">
+        <div style="display: inline-block;">
+          <img src='../../../assets/images/entreprises/e1.jpg' class='offre-pic'>
+        </div>
+        <div style="display: inline-block; margin-left: 20px; vertical-align: middle;">
+          <h6>Offre No 1 <label class="badge badge-success" style="margin-left: 30px;">En évaluation</label></h6>
+          <small class="text-muted">
+            IHM Informatique
+          </small>
+        </div>
+        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
+          <span [ngClass]="{'ti-angle-up': isOpen[0], 'ti-angle-down': !isOpen[0]}"></span>
+        </div>
+      </div>
+      <div style="display: block;">
+        <!-- <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
+          <button type="button" class="btn btn-outline-primary btn-fw">Postuler</button>
+        </div> -->
+        <h2>Aide soignant / Préposé aux bénéficiaires</h2>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Correspondance avec votre profil</h4>
+        <div id="container"></div>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Salaire</h4>
+        2500 DT.<br>
+        <hr>
+        <h4>Horaire</h4>
+        40H/Semaine
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>
+          Domaine</h4>
+        Secteur de santé.<br>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <div style="display: block;">
+          Lorem Ipsum is simply dummy text of the printing
+          and typesetting industry. Lorem Ipsum has been the industry's
+          standard dummy text ever since the 1500s, when an unknown printer took a
+          galley of type and scrambled it to make a type specimen book. It has survived not only five
+          centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was
+          popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br>
+          <hr>
+        </div>
+      </div>
+      <div style="display: block;">
+        <div style="display: block;">
+          <h4>Niveau d’expérience</h4>
+          2 ans.
+          <hr>
+        </div>
+      </div>
+      <div style="display: block;">
+        <h4>Niveau d'études</h4>
+        Bac + 2.
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Compétences techniques</h4>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>Java</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>JavaScript</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>HTML</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>CSS</b></div>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Langues</h4>
+        Anglais: <rating [(ngModel)]="fr" [max]="max" [readonly]="true"></rating><br>
+        Français: <rating [(ngModel)]="ang" [max]="max" [readonly]="true"></rating>
+      </div>
+    </accordion-group>
+    <accordion-group class="acordion-group" [isOpen]="isOpen[1]" (click)="openOrClose(1)">
+      <div accordion-heading style="width:100%;">
+        <div style="display: inline-block;">
+          <img src='../../../assets/images/entreprises/e3.jpg' class='offre-pic'>
+        </div>
+        <div style="display: inline-block; margin-left: 20px; vertical-align: middle;">
+          <h6>Offre No 1 <label class="badge badge-danger" style="margin-left: 30px;">Non retenu</label></h6>
+          <small class="text-muted">
+            IHM Informatique
+          </small>
+        </div>
+        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
+          <span [ngClass]="{'ti-angle-up': isOpen[1], 'ti-angle-down': !isOpen[1]}"></span>
+        </div>
+      </div>
+      <div style="display: block;">
+        <!-- <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
+          <button type="button" class="btn btn-outline-primary btn-fw">Postuler</button>
+        </div> -->
+        <h2>Aide soignant / Préposé aux bénéficiaires</h2>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Correspondance avec votre profil</h4>
+        <div id="container1"></div>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Salaire</h4>
+        2500 DT.<br>
+        <hr>
+        <h4>Horaire</h4>
+        40H/Semaine
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>
+          Domaine</h4>
+        Secteur de santé.<br>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <div style="display: block;">
+          Lorem Ipsum is simply dummy text of the printing
+          and typesetting industry. Lorem Ipsum has been the industry's
+          standard dummy text ever since the 1500s, when an unknown printer took a
+          galley of type and scrambled it to make a type specimen book. It has survived not only five
+          centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was
+          popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br>
+          <hr>
+        </div>
+      </div>
+      <div style="display: block;">
+        <div style="display: block;">
+          <h4>Niveau d’expérience</h4>
+          2 ans.
+          <hr>
+        </div>
+      </div>
+      <div style="display: block;">
+        <h4>Niveau d'études</h4>
+        Bac + 2.
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Compétences techniques</h4>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>Java</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>JavaScript</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>HTML</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>CSS</b></div>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Langues</h4>
+        Anglais: <rating [(ngModel)]="fr" [max]="max" [readonly]="true"></rating><br>
+        Français: <rating [(ngModel)]="ang" [max]="max" [readonly]="true"></rating>
+      </div>
+    </accordion-group>
+    <accordion-group class="acordion-group" [isOpen]="isOpen[2]" (click)="openOrClose(2)">
+      <div accordion-heading style="width:100%;">
+        <div style="display: inline-block;">
+          <img src='../../../assets/images/entreprises/e3.jpg' class='offre-pic'>
+        </div>
+        <div style="display: inline-block; margin-left: 20px; vertical-align: middle;">
+          <h6>Offre No 1 <label class="badge badge-warning" style="margin-left: 30px;">En attente</label></h6> 
+          <small class="text-muted">
+            IHM Informatique
+          </small>
+        </div>
+        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
+          <span [ngClass]="{'ti-angle-up': isOpen[1], 'ti-angle-down': !isOpen[1]}"></span>
+        </div>
+      </div>
+      <div style="display: block;">
+        <!-- <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
+          <button type="button" class="btn btn-outline-primary btn-fw">Postuler</button>
+        </div> -->
+        <h2>Aide soignant / Préposé aux bénéficiaires</h2>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Correspondance avec votre profil</h4>
+        <div id="container1"></div>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Salaire</h4>
+        2500 DT.<br>
+        <hr>
+        <h4>Horaire</h4>
+        40H/Semaine
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>
+          Domaine</h4>
+        Secteur de santé.<br>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <div style="display: block;">
+          Lorem Ipsum is simply dummy text of the printing
+          and typesetting industry. Lorem Ipsum has been the industry's
+          standard dummy text ever since the 1500s, when an unknown printer took a
+          galley of type and scrambled it to make a type specimen book. It has survived not only five
+          centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was
+          popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br>
+          <hr>
+        </div>
+      </div>
+      <div style="display: block;">
+        <div style="display: block;">
+          <h4>Niveau d’expérience</h4>
+          2 ans.
+          <hr>
+        </div>
+      </div>
+      <div style="display: block;">
+        <h4>Niveau d'études</h4>
+        Bac + 2.
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Compétences techniques</h4>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>Java</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>JavaScript</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>HTML</b></div>
+        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+          <b>CSS</b></div>
+        <hr>
+      </div>
+      <div style="display: block;">
+        <h4>Langues</h4>
+        Anglais: <rating [(ngModel)]="fr" [max]="max" [readonly]="true"></rating><br>
+        Français: <rating [(ngModel)]="ang" [max]="max" [readonly]="true"></rating>
+      </div>
+    </accordion-group>
+  </accordion>
+  <!--*******************************************filtre model**********************************-->
+  <ng-template #filterTemplate>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Filtre des offres</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <label>Domaines</label>
+      <select class="form-control form-control-sm">
+        <option>Tous</option>
+        <option>Domaine1</option>
+        <option>Domaine2</option>
+        <option>domaine3</option>
+      </select>
+      <hr>
+      <ng-template #tolTemplate>{{ salaire }} DT</ng-template>
+      <label>Salaire</label>
+      <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplate"
+        triggers="focus">
+      <hr>
+      <ng-template #tolTemplateEtude>BAC + {{ etude }}</ng-template>
+      <label>Etudes</label>
+      <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateEtude"
+        triggers="focus">
+      <hr>
+      <ng-template #tolTemplateExp>{{ experience }} ans</ng-template>
+      <label>Experience</label><br>
+      <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange"
+        [tooltip]="tolTemplateExp" triggers="focus">
+      <hr>
+      <label>Compétences techniques</label><br>
+      <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
+        <b>CSS</b></div>
+      <br>
+      <div class="btn btn-success btn-rounded btn-fw" style="display: inline-block;" (click)="addCompetence()">
+        <span class="ti-plus"></span></div>
+      <div style="margin-left: 20px; display: inline-block;" *ngIf="addComp">
+        <input type="text" class="form-control form-control-sm" placeholder="Compétence" aria-label="Min"
+          style="width: 100%; margin-bottom: 10px;">
+      </div>
+      <hr>
+      <label>Langues</label><br>
+      Français <rating [(ngModel)]="rateFr" [max]="max" [readonly]="isReadonly"></rating><br>
+      Anglais <rating [(ngModel)]="rateAng" [max]="max" [readonly]="isReadonly"></rating>
+      <hr>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="submitSearch()">Filtrer</button>
+      <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
+    </div>
