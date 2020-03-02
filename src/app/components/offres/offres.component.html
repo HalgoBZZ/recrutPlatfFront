@@ -26,7 +26,7 @@
     <accordion-group class="acordion-group" (click)="openOrClose(0)">
       <div accordion-heading style="width:100%;">
         <div style="display: inline-block;">
-          <img src='../../../assets/images/entreprises/e1.jpg' class='offre-pic'>
+          <img src='../../../assets/images/entreprises/e1.jpg' class='offre-pic' alt="">
         </div>
         <div style="display: inline-block; margin-left: 20px; vertical-align: middle;">
           <h6>{{offre.fonction}}</h6>
@@ -40,7 +40,10 @@
       </div>
       <div style="display: block;">
         <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
-          <button type="button" class="btn btn-outline-primary btn-fw">Postuler</button>
+          <button type="button" class="btn btn-outline-primary btn-fw" *ngIf="showPostulerButton(offre)"
+           (click)="postuler(offre)">Postuler</button>
+           <button type="button" class="btn btn-outline-secondary btn-fw" *ngIf="!showPostulerButton(offre)" [disabled]="!showPostulerButton(offre)"
+           (click)="postuler(offre)">Postuler</button>
         </div>
         <h2>{{offre.poste.intitule}}</h2>
         <hr>
