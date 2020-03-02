@@ -10,7 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class HeaderComponent implements OnInit {
 
-  loggedUser;
+  loggedUser : any;
   constructor(private router: Router,private utilisateurService :UtilisateurService,private sanitizer:DomSanitizer) { }
 
   ngOnInit() {

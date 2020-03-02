@@ -30,60 +30,16 @@
         <th> Action</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td class="py-1" *ngIf="showIntitule">domaine1</td>
-        <td *ngIf="showAjout">12-12-2019</td>
-        <td *ngIf="showModification">12-12-2019</td>
+    <tbody *ngFor="let domaine of listDomaines">
+      <tr >
+        <td class="py-1" *ngIf="showIntitule">{{domaine.intitule}}</td>
+        <td *ngIf="showAjout">{{domaine.dateAjout | date: 'dd/MM/yyyy'}}</td>
+        <td *ngIf="showModification">{{domaine.dateModif | date: 'dd/MM/yyyy'}}</td>
         <td>
           <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
-            (click)="showUpdateModal(updateTemplate)"></span>
+            (click)="showUpdateModal(updateTemplate,domaine)"></span>
           <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
-            (click)="showDeleteModal(deleteTemplate)"></span>
-        </td>
-      </tr>
-      <tr>
-        <td class="py-1" *ngIf="showIntitule">domaine2</td>
-        <td *ngIf="showAjout">12-12-2019</td>
-        <td *ngIf="showModification">12-12-2019</td>
-        <td>
-          <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
-            (click)="showUpdateModal(updateTemplate)"></span>
-          <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
-            (click)="showDeleteModal(deleteTemplate)"></span>
-        </td>
-      </tr>
-      <tr>
-        <td class="py-1" *ngIf="showIntitule">domaine3</td>
-        <td *ngIf="showAjout">12-12-2019</td>
-        <td *ngIf="showModification">12-12-2019</td>
-        <td>
-          <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
-            (click)="showUpdateModal(updateTemplate)"></span>
-          <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
-            (click)="showDeleteModal(deleteTemplate)"></span>
-        </td>
-      </tr>
-      <tr>
-        <td class="py-1" *ngIf="showIntitule">domaine4</td>
-        <td *ngIf="showAjout">12-12-2019</td>
-        <td *ngIf="showModification">12-12-2019</td>
-        <td>
-          <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
-            (click)="showUpdateModal(updateTemplate)"></span>
-          <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
-            (click)="showDeleteModal(deleteTemplate)"></span>
-        </td>
-      </tr>
-      <tr>
-        <td class="py-1" *ngIf="showIntitule">domaine5</td>
-        <td *ngIf="showAjout">12-12-2019</td>
-        <td *ngIf="showModification">12-12-2019</td>
-        <td>
-          <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
-            (click)="showUpdateModal(updateTemplate)"></span>
-          <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
-            (click)="showDeleteModal(deleteTemplate)"></span>
+            (click)="showDeleteModal(deleteTemplate,domaine)"></span>
         </td>
       </tr>
     </tbody>
@@ -98,7 +54,8 @@
     </button>
   </div>
   <div class="modal-body">
-    <input type="text" class="form-control form-control-sm" placeholder="Intitulé" aria-label="Intitulé">
+    <input type="text" class="form-control form-control-sm" 
+    [(ngModel)]="domaineToAdd.intitule" [ngModelOptions]="{standalone: true}" placeholder="Intitulé" aria-label="Intitulé">
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="addDomaine()">Ajouter</button>
@@ -108,13 +65,14 @@
 <!---------------------------------------------------update modal*******************************-->
 <ng-template #updateTemplate>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Modification de domaine (domaine1)</h4>
+    <h4 class="modal-title pull-left">Modification de domaine ({{domaineUpdated.intitule}})</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <input type="text" class="form-control form-control-sm" placeholder="Intitulé" aria-label="Intitulé">
+    <input type="text" class="form-control form-control-sm" [(ngModel)]="domaineUpdated.intitule" [ngModelOptions]="{standalone: true}"
+     placeholder="Intitulé" aria-label="Intitulé">
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="updateDomaine()">Modifier</button>
@@ -124,13 +82,13 @@
 <!---------------------------------------------------delete modal*******************************-->
 <ng-template #deleteTemplate>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Suppression de domaine (domaine1)</h4>
+    <h4 class="modal-title pull-left">Suppression de domaine ({{domaineToDelete.intitule}})</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    Vous étes sure de supprimer le domaine (domaine1)?
+    Vous étes sure de supprimer le domaine ({{domaineToDelete.intitule}})?
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="deleteDomaine()">OUI</button>

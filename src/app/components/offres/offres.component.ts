@@ -5,6 +5,8 @@ import { OffreService } from 'src/app/services/offre.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { CompetenceService } from 'src/app/services/competence.service';
 import { DomaineService } from 'src/app/services/domaine.service';
+import { Candidat } from 'src/app/modals/Candidat';
+import { CandidatService } from 'src/app/services/candidat.service';
 
 @Component({
   selector: 'app-offres',
@@ -28,22 +30,25 @@ export class OffresComponent implements OnInit {
   chartOptions;
   data;
   listOffre;
-  listCompetencesSearch =[];
+  listCompetencesSearch = [];
   listCompetences;
-  listDomainesSearch =[];
+  listDomainesSearch = [];
   listDomaines;
   dropdownList = [];
   selectedItems = [];
   selectedItemsDomaines = [];
-  dropdownSettings:IDropdownSettings;
-  dropdownSettingsDomaine:IDropdownSettings;
+  dropdownSettings: IDropdownSettings;
+  candidat;
+  dropdownSettingsDomaine: IDropdownSettings;
+  login;
   constructor(private modalService: BsModalService,
-    private competencesService : CompetenceService, private offreService: OffreService,private domaineService: DomaineService) {
+    private competencesService: CompetenceService, private offreService: OffreService, private domaineService: DomaineService,
+    private candidatService: CandidatService) {
     this.pieChart = Highcharts;
   }
 
   ngOnInit() {
-
+    this.getCandidat();
     this.getAll();
     this.getAllDomaines();
     this.getAllCompetences();
@@ -66,22 +71,28 @@ export class OffresComponent implements OnInit {
       allowSearchFilter: true
     };
   }
+  getCandidat() {
+    this.login = localStorage.getItem("login");
+    this.candidatService.getCandidatByLogin(this.login).subscribe(result => {
+      this.candidat = result;
+    }, error => {
+    });
+  }
 
   getAll() {
     this.offreService.getAll().subscribe(result => {
       if (result == null) {
         this.data = false;
       } else {
-        console.log('result', result)
         this.listOffre = result;
         this.data = true;
       }
     }, error => {
       this.data = true;
     });
-    setTimeout(() =>{
-       this.createChart(); 
-      }, 1000);
+    setTimeout(() => {
+      this.createChart();
+    }, 1000);
   }
   openOrClose(index) {
     this.isOpen[index] = !this.isOpen[index];
@@ -110,19 +121,19 @@ export class OffresComponent implements OnInit {
   }
 
   submitSearch() { }
-  getAllCompetences(){ 
+  getAllCompetences() {
     this.competencesService.getAll().subscribe(result => {
       if (result != null) {
-        this.listCompetences=result;
+        this.listCompetences = result;
       }
     }, error => {
       this.data = true;
     });
   }
-  getAllDomaines(){ 
+  getAllDomaines() {
     this.domaineService.getAll().subscribe(result => {
       if (result != null) {
-        this.listDomaines=result;
+        this.listDomaines = result;
       }
     }, error => {
       this.data = true;
@@ -130,14 +141,14 @@ export class OffresComponent implements OnInit {
   }
   onItemSelectDomaines(item) {
     this.listDomainesSearch.push(item);
-    console.log('this.listDomainesSearch',this.listDomainesSearch);
+    console.log('this.listDomainesSearch', this.listDomainesSearch);
   }
   onSelectAllDomaines(items: any) {
     console.log(items);
   }
   onItemSelect(item) {
     this.listDomainesSearch.push(item);
-    console.log('this.listCompetencesSearch',this.listDomainesSearch);
+    console.log('this.listCompetencesSearch', this.listDomainesSearch);
   }
   onSelectAll(items: any) {
     console.log(items);
@@ -196,5 +207,23 @@ export class OffresComponent implements OnInit {
         ]
       }]
     });
+  }
+  postuler(offre) {
+    const login = localStorage.getItem("login");
+    this.offreService.postuler(offre.id, login).subscribe(result => {
+
+    }, error => {
+    });
+  }
+  showPostulerButton(offre) {
+    if (this.candidat) {
+      for (let element of this.candidat.offres) {
+        if (element.id == offre.id) {
+          return false
+        }
+      }
+      return true;
+    }
+
   }
 }

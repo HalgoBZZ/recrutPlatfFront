@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class EmployeurService {
+
   private uri = 'http://localhost:8080/api/employeur/';
   headers = new HttpHeaders();
 
@@ -29,4 +30,8 @@ export class EmployeurService {
 
       return this.http.post(this.uri + 'uploadfile/', formData, options);
   }
+  getEmployeurByLogin(login) {
+    this.headers.append('Accept', 'application/json;charset=UTF-8');
+    const options = { headers: this.headers };
+    return this.http.get(this.uri + 'getByLogin/'+login, options);  }
 }
