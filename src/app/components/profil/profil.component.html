@@ -1,65 +1,150 @@
 <!--*****************************************************************Employeur info**********************************-->
 <div style="float: right; display: block; display: block;" *ngIf="!update">
   <div style="display: inline-block; margin-right: 10px;">
-    <button class="btn btn-success" (click)="showFormUpdate()">Mettre à jour mes informations <span class="ti-pencil-alt"></span></button>
+    <button class="btn btn-success" (click)="showFormUpdate()">Mettre à jour mes informations <span
+        class="ti-pencil-alt"></span></button>
   </div>
-  </div>
+</div>
 <div *ngIf="employeur && !update" style="width: 90%">
-    <div style="margin-top: 80px;">
-        <div class="card" style="box-shadow: none; ">
-          <div class="row" style="background-color: #dddce1;">
-            <div class="col-md-4">
-              <img src="../../../assets/images/faces/face10.jpg" class="w-100" style="border-radius: 15px;">
-            </div>
-            <div class="col-md-7 px-3">
-              <div class="card-block px-3">
-                <b>Nom: </b>Baazouzi<br>
-                <b>Prénom: </b>Hafedh<br>
-                <b>Titre: </b>Ingénieur<br>
-                <b>Diplome: </b>Ingénieur<br>
-                <b>Adresse: </b>Tunis cité el khadhra<br>
-                <b>Numéro de telephone: </b>+201625353654<br>
-                <b>Date de naissance: </b>15-05-1999<br>
-                <b>Email: </b>hafedh.baazouzi@gmail.com<br>
-                <b>Nationalité: </b>Tunisie<br>
-                <b>Ajouté le: </b>12-12-2019<br>
-                <b>Dérniére modification: </b>12-01-2020<br>
-                <b>CV: </b><a href="#"><i class="fa fa-file-pdf-o"></i></a><br>
-              </div>
-            </div>
+  <div style="margin-top: 80px;">
+    <div class="card" style="box-shadow: none; ">
+      <div class="row" style="background-color: #dddce1;">
+        <div class="col-md-4">
+          <img src="../../../assets/images/faces/face10.jpg" class="w-100" style="border-radius: 15px;">
+        </div>
+        <div class="col-md-7 px-3">
+          <div class="card-block px-3">
+            <b>Nom: </b>{{loggedUser.nom}}<br>
+            <b>Présentation: </b>{{loggedUser.presentation}}<br>
+            <b>Site web: </b>{{loggedUser.site}}<br>
+            <b>Type: </b>{{loggedUser.type}}<br>
+            <b>Adresse: </b>{{loggedUser.adresse}}<br>
+            <b>Taille: </b>{{loggedUser.taille}}<br>
+            <b>Fondation: </b>{{loggedUser.fondation}}<br>
+            <b>Email: </b>{{loggedUser.email}}<br>
+            <b>Nationalité: </b>{{loggedUser.pays}}<br>
+            <b>Ajouté le: </b>{{loggedUser.dateAjout}}<br>
+            <b>Dérniére modification: </b>{{loggedUser.dateModif}}<br>
+            <b>CV: </b><a href="#"><i class="fa fa-file-pdf-o"></i></a><br>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 </div>
 <!--*****************************************************************Employeur**********************************-->
 <div *ngIf="employeur && update" style="width: 90%">
   <input id="nom" type="text" name="nom" placeholder="Nom" class="form-username form-control"
-    style="margin-bottom: 15px;">
+    style="margin-bottom: 15px;" required #nom="ngModel" [(ngModel)]="loggedUser.nom"
+    [ngModelOptions]="{standalone: true}" class="form-username form-control">
+  <div *ngIf="nom.errors && (nom.dirty || nom.touched || tryToSubmit)" class="alert alert-danger">
+    <div [hidden]="!nom.errors.required">
+      Champ obligatoire!
+    </div>
+  </div>
   <textarea name="presentation" placeholder="Présentation" id="presentation" class="form-username form-control" rows="4"
-    style="margin-bottom: 15px;"></textarea>
+    style="margin-bottom: 15px;" [(ngModel)]="loggedUser.presentation" [ngModelOptions]="{standalone: true}"
+    class="form-username form-control" rows="4" required #presentation="ngModel"></textarea>
+  <div *ngIf="presentation.errors && (presentation.dirty || presentation.touched || tryToSubmit)"
+    class="alert alert-danger">
+    <div [hidden]="!nom.errors.required">
+      Champ obligatoire!
+    </div>
+  </div>
   <input id="site" type="url" name="site" placeholder="Site web" class="form-username form-control"
-    style="margin-bottom: 15px;">
-  <input id="adresse" type="text" name="adresse" placeholder="Adresse" class="form-username form-control"
-    style="margin-bottom: 15px;">
-  <input id="taille" type="text" name="taille" placeholder="Taille de l'entreprise" class="form-username form-control"
-    style="margin-bottom: 15px;">
-  <input id="type" type="text" name="type" placeholder="Type de l'entreprise" class="form-username form-control"
-    style="margin-bottom: 15px;">
+    style="margin-bottom: 15px;" [(ngModel)]="loggedUser.site" required [ngModelOptions]="{standalone: true}"
+    #site="ngModel">
+  <div *ngIf="(site.errors || !verifUrlField(loggedUser.site)) && (site.dirty || site.touched || tryToSubmit)"
+    class="alert alert-danger">
+    <div *ngIf="!verifRequired(loggedUser.site)">
+      Champ obligatoire!
+    </div>
+    <div *ngIf="!verifUrlField(loggedUser.site) && verifRequired(loggedUser.site)">
+      Format incorrecte du site!
+    </div>
+  </div>
+  <input id="adresse" type="text" name="adresse" placeholder="Adresse" style="margin-bottom: 15px;"
+    [(ngModel)]="loggedUser.adresse" [ngModelOptions]="{standalone: true}" class="form-username form-control"
+    #adresse="ngModel" required>
+  <div *ngIf="adresse.errors && (adresse.dirty || adresse.touched || tryToSubmit)" class="alert alert-danger">
+    <div [hidden]="!adresse.errors.required">
+      Champ obligatoire!
+    </div>
+  </div>
+  <input id="taille" type="text" name="taille" placeholder="Taille de l'entreprise" style="margin-bottom: 15px;"
+    [(ngModel)]="loggedUser.taille" [ngModelOptions]="{standalone: true}" required class="form-username form-control"
+    #taille="ngModel">
+  <div *ngIf="taille.errors && (taille.dirty || adresse.touched || tryToSubmit)" class="alert alert-danger">
+    <div [hidden]="!taille.errors.required">
+      Champ obligatoire!
+    </div>
+  </div>
+  <input id="type" type="text" name="type" placeholder="Type de l'entreprise" style="margin-bottom: 15px;"
+    [(ngModel)]="loggedUser.type" [ngModelOptions]="{standalone: true}" required class="form-username form-control"
+    #type="ngModel">
+  <div *ngIf="type.errors && (type.dirty || type.touched || tryToSubmit)" class="alert alert-danger">
+    <div [hidden]="!type.errors.required">
+      Champ obligatoire!
+    </div>
+  </div>
   <input id="fondation" type="text" name="fondation" placeholder="Fondation de l'entreprise"
-    class="form-username form-control" style="margin-bottom: 15px;">
-  <select class="form-username form-control" style="margin-bottom: 15px;">
+    style="margin-bottom: 15px;" [(ngModel)]="loggedUser.fondation" [ngModelOptions]="{standalone: true}" required
+    class="form-username form-control" #fondation="ngModel">
+  <div *ngIf="fondation.errors && (fondation.dirty || fondation.touched || tryToSubmit )" class="alert alert-danger">
+    <div [hidden]="!fondation.errors.required">
+      Champ obligatoire!
+    </div>
+  </div>
+  <select [(ngModel)]="loggedUser.pays" [ngModelOptions]="{standalone: true}" class="form-username form-control"
+    #pays="ngModel" style="margin-bottom: 15px;">
     <option selected disabled>Pays</option>
     <option *ngFor="let pays of paysList">{{pays}}</option>
   </select>
+  <div *ngIf="(pays.errors || !verifRequired(loggedUser.pays)) && (pays.dirty || pays.touched || tryToSubmit)"
+    class="alert alert-danger">
+    <div *ngIf="!verifRequired(loggedUser.pays)">
+      Champ obligatoire!
+    </div>
+  </div>
   <input id="form-username" type="email" name="form-username" placeholder="Email" class="form-username form-control"
-    style="margin-bottom: 15px;">
-  <input id="form-password" type="password" name="form-password" placeholder="Mot de passe"
-    class="form-password form-control" style="margin-bottom: 15px;">
+    style="margin-bottom: 15px;" required #email="ngModel" [(ngModel)]="loggedUser.email"
+    [ngModelOptions]="{standalone: true}">
+  <div
+    *ngIf="(email.errors || !verifEmailField(loggedUser.email) || usedMail) && (email.dirty || email.touched || tryToSubmit)"
+    class="alert alert-danger">
+    <div *ngIf="!verifRequired(loggedUser.email)">
+      Champ obligatoire!
+    </div>
+    <div *ngIf="!verifEmailField(loggedUser.email) && verifRequired(loggedUser.email) && !usedMail">
+      Format incorrecte!
+    </div>
+    <div *ngIf="usedMail && verifEmailField(loggedUser.email) && verifRequired(loggedUser.email)">
+      Email déja utilisé!
+    </div>
+  </div>
+  <input id="form-password" type="password" name="form-password" placeholder="Mot de passe" style="margin-bottom: 15px;"
+    [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="form-password form-control" #pwd="ngModel">
+  <div *ngIf="(pwd.errors || !verifPassWordField(password)) && (pwd.dirty || pwd.touched || tryToSubmit)"
+    class="alert alert-danger">
+    <div *ngIf="!verifRequired(password)">
+      Champ obligatoire!
+    </div>
+    <div *ngIf="!verifPassWordField(password) && verifRequired(password)">
+      Format incorrecte (min 8 caratére contenant au moins un chiffre, un caractére miniscule, un
+      caractére majiscule et un caractére spécial)!
+    </div>
+  </div>
   <input id="confirmation" type="confirmation" name="form-password" placeholder="Confirmation mot de passe"
-    class="form-password form-control" style="margin-bottom: 15px;">
-
-  <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo" class="form-password form-control"
-    style="display: none;" style="margin-bottom: 15px;" hidden>
+    class="form-password form-control" style="margin-bottom: 15px;" required #confirmation="ngModel"
+    [(ngModel)]="pwdConfirmation" [ngModelOptions]="{standalone: true}">
+  <div *ngIf="tryToSubmit && !verifConfirmationPassword(password, pwdConfirmation)" class="alert alert-danger">
+    <div [hidden]="verifConfirmationPassword(password, pwdConfirmation)">
+      Mot de passe et confirmation incompatible!
+    </div>
+  </div>
+  <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo"
+    accept="image/x-png,image/gif,image/jpeg" required (change)="handleImageEmployeurInput($event.target.files)"
+    class="form-password form-control" style="display: none;">
   <label id="upload-photo-label" for="photo">LOGO</label>
   <button type="submit" class="btn btn-success form-control" style="margin-bottom: 15px;"
     (click)="modifierMonCompteEmployeur()"><strong>Modifier</strong></button>
@@ -72,93 +157,217 @@
 <!--*****************************************************************Candidat info**********************************-->
 <div *ngIf="candidat && !update" style="width: 90%">
   <div style="margin-top: 80px;">
-      <div class="card" style="box-shadow: none; ">
-        <div class="row" style="background-color: #dddce1;">
-          <div class="col-md-4">
-            <img src="../../../assets/images/faces/face10.jpg" class="w-100" style="border-radius: 15px;">
+    <div class="card" style="box-shadow: none; ">
+      <div class="row" style="background-color: #dddce1;">
+        <div class="col-md-4">
+          <img src="../../../assets/images/faces/face10.jpg" class="w-100" style="border-radius: 15px;">
+        </div>
+        <div class="col-md-7 px-3">
+          <div class="card-block px-3">
+            <b>Nom: </b>{{loggedUser.nom}}<br>
+            <b>Prénom: </b>{{loggedUser.prenom}}<br>
+            <b>Titre: </b>{{loggedUser.titre}}<br>
+            <b>Diplome: </b>{{loggedUser.diplome}}<br>
+            <b>Adresse: </b>{{loggedUser.adresse}}<br>
+            <b>Numéro de telephone: </b>{{loggedUser.tel}}<br>
+            <b>Date de naissance: </b>{{loggedUser.dateNaissance}}<br>
+            <b>Email: </b>{{loggedUser.email}}<br>
+            <b>Nationalité: </b>{{loggedUser.nationalite}}<br>
+            <b>Ajouté le: </b>{{loggedUser.dateAjout}}<br>
+            <b>Dérniére modification: </b>{{loggedUser.dateModif}}<br>
+            <b>CV: </b><a href="#"><i class="fa fa-file-pdf-o"></i></a><br>
           </div>
-          <div class="col-md-7 px-3">
-            <div class="card-block px-3">
-              <b>Nom: </b>Baazouzi<br>
-              <b>Prénom: </b>Hafedh<br>
-              <b>Titre: </b>Ingénieur<br>
-              <b>Diplome: </b>Ingénieur<br>
-              <b>Adresse: </b>Tunis cité el khadhra<br>
-              <b>Numéro de telephone: </b>+201625353654<br>
-              <b>Date de naissance: </b>15-05-1999<br>
-              <b>Email: </b>hafedh.baazouzi@gmail.com<br>
-              <b>Nationalité: </b>Tunisie<br>
-              <b>Ajouté le: </b>12-12-2019<br>
-              <b>Dérniére modification: </b>12-01-2020<br>
-              <b>CV: </b><a href="#"><i class="fa fa-file-pdf-o"></i></a><br>
-            </div>
-          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <!--*****************************************************************Candidat update form**********************************-->
-<div *ngIf="candidat" style="width: 90%">
-  <input id="nom" type="text" name="nom" placeholder="Nom" class="form-username form-control" style="margin-bottom: 15px;">
-  <input type="text" name="prenom" placeholder="Prénom" id="prenom" class="form-username form-control" style="margin-bottom: 15px;">
+<div *ngIf="candidat && update" style="width: 90%">
+  <input id="nom" type="text" name="nom" placeholder="Nom" class="form-username form-control"
+    style="margin-bottom: 15px;" #nomc="ngModel" required [(ngModel)]="loggedUser.nom"
+    [ngModelOptions]="{standalone: true}">
+  <div *ngIf="nomc.errors && (nomc.dirty || nomc.touched || tryToSubmit)" class="alert alert-danger">
+    <div [hidden]="!nomc.errors.required">
+      Champ obligatoire!
+    </div>
+  </div>
+  <input type="text" name="prenom" placeholder="Prénom" id="prenom" class="form-username form-control"
+    style="margin-bottom: 15px;" #prenomc="ngModel" required [(ngModel)]="loggedUser.prenom"
+    [ngModelOptions]="{standalone: true}">
+  <div *ngIf="prenomc.errors && (prenomc.dirty || prenomc.touched || tryToSubmit)" class="alert alert-danger">
+    <div [hidden]="!prenomc.errors.required">
+      Champ obligatoire!
+    </div>
+  </div>
   <input id="datenaissance" type="text" onfocus="(this.type='date')" name="datenaissance"
-    placeholder="Date de naissance" class="form-username form-control" style="margin-bottom: 15px;">
-  <input id="adresse" type="text" name="adresse" placeholder="Adresse" class="form-username form-control" style="margin-bottom: 15px;">
-  <input id="tel" type="tel" name="tel" placeholder="Numéro de telephone" class="form-username form-control" style="margin-bottom: 15px;">
+    placeholder="Date de naissance" class="form-username form-control" style="margin-bottom: 15px;"
+    #datenaissc="ngModel" required [(ngModel)]="loggedUser.dateNaissance" [ngModelOptions]="{standalone: true}">
+  <div *ngIf="datenaissc.errors && (datenaissc.dirty || datenaissc.touched || tryToSubmit)" class="alert alert-danger">
+    <div [hidden]="!datenaissc.errors.required">
+      Champ obligatoire!
+    </div>
+  </div>
+  <input id="adresse" type="text" name="adresse" placeholder="Adresse" class="form-username form-control"
+    style="margin-bottom: 15px;" #adressec="ngModel" required [(ngModel)]="loggedUser.adresse"
+    [ngModelOptions]="{standalone: true}">
+  <div *ngIf="adressec.errors && (adressec.dirty || adressec.touched || tryToSubmit)" class="alert alert-danger">
+    <div [hidden]="!adressec.errors.required">
+      Champ obligatoire!
+    </div>
+  </div>
+  <input id="tel" type="tel" name="tel" placeholder="Numéro de telephone" class="form-username form-control"
+    style="margin-bottom: 15px;" #telc="ngModel" required [(ngModel)]="loggedUser.tel"
+    [ngModelOptions]="{standalone: true}">
+  <div
+    *ngIf="(!verifRequired(loggedUser.tel) || !verifTelField(loggedUser.tel)) && (telc.dirty || telc.touched || tryToSubmit)"
+    class="alert alert-danger">
+    <div *ngIf="!verifRequired(loggedUser.tel)">
+      Champ obligatoire!
+    </div>
+    <div *ngIf="verifRequired(loggedUser.tel) && !verifTelField(loggedUser.tel)">
+      Format incorrecte(XXXXXXXX ou XX-XXX-XXX ou XX.XXX.XXX ou XX XXX XXX)!
+    </div>
+  </div>
 
-  <input id="diplome" type="text" name="diplome" placeholder="Diplome" class="form-username form-control" style="margin-bottom: 15px;">
+  <input id="diplome" type="text" name="diplome" placeholder="Diplome" class="form-username form-control"
+    style="margin-bottom: 15px;" #diplomec="ngModel" required [(ngModel)]="loggedUser.diplome"
+    [ngModelOptions]="{standalone: true}">
 
-  <input id="pj" type="file" name="pj" placeholder="CV" class="form-password form-control" style="display: none; margin-bottom: 15px;">
+  <div *ngIf="diplomec.errors && (diplomec.dirty || diplomec.touched || tryToSubmit)" class="alert alert-danger">
+    <div [hidden]="!diplomec.errors.required">
+      Champ obligatoire!
+    </div>
+  </div>
+  <input id="pj" type="file" name="pj" placeholder="CV" class="form-password form-control"
+    style="display: none; margin-bottom: 15px;" (change)="handleCVCandidatInput($event.target.files)"
+    style="display: none;">
   <label id="upload-photo-label" for="pj">CV en piéce jointe</label>
-
-  <input id="titre" type="text" name="titre" placeholder="Titre" class="form-username form-control" style="margin-bottom: 15px;">
-  <select class="form-username form-control" style="margin-bottom: 15px;">
+  <input id="titre" type="text" name="titre" placeholder="Titre" class="form-username form-control"
+    style="margin-bottom: 15px;" #titrec="ngModel" required [(ngModel)]="loggedUser.titre"
+    [ngModelOptions]="{standalone: true}">
+  <div *ngIf="titrec.errors && (titrec.dirty || titrec.touched || tryToSubmit)" class="alert alert-danger">
+    <div [hidden]="!titrec.errors.required">
+      Champ obligatoire!
+    </div>
+  </div>
+  <select class="form-username form-control" style="margin-bottom: 15px;" #nationalite="ngModel"
+    [(ngModel)]="loggedUser.nationalite" [ngModelOptions]="{standalone: true}">
     <option selected disabled>Nationnalité</option>
     <option *ngFor="let pays of paysList">{{pays}}</option>
   </select>
-  <input id="form-username" type="email" name="form-username" placeholder="Email" class="form-username form-control" style="margin-bottom: 15px;">
+  <div *ngIf="!verifRequired(loggedUser.nationalite) && (nationalite.dirty || nationalite.touched || tryToSubmit)"
+    class="alert alert-danger">
+    <div *ngIf="!verifRequired(loggedUser.nationalite)">
+      Champ obligatoire!
+    </div>
+  </div>
+  <input id="form-username" type="email" name="form-username" placeholder="Email" class="form-username form-control"
+    style="margin-bottom: 15px;" equired #emailc="ngModel" [(ngModel)]="loggedUser.email" (change)="checkUsedMail()">
+  <div
+    *ngIf="(emailc.errors || !verifEmailField(loggedUser.email) || usedMail) && (emailc.dirty || emailc.touched || tryToSubmit)"
+    class="alert alert-danger">
+    <div *ngIf="!verifRequired(loggedUser.email)">
+      Champ obligatoire!
+    </div>
+    <div *ngIf="!verifEmailField(loggedUser.email) && verifRequired(loggedUser.email) && !usedMail">
+      Format incorrecte!
+    </div>
+    <div *ngIf="usedMail && verifEmailField(loggedUser.email) && verifRequired(loggedUser.email)">
+      Email déja utilisé!
+    </div>
+  </div>
   <input id="form-password" type="password" name="form-password" placeholder="Mot de passe"
-    class="form-password form-control" style="margin-bottom: 15px;">
+    class="form-password form-control" style="margin-bottom: 15px;" required #passwordc="ngModel"
+    [(ngModel)]="password">
+  <div
+    *ngIf="(passwordc.errors || !verifPassWordField(password)) && (passwordc.dirty || passwordc.touched || tryToSubmit)"
+    class="alert alert-danger">
+    <div *ngIf="!verifRequired(password)">
+      Champ obligatoire!
+    </div>
+    <div *ngIf="!verifPassWordField(password) && verifRequired(password)">
+      Format incorrecte (min 8 caratére contenant au moins un chiffre, un caractére miniscule, un
+      caractére majiscule et un caractére spécial)!
+    </div>
+  </div>
   <input id="confirmation" type="confirmation" name="form-password" placeholder="Confirmation mot de passe"
-    class="form-password form-control" style="margin-bottom: 15px;">
+    class="form-password form-control" style="margin-bottom: 15px;" required #confirmationc="ngModel"
+    [(ngModel)]="pwdConfirmation" (change)="checkPwdConfirmation()">
+  <div *ngIf="tryToSubmit && !verifConfirmationPassword(password, pwdConfirmation)" class="alert alert-danger">
+    <div [hidden]="verifConfirmationPassword(password, pwdConfirmation)">
+      Mot de passe et confirmation incompatible!
+    </div>
+  </div>
   <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo" class="form-password form-control"
-    style="display: none; margin-bottom: 15px;">
+    style="display: none; margin-bottom: 15px;" required
+    (change)="handleImageCandidatInput($event.target.files)" accept="image/x-png,image/gif,image/jpeg">
   <label id="upload-photo-label" for="photo">PHOTO</label>
+
   <button type="submit" class="btn btn-success form-control" style="margin-bottom: 15px;"
-    (click)="modifierMonCompteEmployeur()"><strong>Modifier</strong></button>
+    (click)="modifierMonCompteCandidat()"><strong>Modifier</strong></button>
   <button type="button" class="btn btn-danger form-control"
     (click)="annulerModification()"><strong>Annuler</strong></button>
 </div>
-
-
-
-
 
 <!--*****************************************************************Admin info**********************************-->
 <div *ngIf="admin && !update" style="width: 90%">
   <div style="margin-top: 80px;">
-      <div class="card" style="box-shadow: none; ">
-        <div class="row" style="background-color: #dddce1;">
-          <div class="col-md-7 px-3">
-            <div class="card-block px-3">
-              <b>Email: </b>hafedh.baazouzi@gmail.com<br>
-              <b>Ajouté le: </b>12-12-2019<br>
-              <b>Dérniére modification: </b>12-01-2020<br>
+    <div class="card" style="box-shadow: none; ">
+      <div class="row" style="background-color: #dddce1;">
+        <div class="col-md-7 px-3">
+          <div class="card-block px-3">
+            <b>Email: </b>{{loggedUser.email}}<br>
+            <b>Ajouté le: </b>{{loggedUser.dateAjout}}<br>
+            <b>Dérniére modification: </b>{{loggedUser.dateModif}}<br>
           </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<!--*****************************************************************Candidat info**********************************-->
-<div *ngIf="admin && update" style="width: 90%">
-  <input id="form-username" type="email" name="form-username" placeholder="Email" class="form-username form-control" style="margin-bottom: 15px;">
-  <input id="form-password" type="password" name="form-password" placeholder="Mot de passe"
-    class="form-password form-control" style="margin-bottom: 15px;">
-  <input id="confirmation" type="confirmation" name="form-password" placeholder="Confirmation mot de passe"
-    class="form-password form-control" style="margin-bottom: 15px;">
-  <button type="submit" class="btn btn-success form-control" style="margin-bottom: 15px;"
-    (click)="modifierMonCompteEmployeur()"><strong>Modifier</strong></button>
-  <button type="button" class="btn btn-danger form-control"
-    (click)="annulerModification()"><strong>Annuler</strong></button>
+  </div>
+  <!--*****************************************************************Admin Form**********************************-->
+  <div *ngIf="admin && update" style="width: 90%">
+    <input id="form-username" type="email" name="form-username" placeholder="Email" class="form-username form-control"
+      style="margin-bottom: 15px;" equired #emailc="ngModel" [(ngModel)]="loggedUser.email" (change)="checkUsedMail()">
+    <div
+      *ngIf="(emailc.errors || !verifEmailField(loggedUser.email) || usedMail) && (emailc.dirty || emailc.touched || tryToSubmit)"
+      class="alert alert-danger">
+      <div *ngIf="!verifRequired(loggedUser.email)">
+        Champ obligatoire!
+      </div>
+      <div *ngIf="!verifEmailField(loggedUser.email) && verifRequired(loggedUser.email) && !usedMail">
+        Format incorrecte!
+      </div>
+      <div *ngIf="usedMail && verifEmailField(loggedUser.email) && verifRequired(loggedUser.email)">
+        Email déja utilisé!
+      </div>
+    </div>
+    <input id="form-password" type="password" name="form-password" placeholder="Mot de passe"
+      class="form-password form-control" style="margin-bottom: 15px;" required #passwordc="ngModel"
+      [(ngModel)]="password">
+    <div
+      *ngIf="(passwordc.errors || !verifPassWordField(password)) && (passwordc.dirty || passwordc.touched || tryToSubmit)"
+      class="alert alert-danger">
+      <div *ngIf="!verifRequired(password)">
+        Champ obligatoire!
+      </div>
+      <div *ngIf="!verifPassWordField(password) && verifRequired(password)">
+        Format incorrecte (min 8 caratére contenant au moins un chiffre, un caractére miniscule, un
+        caractére majiscule et un caractére spécial)!
+      </div>
+    </div>
+    <input id="confirmation" type="password" name="form-password" placeholder="Confirmation mot de passe"
+      class="form-password form-control" style="margin-bottom: 15px;" required #confirmationc="ngModel"
+      [(ngModel)]="pwdConfirmation" (change)="checkPwdConfirmation()">
+    <div *ngIf="tryToSubmit && !verifConfirmationPassword(password, pwdConfirmation)" class="alert alert-danger">
+      <div [hidden]="verifConfirmationPassword(password, pwdConfirmation)">
+        Mot de passe et confirmation incompatible!
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success form-control" style="margin-bottom: 15px;"
+      (click)="modifierMonCompteAdmin()"><strong>Modifier</strong></button>
+    <button type="button" class="btn btn-danger form-control"
+      (click)="annulerModification()"><strong>Annuler</strong></button>
 
-</div>
+  </div>

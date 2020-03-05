@@ -10,8 +10,18 @@
             <form role="form" action="" method="post" class="login-form">
               <div class="form-group">
                 <div class="pos-r">
-                  <input id="code" type="text" name="code" placeholder="Code réçu par Email"
-                    class="form-password form-control">
+                  <input id="code" type="text" name="code" placeholder="Code réçu par Email" [(ngModel)]="code" [ngModelOptions]="{standalone: true}"
+                    class="form-password form-control" required #coderecu="ngModel">
+                    <div
+                      *ngIf="(coderecu.errors || !correctCode) && (coderecu.dirty || coderecu.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div *ngIf="!verifRequired(code)">
+                        Champ obligatoire!
+                      </div>
+                      <div *ngIf="!correctCode && verifRequired(code)">
+                        Code incorrect!
+                      </div>
+                    </div>
                 </div>
               </div>
               <div class="form-group">
@@ -27,8 +37,18 @@
             <form role="form" action="" method="post" class="login-form">
               <div class="form-group">
                 <div class="pos-r">
-                  <input id="email" type="email" name="code" placeholder="Votre email"
+                  <input id="email" type="email" name="code" placeholder="Votre email" [(ngModel)]="email" #emailto="ngModel" required [ngModelOptions]="{standalone: true}"
                     class="form-password form-control">
+                    <div
+                    *ngIf="(emailto.errors || !verifEmailField(email)) && (emailto.dirty || emailto.touched || tryToSubmit)"
+                    class="alert alert-danger">
+                    <div *ngIf="!verifRequired(email)">
+                      Champ obligatoire!
+                    </div>
+                    <div *ngIf="!verifEmailField(email) && verifRequired(email)">
+                      Format incorrecte!
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="form-group">

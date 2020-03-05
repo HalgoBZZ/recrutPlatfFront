@@ -17,29 +17,29 @@
       <tr>
         <th *ngIf="showIntitule">
           <ng-container *ngIf="!filter">Intitulé</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="Intitulé"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Intitulé" [(ngModel)]="intituleFilter" [ngModelOptions]="{standalone: true}" #intit="ngModel"></ng-container>
         </th>
         <th *ngIf="showAjout">
           <ng-container *ngIf="!filter">Date d'ajout</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="Date d'ajout"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Date d'ajout" [(ngModel)]="dateAjoutFilter" [ngModelOptions]="{standalone: true}" #dtajout="ngModel"></ng-container>
         </th>
         <th *ngIf="showModification">
           <ng-container *ngIf="!filter">Date de modification</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="Date de modification"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Date de modification" [(ngModel)]="dateFinFilter" [ngModelOptions]="{standalone: true}" #dtmodif="ngModel"></ng-container>
         </th>
         <th> Action</th>
       </tr>
     </thead>
-    <tbody *ngFor="let domaine of listDomaines">
-      <tr >
-        <td class="py-1" *ngIf="showIntitule">{{domaine.intitule}}</td>
-        <td *ngIf="showAjout">{{domaine.dateAjout | date: 'dd/MM/yyyy'}}</td>
-        <td *ngIf="showModification">{{domaine.dateModif | date: 'dd/MM/yyyy'}}</td>
+    <tbody>
+      <tr *ngFor="let categorie of categories | filterIntituleCategorie:intituleFilter|filterAjoutCategorie:dateAjoutFilter|filterModifCategorie:dateFinFilter">
+        <td class="py-1" *ngIf="showIntitule">{{categorie.intitule}}</td>
+        <td *ngIf="showAjout">{{categorie.dateAjout}}</td>
+        <td *ngIf="showModification">{{categorie.dateModif}}</td>
         <td>
           <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
-            (click)="showUpdateModal(updateTemplate,domaine)"></span>
+            (click)="showUpdateModal(updateTemplate, categorie)"></span>
           <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
-            (click)="showDeleteModal(deleteTemplate,domaine)"></span>
+            (click)="showDeleteModal(deleteTemplate, categorie)"></span>
         </td>
       </tr>
     </tbody>
@@ -49,30 +49,42 @@
 <ng-template #addTemplate>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Ajout d'un domaine</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide(); tryToSubmit=false;">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <input type="text" class="form-control form-control-sm" 
-    [(ngModel)]="domaineToAdd.intitule" [ngModelOptions]="{standalone: true}" placeholder="Intitulé" aria-label="Intitulé">
+    <input type="text" class="form-control form-control-sm" placeholder="Intitulé" aria-label="Intitulé"
+    intitule="ngModel" [(ngModel)]="categorieToAdd.intitule" required #intitAdd="ngModel">
+    <div *ngIf="intitAdd.errors && (intitAdd.dirty || intitAdd.touched ||tryToSubmit)"
+    class="alert alert-danger">
+    <div>
+      Champ obligatoire!
+    </div>
+  </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="addDomaine()">Ajouter</button>
-    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide(); tryToSubmit=false;">Annuler</button>
   </div>
 </ng-template>
 <!---------------------------------------------------update modal*******************************-->
 <ng-template #updateTemplate>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Modification de domaine ({{domaineUpdated.intitule}})</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <h4 class="modal-title pull-left">Modification de domaine {{categorieToDelete.intitule}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide(); this.tryToSubmit = false">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <input type="text" class="form-control form-control-sm" [(ngModel)]="domaineUpdated.intitule" [ngModelOptions]="{standalone: true}"
-     placeholder="Intitulé" aria-label="Intitulé">
+    <input type="text" class="form-control form-control-sm" placeholder="Intitulé" aria-label="Intitulé" [(ngModel)]="categorieToUpdate.intitule" required
+    #intitUp="ngModel">
+    <div *ngIf="intitUp.errors && (intitUp.dirty || intitUp.touched ||tryToSubmit)"
+    class="alert alert-danger">
+    <div>
+      Champ obligatoire!
+    </div>
+  </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="updateDomaine()">Modifier</button>
@@ -82,13 +94,13 @@
 <!---------------------------------------------------delete modal*******************************-->
 <ng-template #deleteTemplate>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Suppression de domaine ({{domaineToDelete.intitule}})</h4>
+    <h4 class="modal-title pull-left">Suppression de domaine {{categorieToDelete.intitule}}</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    Vous étes sure de supprimer le domaine ({{domaineToDelete.intitule}})?
+    Vous étes sure de supprimer le domaine {{categorieToDelete.intitule}}?
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="deleteDomaine()">OUI</button>

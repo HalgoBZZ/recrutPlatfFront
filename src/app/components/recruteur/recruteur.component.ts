@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { EmployeurService } from 'src/app/services/EmployeurService';
 
 @Component({
   selector: 'app-recruteur',
@@ -24,48 +25,56 @@ export class RecruteurComponent implements OnInit {
   showLogo = true;
   showModification = false;
   bsModalRef: BsModalRef;
+  employeurToDelete;
+  employeurs;
+  employeurToDisplayDetails;
+  nomFilter = '';
+  presentationFilter = '';
+  siteFilter = '';
+  tailleFilter = '';
+  adresseFilter = '';
+  typeFilter = '';
+  emailFilter = '';
+  paysFilter = '';
+  fondationFilter = '';
+  ajoutFilter = '';
+  modifFilter = '';
 
-  constructor(private modalService: BsModalService, private toastr: ToastrService) { }
+  constructor(private modalService: BsModalService, private toastr: ToastrService, private employeurService: EmployeurService) { }
 
   ngOnInit() {
+    this.getAll();
   }
 
-  showAddModal(template) {
-    this.bsModalRef = this.modalService.show(template, { class: 'modal-md' });
-  }
   showFilter() {
     this.filter = !this.filter;
   }
   changeSettings(template) {
     this.bsModalRef = this.modalService.show(template, { class: 'modal-md' });
   }
-
-  showUpdateModal(template) {
+  showDeleteModal(template, employeur) {
+    this.employeurToDelete = employeur;
     this.bsModalRef = this.modalService.show(template, { class: 'modal-md' });
   }
-  showDeleteModal(template) {
-    this.bsModalRef = this.modalService.show(template, { class: 'modal-md' });
-  }
-  showInfoModal(template) {
+  showInfoModal(template, employeur) {
+    this.employeurToDisplayDetails = employeur;
     this.bsModalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
-  addCandidat() {
-    this.bsModalRef.hide();
-    this.toastr.success('Success!', 'Success toast!');
-    this.toastr.error('Error!', 'Error toast');
+  deleteEmployeur() {
+    this.employeurService.deleteEmployeur(this.employeurToDelete.id).subscribe(res => {
+      this.bsModalRef.hide();
+      this.toastr.success('Succés!', 'Employeur supprimé avec succés!');
+      this.getAll();
+    }, error => {
+      this.toastr.error('Erreur!', 'Erreur lors de suppression de l\'employeur');
+    });
   }
 
-  updateCandidat() {
-    this.bsModalRef.hide();
-    this.toastr.success('Success!', 'Success toast!');
-    this.toastr.error('Error!', 'Error toast');
-  }
-
-  deleteCandidat() {
-    this.bsModalRef.hide();
-    this.toastr.success('Success!', 'Success toast!');
-    this.toastr.error('Error!', 'Error toast');
+  getAll() {
+    this.employeurService.getAll().subscribe(res => {
+      this.employeurs = res;
+    });
   }
 
 }

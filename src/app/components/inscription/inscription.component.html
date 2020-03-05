@@ -50,8 +50,8 @@
                     <input id="nom" type="text" name="nom" placeholder="Nom" required #nom="ngModel"
                       [(ngModel)]="employeur.nom" [ngModelOptions]="{standalone: true}"
                       class="form-username form-control">
-                    <div *ngIf="nom.errors && (nom.dirty || nom.touched)" class="alert alert-danger">
-                      <div ng-show="form.nom.$dirty && form.nom.$error.required">
+                    <div *ngIf="nom.errors && (nom.dirty || nom.touched || tryToSubmit)" class="alert alert-danger">
+                      <div [hidden]="!nom.errors.required">
                         Champ obligatoire!
                       </div>
                     </div>
@@ -61,33 +61,67 @@
                   <div class="pos-r">
                     <textarea name="presentation" placeholder="Présentation" id="presentation"
                       [(ngModel)]="employeur.presentation" [ngModelOptions]="{standalone: true}"
-                      class="form-username form-control" rows="4"></textarea>
+                      class="form-username form-control" rows="4" required #presentation="ngModel"></textarea>
+                    <div *ngIf="presentation.errors && (presentation.dirty || presentation.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div [hidden]="!nom.errors.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group ">
                   <div class="pos-r">
-                    <input id="site" type="url" name="site" placeholder="Site web" [(ngModel)]="employeur.site"
-                      [ngModelOptions]="{standalone: true}" class="form-username form-control">
+                    <input id="site" type="url" name="site" placeholder="Site web" [(ngModel)]="employeur.site" required
+                      [ngModelOptions]="{standalone: true}" class="form-username form-control" #site="ngModel">
+                    <div
+                      *ngIf="(site.errors || !verifUrlField(employeur.site)) && (site.dirty || site.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div *ngIf="!verifRequired(employeur.site)">
+                        Champ obligatoire!
+                      </div>
+                      <div *ngIf="!verifUrlField(employeur.site) && verifRequired(employeur.site)">
+                        Format incorrecte du site!
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group ">
                   <div class="pos-r">
                     <input id="adresse" type="text" name="adresse" placeholder="Adresse" [(ngModel)]="employeur.adresse"
-                      [ngModelOptions]="{standalone: true}" class="form-username form-control">
+                      [ngModelOptions]="{standalone: true}" class="form-username form-control" #adresse="ngModel"
+                      required>
+                    <div *ngIf="adresse.errors && (adresse.dirty || adresse.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div [hidden]="!adresse.errors.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group ">
                   <div class="pos-r">
                     <input id="taille" type="text" name="taille" placeholder="Taille de l'entreprise"
-                      [(ngModel)]="employeur.taille" [ngModelOptions]="{standalone: true}"
-                      class="form-username form-control">
+                      [(ngModel)]="employeur.taille" [ngModelOptions]="{standalone: true}" required
+                      class="form-username form-control" #taille="ngModel">
+                    <div *ngIf="taille.errors && (taille.dirty || adresse.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div [hidden]="!taille.errors.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group ">
                   <div class="pos-r">
                     <input id="type" type="text" name="type" placeholder="Type de l'entreprise"
-                      [(ngModel)]="employeur.type" [ngModelOptions]="{standalone: true}"
-                      class="form-username form-control">
+                      [(ngModel)]="employeur.type" [ngModelOptions]="{standalone: true}" required
+                      class="form-username form-control" #type="ngModel">
+                    <div *ngIf="type.errors && (type.dirty || type.touched || tryToSubmit)" class="alert alert-danger">
+                      <div [hidden]="!type.errors.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group">
@@ -100,17 +134,30 @@
                 <div class="form-group ">
                   <div class="pos-r">
                     <input id="fondation" type="text" name="fondation" placeholder="Fondation de l'entreprise"
-                      [(ngModel)]="employeur.fondation" [ngModelOptions]="{standalone: true}"
-                      class="form-username form-control">
+                      [(ngModel)]="employeur.fondation" [ngModelOptions]="{standalone: true}" required
+                      class="form-username form-control" #fondation="ngModel">
+                    <div *ngIf="fondation.errors && (fondation.dirty || fondation.touched || tryToSubmit )"
+                      class="alert alert-danger">
+                      <div [hidden]="!fondation.errors.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group ">
                   <div class="pos-r">
                     <select [(ngModel)]="employeur.pays" [ngModelOptions]="{standalone: true}"
-                      class="form-username form-control">
+                      class="form-username form-control" #pays="ngModel">
                       <option selected disabled>Pays</option>
                       <option *ngFor="let pays of paysList">{{pays}}</option>
                     </select>
+                    <div
+                      *ngIf="(pays.errors || !verifRequired(employeur.pays)) && (pays.dirty || pays.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div *ngIf="!verifRequired(employeur.pays)">
+                        Champ obligatoire!
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group ">
@@ -118,14 +165,17 @@
                     <input id="email" type="email" name="email" placeholder="Email" required #email="ngModel"
                       [(ngModel)]="employeur.email" [ngModelOptions]="{standalone: true}"
                       class="form-username form-control">
-                    <div *ngIf="usedMail" class="alert alert-danger">
-                      <div>
-                        L'email est déja utilisé!
-                      </div>
-                    </div>
-                    <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert alert-danger">
-                      <div ng-show="form.email.$dirty && form.email.$error.required">
+                    <div
+                      *ngIf="(email.errors || !verifEmailField(employeur.email) || usedMail) && (email.dirty || email.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div *ngIf="!verifRequired(employeur.email)">
                         Champ obligatoire!
+                      </div>
+                      <div *ngIf="!verifEmailField(employeur.email) && verifRequired(employeur.email) && !usedMail">
+                        Format incorrecte!
+                      </div>
+                      <div *ngIf="usedMail && verifEmailField(employeur.email) && verifRequired(employeur.email)">
+                        Email déja utilisé!
                       </div>
                     </div>
                   </div>
@@ -134,35 +184,50 @@
                   <div class="pos-r">
                     <input id="form-password" type="password" name="form-password" placeholder="Mot de passe"
                       [(ngModel)]="employeur.password" [ngModelOptions]="{standalone: true}"
-                      class="form-password form-control">
+                      class="form-password form-control" #pwd="ngModel">
+                    <div
+                      *ngIf="(pwd.errors || !verifPassWordField(employeur.password)) && (pwd.dirty || pwd.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div *ngIf="!verifRequired(employeur.password)">
+                        Champ obligatoire!
+                      </div>
+                      <div *ngIf="!verifPassWordField(employeur.password) && verifRequired(employeur.password)">
+                        Format incorrecte (min 8 caratére contenant au moins un chiffre, un caractére miniscule, un
+                        caractére majiscule et un caractére spécial)!
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="pos-r">
-                    <input id="confirmation" type="text" name="confirmation" required #confirmation="ngModel"
+                    <input id="confirmation" type="password" name="confirmation" required #confirmation="ngModel"
                       [(ngModel)]="pwdConfirmation" [ngModelOptions]="{standalone: true}"
                       placeholder="Confirmation mot de passe" class="form-password form-control">
-                    <!-- <div *ngIf="confirmation.errors && (confirmation.dirty || confirmation.touched) || pwdConfirm"
+                    <div *ngIf="tryToSubmit && !verifConfirmationPassword(employeur.password, pwdConfirmation)"
                       class="alert alert-danger">
-                      <div ng-show="pwdConfirm">
-                        vos mots de passe ne sont pas compatibles veuillez vérifier!
+                      <div [hidden]="verifConfirmationPassword(employeur.password, pwdConfirmation)">
+                        Mot de passe et confirmation incompatible!
                       </div>
-                      <div ng-show="form.confirmation.$dirty && form.confirmation.$error.required">
-                        Champ obligatoire!
-                      </div>
-                    </div> -->
+                    </div>
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="pos-r">
                     <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo"
-                      (change)="handleImageEmployeurInput($event.target.files)"
-                      class="form-password form-control" style="display: none;">
+                      accept="image/x-png,image/gif,image/jpeg" required [(ngModel)]="employeur.photo"
+                      [ngModelOptions]="{standalone: true}" (change)="handleImageEmployeurInput($event.target.files)"
+                      class="form-password form-control" style="display: none;" #photo="ngModel">
                     <label id="upload-photo-label" for="photo">LOGO</label>
+                    <div *ngIf="photo.errors && (photo.dirty || photo.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div [hidden]="!photo.errors.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group">
-                  <button type="submit" class="btn btn-warning form-control" 
+                  <button type="submit" class="btn btn-warning form-control"
                     (click)="inscription()"><strong>S'inscrire</strong></button>
                 </div>
 
@@ -179,127 +244,217 @@
 
 <!--*****************************************************************Candidat**********************************-->
 <form name="candidatForm">
-<div class="parent" *ngIf="cmptCandidat && choose">
-  <div class="container ">
-    <div class="row">
-      <div class="login-container col-lg-4 col-md-6 col-sm-8 col-xs-12">
-        <div class="login-title text-center">
-          <h2><span style="color: #27367f;">My<strong>JOB</strong></span></h2>
-        </div>
-        <div class="login-content" style="width: 900px; margin-left: -250px;">
-          <div class="login-body">
-            <div id="part1" style="display: inline-block; margin-right:70px; width:45%;">
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="nom" type="text" name="nom" placeholder="Nom" required #nom="ngModel"
-                  [(ngModel)]="candidat.nom" [ngModelOptions]="{standalone: true}" class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input type="text" name="prenom" placeholder="Prénom" id="prenom" required #prenom="ngModel"
-                  [(ngModel)]="candidat.prenom"  class="form-username form-control"
-                    rows="5">
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="datenaissance" type="text" onfocus="(this.type='date')" name="datenaissance"
-                  required #nodatenaissancem="ngModel" [(ngModel)]="candidat.dateNaissance"  placeholder="Date de naissance" 
-                  class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="adresse" type="text" name="adresse" placeholder="Adresse" required #adresse="ngModel"
-                  [(ngModel)]="candidat.adresse" 
-                    class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="tel" type="tel" name="tel" placeholder="Numéro de telephone" required #tel="ngModel"
-                  [(ngModel)]="candidat.tel" 
-                    class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="diplome" type="text" name="diplome" placeholder="Diplome" required #diplome="ngModel"
-                  [(ngModel)]="candidat.diplome" 
-                    class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="pos-r">
-                  <input id="pj" type="file" name="pj" placeholder="CV" class="form-password form-control" required  (change)="handleCVCandidatInput($event.target.files)"
-                    style="display: none;">
-                  <label id="upload-photo-label" for="pj">CV en piéce jointe</label>
-                </div>
-              </div>
-              <div class="form-group">
-                <button type="button" class="btn btn-warning form-control"
-                  (click)="back()"><strong>Retour</strong></button>
-              </div>
-            </div>
-            <div id="part2" style="display: inline-block; width:45%;">
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="titre" type="text" name="titre" placeholder="Titre" required #titre="ngModel"
-                  [(ngModel)]="candidat.titre"  class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <select [(ngModel)]="candidat.pays" [ngModelOptions]="{standalone: true}" class="form-username form-control">
-                    <option selected disabled>Nationnalité</option>
-                    <option *ngFor="let pays of paysList">{{pays}}</option>
-                  </select>
-                  <!-- <input id="pays" type="text" name="pays" placeholder="Type de l'entreprise" class="form-username form-control"> -->
-                </div>
-              </div>
-              <div class="form-group ">
-                <div class="pos-r">
-                  <input id="email" type="email" name="email" placeholder="Email" required #email="ngModel"
-                  [(ngModel)]="candidat.email"  (change)="checkUsedMail()"
-                    class="form-username form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="pos-r">
-                  <input id="password" type="password" name="password"  required #password="ngModel"
-                  [(ngModel)]="candidat.password"  placeholder="Mot de passe"
-                    class="form-password form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="pos-r">
-                  <input id="confirmation" type="text" name="confirmation" required #confirmation="ngModel"
-                  [(ngModel)]="pwdConfirmation"   (change)="checkPwdConfirmation()"
-                    placeholder="Confirmation mot de passe" class="form-password form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="pos-r">
-                  <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo" required  (change)="handleImageCandidatInput($event.target.files)"
-                    class="form-password form-control" style="display: none;">
-                  <label id="upload-photo-label" for="photo">PHOTO</label>
-
-                </div>
-              </div>
-
-              <div class="form-group">
-                <button type="submit" class="btn btn-warning form-control"
-                  (click)="inscription()"><strong>S'inscrire</strong></button>
-              </div>
-
-            </div>
-            <!-- </form> -->
+  <div class="parent" *ngIf="cmptCandidat && choose">
+    <div class="container ">
+      <div class="row">
+        <div class="login-container col-lg-4 col-md-6 col-sm-8 col-xs-12">
+          <div class="login-title text-center">
+            <h2><span style="color: #27367f;">My<strong>JOB</strong></span></h2>
           </div>
-        </div>
+          <div class="login-content" style="width: 900px; margin-left: -250px;">
+            <div class="login-body">
+              <div id="part1" style="display: inline-block; margin-right:70px; width:45%;">
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="nom" type="text" name="nom" placeholder="Nom" required #nomc="ngModel"
+                      [(ngModel)]="candidat.nom" [ngModelOptions]="{standalone: true}"
+                      class="form-username form-control">
+                    <div *ngIf="nomc.errors && (nomc.dirty || nomc.touched || tryToSubmit)" class="alert alert-danger">
+                      <div [hidden]="!nomc.errors.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input type="text" name="prenom" placeholder="Prénom" id="prenom" required #prenom="ngModel"
+                      [(ngModel)]="candidat.prenom" class="form-username form-control">
+                    <div *ngIf="prenom.errors && (prenom.dirty || prenom.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div [hidden]="!prenom.errors.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="datenaissance" type="text" onfocus="(this.type='date')" name="datenaissance" required
+                      #nodatenaissancem="ngModel" [(ngModel)]="candidat.dateNaissance" placeholder="Date de naissance"
+                      class="form-username form-control">
+                    <div
+                      *ngIf="nodatenaissancem.errors && (nodatenaissancem.dirty || nodatenaissancem.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div [hidden]="!nodatenaissancem.errors.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="adresse" type="text" name="adresse" placeholder="Adresse" required #adressec="ngModel"
+                      [(ngModel)]="candidat.adresse" class="form-username form-control">
+                    <div *ngIf="adressec.errors && (adressec.dirty || adressec.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div [hidden]="!adressec.errors.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="tel" type="tel" name="tel" placeholder="Numéro de telephone" required #tel="ngModel"
+                      [(ngModel)]="candidat.tel" class="form-username form-control">
+                    <div
+                      *ngIf="(!verifRequired(candidat.tel) || !verifTelField(candidat.tel)) && (tel.dirty || tel.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div *ngIf="!verifRequired(candidat.tel)">
+                        Champ obligatoire!
+                      </div>
+                      <div *ngIf="verifRequired(candidat.tel) && !verifTelField(candidat.tel)">
+                        Format incorrecte(XXXXXXXX ou XX-XXX-XXX ou XX.XXX.XXX ou XX XXX XXX)!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="diplome" type="text" name="diplome" placeholder="Diplome" required #diplome="ngModel"
+                      [(ngModel)]="candidat.diplome" class="form-username form-control">
+                    <div *ngIf="diplome.errors && (diplome.dirty || diplome.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div [hidden]="!diplome.errors.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="pos-r">
+                    <input id="pj" type="file" name="pj" placeholder="CV" class="form-password form-control" required
+                      (change)="handleCVCandidatInput($event.target.files)" style="display: none;">
+                    <label id="upload-photo-label" for="pj">CV en piéce jointe</label>
+                    <div *ngIf="!fileToUploadCVCandidat && (tryToSubmit)" class="alert alert-danger">
+                      <div [hidden]="fileToUploadCVCandidat">
+                        Champ obligatoire!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <button type="button" class="btn btn-warning form-control"
+                    (click)="back()"><strong>Retour</strong></button>
+                </div>
+              </div>
+              <div id="part2" style="display: inline-block; width:45%;">
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="titre" type="text" name="titre" placeholder="Titre" required #titre="ngModel"
+                      [(ngModel)]="candidat.titre" class="form-username form-control">
+                    <div *ngIf="titre.errors && (titre.dirty || titre.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div [hidden]="!titre.errors.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <select [(ngModel)]="candidat.nationalite" [ngModelOptions]="{standalone: true}"
+                      class="form-username form-control" #nationalite="ngModel">
+                      <option selected disabled>Nationnalité</option>
+                      <option *ngFor="let pays of paysList">{{pays}}</option>
+                    </select>
+                    <div
+                      *ngIf="!verifRequired(candidat.nationalite) && (nationalite.dirty || nationalite.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div *ngIf="!verifRequired(candidat.nationalite)">
+                        Champ obligatoire!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <div class="pos-r">
+                    <input id="email" type="email" name="email" placeholder="Email" required #emailc="ngModel"
+                      [(ngModel)]="candidat.email" (change)="checkUsedMail()" class="form-username form-control">
+                    <div
+                      *ngIf="(emailc.errors || !verifEmailField(candidat.email) || usedMail) && (emailc.dirty || emailc.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div *ngIf="!verifRequired(candidat.email)">
+                        Champ obligatoire!
+                      </div>
+                      <div *ngIf="!verifEmailField(candidat.email) && verifRequired(candidat.email) && !usedMail">
+                        Format incorrecte!
+                      </div>
+                      <div *ngIf="usedMail && verifEmailField(candidat.email) && verifRequired(candidat.email)">
+                        Email déja utilisé!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="pos-r">
+                    <input id="password" type="password" name="password" required #password="ngModel"
+                      [(ngModel)]="candidat.password" placeholder="Mot de passe" class="form-password form-control">
+                    <div
+                      *ngIf="(password.errors || !verifPassWordField(candidat.password)) && (password.dirty || password.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div *ngIf="!verifRequired(candidat.password)">
+                        Champ obligatoire!
+                      </div>
+                      <div *ngIf="!verifPassWordField(candidat.password) && verifRequired(candidat.password)">
+                        Format incorrecte (min 8 caratére contenant au moins un chiffre, un caractére miniscule, un
+                        caractére majiscule et un caractére spécial)!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="pos-r">
+                    <input id="confirmation" type="password" name="confirmation" required #confirmationc="ngModel"
+                      [(ngModel)]="pwdConfirmation" (change)="checkPwdConfirmation()"
+                      placeholder="Confirmation mot de passe" class="form-password form-control">
+                    <div *ngIf="tryToSubmit && !verifConfirmationPassword(candidat.password, pwdConfirmation)"
+                      class="alert alert-danger">
+                      <div [hidden]="verifConfirmationPassword(candidat.password, pwdConfirmation)">
+                        Mot de passe et confirmation incompatible!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="pos-r">
+                    <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo" required
+                      #photoc="ngModel" [(ngModel)]="candidat.photo"
+                      (change)="handleImageCandidatInput($event.target.files)" accept="image/x-png,image/gif,image/jpeg"
+                      class="form-password form-control" style="display: none;">
+                    <label id="upload-photo-label" for="photo">PHOTO</label>
+                    <div *ngIf="photoc.errors && (photoc.dirty || photoc.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div [hidden]="!photoc.errors.required">
+                        Champ obligatoire!
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
+                <div class="form-group">
+                  <button type="submit" class="btn btn-warning form-control"
+                    (click)="inscription()"><strong>S'inscrire</strong></button>
+                </div>
+
+              </div>
+              <!-- </form> -->
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
-</div>
 </form>
