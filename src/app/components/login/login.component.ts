@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Route } from '@angular/compiler/src/core';
 import { Router } from '@angular/router';
-import { UtilisateurService } from 'src/app/services/utilisateur.service';
+import { UtilisateurService } from 'src/app/services/UtilisateurService';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
   connectionError = false;
   connectedUser;
 
-  constructor(private router: Router,private utilisateurService :UtilisateurService) { }
+  constructor(private router: Router, private utilisateurService: UtilisateurService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
   }
@@ -24,24 +25,23 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/principal']);
   }
 
-  
+
   authentication() {
-    console.log('this.login,',this.login);
-    console.log('this.pwd,',this.pwd);
-
-    this.utilisateurService.authentication(this.login, this.pwd).subscribe(data => {
+    this.spinner.show();
+    this.utilisateurService.getByLogin(this.login).subscribe(data => {
       this.connectedUser = data;
-      if (data !== null) {
-        console.log('data',data[0]);
-      this.router.navigate(['/principal']);
-      localStorage.setItem('connected', 'connected');
-      localStorage.setItem('login', this.login);
-
+      if (this.connectedUser && this.connectedUser.password === this.pwd) {
+        this.router.navigate(['/principal']);
+        localStorage.setItem('connected', 'connected');
+        localStorage.setItem('login', this.login);
+        this.spinner.hide();
       } else {
         this.connectionError = true;
+        this.spinner.hide();
       }
     }, error => {
       this.connectionError = true;
+      this.spinner.hide();
     });
   }
 }

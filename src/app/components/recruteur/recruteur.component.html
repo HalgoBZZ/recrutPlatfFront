@@ -17,6 +17,7 @@
         </th>
         <th *ngIf="showNom">
           <ng-container *ngIf="!filter">Nom</ng-container>
+<<<<<<< HEAD
           <ng-container *ngIf="filter"><input type="text" placeholder="Nom"></ng-container>
         </th>
         <th *ngIf="showPresentation">
@@ -62,11 +63,59 @@
         <th *ngIf="showModification">
           <ng-container *ngIf="!filter">Date de modification</ng-container>
           <ng-container *ngIf="filter"><input type="text" placeholder="Date de modification"></ng-container>
+=======
+          <ng-container *ngIf="filter"><input type="text" placeholder="Nom" [(ngModel)]="nomFilter"></ng-container>
+        </th>
+        <th *ngIf="showPresentation">
+          <ng-container *ngIf="!filter">Présentation</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Présentation" [(ngModel)]="presentationFilter"></ng-container>
+        </th>
+        <th *ngIf="showSite">
+          <ng-container *ngIf="!filter">Site web</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Site web" [(ngModel)]="siteFilter"></ng-container>
+        </th>
+        <th *ngIf="showTaille">
+          <ng-container *ngIf="!filter">Taille</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Taille" [(ngModel)]="tailleFilter"></ng-container>
+        </th>
+        <th *ngIf="showAdresse">
+          <ng-container *ngIf="!filter">Adresse</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Adresse" [(ngModel)]="adresseFilter"></ng-container>
+        </th>
+        <th *ngIf="showType">
+          <ng-container *ngIf="!filter">Type</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Type" [(ngModel)]="typeFilter"></ng-container>
+        </th>
+        <th *ngIf="showEmail">
+          <ng-container *ngIf="!filter">Email</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Email" [(ngModel)]="emailFilter"></ng-container>
+        </th>
+        <!-- <th *ngIf="showTel">
+          <ng-container *ngIf="!filter">Numéro de telephone</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="numéro de telephone"></ng-container>
+        </th> -->
+        <th *ngIf="showPays">
+          <ng-container *ngIf="!filter">Pays</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Pays" [(ngModel)]="paysFilter"></ng-container>
+        </th>
+        <th *ngIf="showFondation">
+          <ng-container *ngIf="!filter">Fondation</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Fondation" [(ngModel)]="fondationFilter"></ng-container>
+        </th>
+        <th *ngIf="showAjout">
+          <ng-container *ngIf="!filter">Date d'ajout</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Date d'ajout" [(ngModel)]="ajoutFilter"></ng-container>
+        </th>
+        <th *ngIf="showModification">
+          <ng-container *ngIf="!filter">Date de modification</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Date de modification" [(ngModel)]="modifFilter"></ng-container>
+>>>>>>>  after deleting branch halgo to resolved confilcts problems
         </th>
         <th> Action</th>
       </tr>
     </thead>
     <tbody>
+<<<<<<< HEAD
       <tr>
         <td class="py-1" *ngIf="showLogo">
           <img src="../../../assets/images/entreprises/e1.jpg" class="zoom">
@@ -134,11 +183,37 @@
             (click)="showDeleteModal(deleteTemplate)"></span>
           <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
             (click)="showInfoModal(infoTemplate)"></span>
+=======
+      <tr *ngFor="let employeur of employeurs |filterNomEmployeur:nomFilter|filterPresentationEmployeur:presentationFilter|filterSiteEmployeur:siteFilter
+      |filterTailleEmployeur:tailleFilter|filterAdresseEmployeur:adresseFilter|filterTypeEmployeur:typeFilter|filterEmailEmployeur:emailFilter
+      |filterFondationEmployeur:fondationFilter|filterPaysEmployeur:paysFilter|filterModificationEmployeur:modifFilter|filterAjoutEmployeur:ajoutFilter">
+        <td class="py-1" *ngIf="showLogo">
+          <img src="../../../assets/images/entreprises/e1.jpg" class="zoom">
+        </td>
+        <td *ngIf="showNom">{{employeur.nom}}</td>
+        <td *ngIf="showPresentation">{{employeur.presentation}}</td>
+        <td *ngIf="showSite">{{employeur.site}}</td>
+        <td *ngIf="showTaille">{{employeur.taille}}</td>
+        <td class="py-1" *ngIf="showAdresse">{{employeur.adresse}}</td>
+        <td class="py-1" *ngIf="showType">{{employeur.type}}</td>
+        <td class="py-1" *ngIf="showEmail">{{employeur.email}}</td>
+        <!-- <td *ngIf="showTel">{{employeurToDisplayDetails.nom}}</td> -->
+        <td class="py-1" *ngIf="showPays">{{employeur.pays}}</td>
+        <td class="py-1" *ngIf="showFondation">{{employeur.fondation}}</td>
+        <td *ngIf="showAjout">{{employeur.dateAjout}}</td>
+        <td *ngIf="showModification">{{employeur.dateModif}}</td>
+        <td>
+          <span title="Supprimer" class="ti-trash" style="cursor: pointer; margin-right: 20px;color: red;"
+            (click)="showDeleteModal(deleteTemplate, employeur)"></span>
+          <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
+            (click)="showInfoModal(infoTemplate, employeur)"></span>
+>>>>>>>  after deleting branch halgo to resolved confilcts problems
         </td>
       </tr>
     </tbody>
   </table>
 </div>
+<<<<<<< HEAD
 <!--****************************************Add modal**********************************-->
 <ng-template #addTemplate>
   <div class="modal-header">
@@ -175,15 +250,28 @@
 <ng-template #deleteTemplate>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Suppression de domaine (domaine1)</h4>
+=======
+<!---------------------------------------------------delete modal*******************************-->
+<ng-template #deleteTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Suppression de domaine {{employeurToDelete.nom}}</h4>
+>>>>>>>  after deleting branch halgo to resolved confilcts problems
     <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
+<<<<<<< HEAD
     Vous étes sure de supprimer le domaine (domaine1)?
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="deleteCandidat()">OUI</button>
+=======
+    Vous étes sure de supprimer le domaine {{employeurToDelete.nom}}?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="deleteEmployeur()">OUI</button>
+>>>>>>>  after deleting branch halgo to resolved confilcts problems
     <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">NON</button>
   </div>
 </ng-template>
@@ -191,7 +279,11 @@
 <!---------------------------------------------------info modal*******************************-->
 <ng-template #infoTemplate>
   <div class="modal-header">
+<<<<<<< HEAD
     <h4 class="modal-title pull-left">Détails de l'employeur IHM informatique</h4>
+=======
+    <h4 class="modal-title pull-left">Détails de l'employeur {{employeurToDisplayDetails.nom}}</h4>
+>>>>>>>  after deleting branch halgo to resolved confilcts problems
     <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -205,6 +297,7 @@
           </div>
           <div class="col-md-7 px-3">
             <div class="card-block px-3">
+<<<<<<< HEAD
               <b>Nom: </b>IHM informatique<br>
               <b>Présentation: </b>presentation<br>
               <b>Site web: </b>www.ihm.com<br>
@@ -217,6 +310,20 @@
               <b>Pays: </b>Tunisie<br>
               <b>Ajouté le: </b>12-12-2019<br>
               <b>Dérniére modification: </b>12-01-2020<br>
+=======
+              <b>Nom: </b>{{employeurToDisplayDetails.nom}}<br>
+              <b>Présentation: </b>{{employeurToDisplayDetails.presentation}}<br>
+              <b>Site web: </b>{{employeurToDisplayDetails.site}}<br>
+              <b>Taille: </b>{{employeurToDisplayDetails.taille}}<br>
+              <b>Adresse: </b>{{employeurToDisplayDetails.adresse}}<br>
+              <!-- <b>Numéro de telephone: </b>+201625353654<br> -->
+              <b>Type: </b>{{employeurToDisplayDetails.type}}<br>
+              <b>Fondation: </b>{{employeurToDisplayDetails.fondation}}<br>
+              <b>Email: </b>{{employeurToDisplayDetails.email}}<br>
+              <b>Pays: </b>{{employeurToDisplayDetails.pays}}<br>
+              <b>Ajouté le: </b>{{employeurToDisplayDetails.dateAjout}}<br>
+              <b>Dérniére modification: </b>{{employeurToDisplayDetails.dateModif}}<br>
+>>>>>>>  after deleting branch halgo to resolved confilcts problems
             </div>
           </div>
 

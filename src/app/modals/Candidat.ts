@@ -16,7 +16,7 @@ export class Candidat extends Utilisateur {
     nationalite;
     formations;
     competences;
-    experiences; 
+    experiences;
     langues;
     offres;
 }

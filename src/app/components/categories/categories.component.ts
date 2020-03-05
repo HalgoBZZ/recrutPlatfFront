@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { DomaineService } from 'src/app/services/domaine.service';
-import { Domaine } from 'src/app/modals/Domaine';
+import { CategorieService } from 'src/app/services/categorie.service';
 
 @Component({
   selector: 'app-categories',
@@ -15,14 +14,19 @@ export class CategoriesComponent implements OnInit {
   showAjout = true;
   showModification = true;
   bsModalRef: BsModalRef;
-  listDomaines;
-  domaineUpdated = new Domaine();
-  domaineToDelete = new Domaine();
-  domaineToAdd= new Domaine();
-  constructor(private modalService: BsModalService, private toastr: ToastrService,private domaineService: DomaineService) { }
+  categorieToAdd: any = {};
+  categorieToDelete;
+  categorieToUpdate;
+  tryToSubmit = false;
+  categories;
+  intituleFilter = '';
+  dateAjoutFilter = '';
+  dateFinFilter = '';
+
+  constructor(private modalService: BsModalService, private toastr: ToastrService, private categorieService: CategorieService) { }
 
   ngOnInit() {
-    this.getAllDomaines();
+    this.getAll();
   }
 
   showAddModal(template) {
@@ -35,52 +39,56 @@ export class CategoriesComponent implements OnInit {
     this.bsModalRef = this.modalService.show(template, { class: 'modal-md' });
   }
 
-  showUpdateModal(template,domaine) {
-    this.domaineUpdated = domaine;
+  showUpdateModal(template, categorie) {
+    this.categorieToUpdate = categorie;
     this.bsModalRef = this.modalService.show(template, { class: 'modal-md' });
-    this.updateDomaine();
   }
-  showDeleteModal(template,domaine) {
-    this.domaineToDelete=domaine;
+  showDeleteModal(template, categorie) {
+    this.categorieToDelete = categorie;
     this.bsModalRef = this.modalService.show(template, { class: 'modal-md' });
   }
 
   addDomaine() {
-    this.domaineService.add( this.domaineToAdd).subscribe(result => {
-      this.getAllDomaines();
-    }, error => {
-    });
-    this.bsModalRef.hide();
-    this.toastr.success('Success!', 'Success toast!');
-    this.toastr.error('Error!', 'Error toast');
+    this.tryToSubmit = true;
+    if (this.categorieToAdd && this.categorieToAdd.intitule) {
+      this.categorieService.addCategorie(this.categorieToAdd).subscribe(res => {
+        this.bsModalRef.hide();
+        this.toastr.success('Succés!', 'Domaine ajouté avec succés!');
+        this.tryToSubmit = false;
+        this.getAll();
+      }, error => {
+        this.toastr.error('Erreur!', 'Erreur lors d\'ajout de domaine!');
+      });
+    }
   }
 
   updateDomaine() {
-    this.domaineService.update( this.domaineUpdated).subscribe(result => {
-      this.getAllDomaines();
-    }, error => {
-    });
-    this.bsModalRef.hide();
-    this.toastr.success('Success!', 'Success toast!');
-    this.toastr.error('Error!', 'Error toast');
+    this.tryToSubmit = true;
+    if (this.categorieToUpdate && this.categorieToUpdate.intitule) {
+      this.categorieService.updateCategorie(this.categorieToUpdate).subscribe(res => {
+        this.bsModalRef.hide();
+        this.toastr.success('Succés!', 'Domaine mis à jour avec succés!');
+        this.tryToSubmit = false;
+      }, error => {
+        this.toastr.error('Erreur!', 'Erreur lors de mise à jour de domaine');
+      });
+    }
   }
 
   deleteDomaine() {
-    this.domaineService.delete(this.domaineToDelete.id).subscribe(result => {
-      this.getAllDomaines();
+    this.categorieService.deleteCategorie(this.categorieToDelete.id).subscribe(res => {
+      this.bsModalRef.hide();
+      this.toastr.success('Succéss!', 'Catégorie supprimé avec succés!');
+      this.getAll();
     }, error => {
+      this.toastr.error('Erreur!', 'Erreur lors de suppression de catégorie');
     });
-    this.bsModalRef.hide();
-    this.toastr.success('Success!', 'Success toast!');
-    this.toastr.error('Error!', 'Error toast');
   }
 
-  getAllDomaines(){ 
-    this.domaineService.getAll().subscribe(result => {
-      if (result != null) {
-        this.listDomaines=result;
-      }
-    }, error => {
+  getAll() {
+    this.categorieService.getAll().subscribe(res => {
+      this.categories = res;
     });
   }
+
 }

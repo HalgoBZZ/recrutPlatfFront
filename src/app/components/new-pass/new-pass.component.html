@@ -10,14 +10,31 @@
             <form role="form" action="" method="post" class="login-form">
               <div class="form-group">
                 <div class="pos-r">
-                  <input id="pwd" type="password" name="pwd" placeholder="Nouveau mot de passe"
-                    class="form-password form-control">
+                  <input id="pwd" type="password" name="pwd" placeholder="Nouveau mot de passe" [(ngModel)]="pwd" #password="ngModel"
+                    class="form-password form-control" required>
+                    <div
+                      *ngIf="(password.errors || !verifPassWordField(pwd)) && (password.dirty || password.touched || tryToSubmit)"
+                      class="alert alert-danger">
+                      <div *ngIf="!verifRequired(pwd)">
+                        Champ obligatoire!
+                      </div>
+                      <div *ngIf="!verifPassWordField(pwd) && verifRequired(pwd)">
+                        Format incorrecte (min 8 caratére contenant au moins un chiffre, un caractére miniscule, un
+                        caractére majiscule et un caractére spécial)!
+                      </div>
+                    </div>
                 </div>
               </div>
               <div class="form-group">
                 <div class="pos-r">
-                  <input id="confirmation" type="password" name="confirmation" placeholder="Confirmer mot de passe"
+                  <input id="confirmation" type="password" name="confirmation" placeholder="Confirmer mot de passe" [(ngModel)]="confirmation"
                     class="form-password form-control">
+                    <div *ngIf="tryToSubmit && !verifConfirmationPassword(pwd, confirmation)"
+                      class="alert alert-danger">
+                    <div [hidden]="verifConfirmationPassword(pwd, confirmation)">
+                      Mot de passe et confirmation incompatible!
+                    </div>
+                    </div>
                 </div>
               </div>
               <div class="form-group">

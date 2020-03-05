@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { CandidatService } from 'src/app/services/candidat.service';
+import { CandidatService } from 'src/app/services/CandidatService';
 import { DomSanitizer } from '@angular/platform-browser';
-import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-candidats',
   templateUrl: './candidats.component.html',
@@ -26,12 +25,24 @@ export class CandidatsComponent implements OnInit {
   showPhoto = true;
   showModification = false;
   bsModalRef: BsModalRef;
+  candidatToDelete;
   data;
   listCandidat;
   idCandidatToDelete: any;
   candidatDetail: any;
   fileUrl: any;
   fileName: string;
+  nomFilter = '';
+  prenomFilter = '';
+  titreFilter = '';
+  diplomeFilter = '';
+  adresseFilter = '';
+  dateNaissFilter = '';
+  emailFilter = '';
+  telFilter = '';
+  nationaliteFilter = '';
+  ajoutFilter = '';
+  modifFilter = '';
   constructor(private modalService: BsModalService, private toastr: ToastrService,
     private candidatService: CandidatService, private sanitizer: DomSanitizer) { }
 
@@ -40,6 +51,7 @@ export class CandidatsComponent implements OnInit {
   }
   getAll() {
     this.candidatService.getAll().subscribe(result => {
+      console.log('dd ==>', result)
       if (result == null) {
         this.data = false;
       } else {
@@ -63,8 +75,8 @@ export class CandidatsComponent implements OnInit {
   showUpdateModal(template) {
     this.bsModalRef = this.modalService.show(template, { class: 'modal-md' });
   }
-  showDeleteModal(template, id) {
-    this.idCandidatToDelete = id;
+  showDeleteModal(template, candidat) {
+    this.candidatToDelete = candidat;
     this.bsModalRef = this.modalService.show(template, { class: 'modal-md' });
   }
   showInfoModal(template, candidat) {
@@ -85,16 +97,12 @@ export class CandidatsComponent implements OnInit {
   }
 
   deleteCandidat() {
-    this.candidatService.deleteCandidat(this.idCandidatToDelete).subscribe(result => {
-      if (result == true) {
-        this.getAll();
-        this.toastr.success('Success!', 'Success toast!');
-
-      }
+    this.candidatService.deleteCandidat(this.candidatToDelete.id).subscribe(result => {
+      this.toastr.success('Succés!', 'Candidat supprimé avec succés!');
+      this.getAll();
     }, error => {
       this.data = true;
-      this.toastr.error('Error!', 'Error toast');
-
+      this.toastr.error('Erreur!', 'Une erreur s\'est produite lors de la suppression de candidat');
     });
     this.bsModalRef.hide();
   }
@@ -103,7 +111,7 @@ export class CandidatsComponent implements OnInit {
   downLoadFile(data, candidat) {
     const fileName = candidat + "CV";
     const blobData = this.convertBase64ToBlobData(data);
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) { 
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(blobData, fileName);
     } else {
       const blob = new Blob([blobData], { type: 'image/png' });

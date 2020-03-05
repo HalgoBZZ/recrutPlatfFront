@@ -17,56 +17,58 @@
         </th>
         <th *ngIf="showNom">
           <ng-container *ngIf="!filter">Nom</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="Nom"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Nom" [(ngModel)]="nomFilter"></ng-container>
         </th>
         <th *ngIf="showPrenom">
           <ng-container *ngIf="!filter">Prénom</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="Prenom"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Prenom" [(ngModel)]="prenomFilter"></ng-container>
         </th>
         <th *ngIf="showTitre">
           <ng-container *ngIf="!filter">Titre</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="Titre"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Titre" [(ngModel)]="titreFilter"></ng-container>
         </th>
         <th *ngIf="showDiplome">
           <ng-container *ngIf="!filter">Diplome</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="Diplome"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Diplome" [(ngModel)]="diplomeFilter"></ng-container>
         </th>
         <th *ngIf="showAdresse">
           <ng-container *ngIf="!filter">Adresse</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="Adresse"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Adresse" [(ngModel)]="adresseFilter"></ng-container>
         </th>
         <th *ngIf="showDateNaiss">
           <ng-container *ngIf="!filter">Date de naissance</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="Date de naissance"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Date de naissance" [(ngModel)]="dateNaissFilter"></ng-container>
         </th>
         <th *ngIf="showEmail">
           <ng-container *ngIf="!filter">Email</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="Email"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Email" [(ngModel)]="emailFilter"></ng-container>
         </th>
         <th *ngIf="showTel">
           <ng-container *ngIf="!filter">Numéro de telephone</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="numéro de telephone"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="numéro de telephone" [(ngModel)]="telFilter"></ng-container>
         </th>
         <th *ngIf="showNationalite">
           <ng-container *ngIf="!filter">Nationalité</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="Nationalité"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Nationalité" [(ngModel)]="nationaliteFilter"></ng-container>
         </th>
         <th *ngIf="showCV">
           <ng-container>CV</ng-container>
         </th>
         <th *ngIf="showAjout">
           <ng-container *ngIf="!filter">Date d'ajout</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="Date d'ajout"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Date d'ajout" [(ngModel)]="ajoutFilter"></ng-container>
         </th>
         <th *ngIf="showModification">
           <ng-container *ngIf="!filter">Date de modification</ng-container>
-          <ng-container *ngIf="filter"><input type="text" placeholder="Date de modification"></ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Date de modification" [(ngModel)]="modifFilter"></ng-container>
         </th>
         <th> Action{{showNom}}</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let candidat of listCandidat">
+      <tr *ngFor="let candidat of listCandidat|filterNomCandidat:nomFilter|filterPrenomCandidat:prenomFilter|filterTitreCandidat:titreFilter
+      |filterDiplomeCandidat:diplomeFilter|filterAdresseCandidat:adresseFilter|filterDatenaissanceCandidat:dateNaissFilter|filterEmailCandidat:emailFilter
+      |filterTelCandidat:telFilter|filterNationaliteCandidat:nationaliteFilter|filterModifCandidat:modifFilter|filterAjoutCandidat:ajoutFilter">
         <td class="py-1" *ngIf="showPhoto">
           <img  *ngIf="candidat.photo" src="data:image/jpg;base64,{{ candidat.photo }}" alt="image" class="zoom">
 
@@ -83,11 +85,11 @@
         <td *ngIf="showTel">{{candidat.tel}}</td>
         <td class="py-1" *ngIf="showNationalite">{{candidat.nationalite}}</td>
         <td class="py-1" *ngIf="showCV"><a title="Télécharger le fichier" (click)="downLoadFile(candidat.piece_jointe,candidat.nom)"><i class="fa fa-file-pdf-o"></i>{{candidat.piece_jointe}}</a></td>
-        <td *ngIf="showAjout">{{candidat.nom}}</td>
-        <td *ngIf="showModification">{{candidat.nom}}</td>
+        <td *ngIf="showAjout">{{candidat.dateAjout}}</td>
+        <td *ngIf="showModification">{{candidat.dateModif}}</td>
         <td>
           <span title="Supprimer" class="ti-trash" style="cursor: pointer; margin-right: 20px;color: red;"
-            (click)="showDeleteModal(deleteTemplate,candidat.id)"></span>
+            (click)="showDeleteModal(deleteTemplate,candidat)"></span>
           <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
             (click)="showInfoModal(infoTemplate,candidat)"></span>
         </td>
@@ -96,48 +98,16 @@
     </tbody>
   </table>
 </div>
-<!--****************************************Add modal**********************************-->
-<!-- <ng-template #addTemplate>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Ajout d'un domaine</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <input type="text" class="form-control form-control-sm" placeholder="Intitulé" aria-label="Intitulé">
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="addCandidat()">Ajouter</button>
-    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
-  </div>
-</ng-template> -->
-<!---------------------------------------------------update modal*******************************-->
-<!-- <ng-template #updateTemplate>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Modification de domaine (domaine1)</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <input type="text" class="form-control form-control-sm" placeholder="Intitulé" aria-label="Intitulé">
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="updateCandidat()">Modifier</button>
-    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
-  </div>
-</ng-template> -->
-<!---------------------------------------------------delete modal*******************************-->
+<!--************************************************************delete modal---------------------------->
 <ng-template #deleteTemplate>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Suppression de domaine (domaine1)</h4>
+    <h4 class="modal-title pull-left">Suppression de candidat {{candidatToDelete.prenom}} {{candidatToDelete.nom}}</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    Vous étes sure de supprimer le domaine (domaine1)?
+    Vous étes sure de supprimer le candidat {{candidatToDelete.prenom}} {{candidatToDelete.nom}}?
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="deleteCandidat()">OUI</button>
@@ -159,7 +129,7 @@
         <div class="row ">
           <div class="col-md-5">
             <img *ngIf="candidatDetail.photo"  src="data:image/jpg;base64,{{candidatDetail.photo}}">
-            <img *ngIf="!candidatDetail.photo"  src="../../../assets/images/faces/face21.jpg" style="width:30px; height:30px;">  
+            <img *ngIf="!candidatDetail.photo"  src="../../../assets/images/faces/face21.jpg" style="width:30px; height:30px;">
           </div>
           <div class="col-md-7 px-3">
             <div class="card-block px-3">
@@ -175,7 +145,6 @@
               <b>CV: </b><a title="Télécharger le fichier" (click)="downLoadFile(candidatDetail.piece_jointe,candidatDetail.nom)"><i class="fa fa-file-pdf-o"></i></a><br>
             </div>
           </div>
-
         </div>
       </div>
     </div>
