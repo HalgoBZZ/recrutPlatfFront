@@ -51,6 +51,7 @@ import { FilterIntituleCategoriePipe } from './pipes/categorie/filter-intitule-c
 import { FilterAjoutCategoriePipe } from './pipes/categorie/filter-ajout-categorie.pipe';
 import { FilterModifCategoriePipe } from './pipes/categorie/filter-modif-categorie.pipe';
 import { FilterNomEmployeurPipe } from './pipes/employeur/filter-nom-employeur.pipe';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -108,6 +109,7 @@ import { FilterNomEmployeurPipe } from './pipes/employeur/filter-nom-employeur.p
     ChartModule,
     AccordionModule.forRoot(),
     TooltipModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
     RatingModule.forRoot(),
     ToastrModule.forRoot({
