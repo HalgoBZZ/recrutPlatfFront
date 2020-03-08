@@ -4,6 +4,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { OffreService } from 'src/app/services/offre.service';
 import { EmployeurService } from 'src/app/services/employeur.service';
+import { UtilisateurService } from 'src/app/services/utilisateur.service';
 @Component({
   selector: 'app-mes-offres',
   templateUrl: './mes-offres.component.html',
@@ -28,15 +29,15 @@ export class MesOffresComponent implements OnInit {
   employeur;
   myoffres;
   constructor(private modalService: BsModalService, private toastr: ToastrService, private offreService: OffreService,
-    private employeurService: EmployeurService) { }
+    private employeurService: EmployeurService, private utilisateurService: UtilisateurService) { }
 
   ngOnInit() {
     this.getEmployeurConnected();
 
   }
   getEmployeurConnected() {
-    this.login = localStorage.getItem("login");
-    this.employeurService.getEmployeurByLogin(this.login).subscribe(result => {
+    this.login = localStorage.getItem('login');
+    this.utilisateurService.getByLogin(this.login).subscribe(result => {
       this.employeur = result;
       console.log('this.employeur', this.employeur);
       this.getAll();

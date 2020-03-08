@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { EmployeurService } from 'src/app/services/EmployeurService';
+import { EmployeurService } from 'src/app/services/employeur.service';
 
 @Component({
   selector: 'app-recruteur',

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Location } from '@angular/common';
-import { UtilisateurService } from 'src/app/services/UtilisateurService';
 import { ToastrService } from 'ngx-toastr';
-import { EmployeurService } from 'src/app/services/EmployeurService';
-import { CandidatService } from 'src/app/services/CandidatService';
+import { CandidatService } from 'src/app/services/candidat.service';
+import { UtilisateurService } from 'src/app/services/utilisateur.service';
+import { EmployeurService } from 'src/app/services/employeur.service';
 
 @Component({
   selector: 'app-new-pass',
