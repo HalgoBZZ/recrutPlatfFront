@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { CandidatService } from 'src/app/services/CandidatService';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CandidatService } from 'src/app/services/candidat.service';
 @Component({
   selector: 'app-candidats',
   templateUrl: './candidats.component.html',

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Employeur } from 'src/app/modals/Employeur.';
-import { EmployeurService } from 'src/app/services/EmployeurService';
-import { CandidatService } from 'src/app/services/CandidatService';
-import { UtilisateurService } from 'src/app/services/UtilisateurService';
 import { Candidat } from 'src/app/modals/Candidat';
 import { ToastrService } from 'ngx-toastr';
 import { PaysService } from 'src/app/services/pays.service';
+import { EmployeurService } from 'src/app/services/employeur.service';
+import { CandidatService } from 'src/app/services/candidat.service';
+import { UtilisateurService } from 'src/app/services/utilisateur.service';
 
 @Component({
   selector: 'app-inscription',
@@ -147,7 +147,7 @@ export class InscriptionComponent implements OnInit {
   }
   saveImageCandidat(id) {
     if (this.fileToUpload != null) {
-      this.candidatService.uploadFile(this.fileToUpload, this.candidat.email, id).subscribe(result => {
+      this.candidatService.uploadFile(this.fileToUpload, this.candidat.email, id, this.fileToUpload.type).subscribe(result => {
         if (result != null) {
           this.pathfile = result;
           this.savedFile = true;
@@ -162,7 +162,8 @@ export class InscriptionComponent implements OnInit {
       this.savedFile = true;
     }
     if (this.fileToUploadCVCandidat != null) {
-      this.candidatService.uploadFile(this.fileToUploadCVCandidat, this.candidat.email, id).subscribe(result => {
+      this.candidatService.uploadFile(this.fileToUploadCVCandidat, this.candidat.email, id, this.fileToUploadEmployeur.type)
+      .subscribe(result => {
         if (result != null) {
           this.pathfile = result;
           this.savedFile = true;

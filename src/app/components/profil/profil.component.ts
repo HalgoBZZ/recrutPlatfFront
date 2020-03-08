@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilisateurService } from 'src/app/services/UtilisateurService';
-import { Router } from '@angular/router';
-import { CandidatService } from 'src/app/services/CandidatService';
-import { EmployeurService } from 'src/app/services/EmployeurService';
 import { ToastrService } from 'ngx-toastr';
 import { PaysService } from 'src/app/services/pays.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { UtilisateurService } from 'src/app/services/utilisateur.service';
+import { EmployeurService } from 'src/app/services/employeur.service';
+import { CandidatService } from 'src/app/services/candidat.service';
 
 @Component({
   selector: 'app-profil',
@@ -108,7 +107,7 @@ export class ProfilComponent implements OnInit {
 
   saveImageCandidat(id) {
     if (this.fileToUpload != null) {
-      this.candidatService.uploadFile(this.fileToUpload, this.loggedUser.email, id).subscribe(result => {
+      this.candidatService.uploadFile(this.fileToUpload, this.loggedUser.email, id, this.fileToUpload.type).subscribe(result => {
         if (result != null) {
           this.successUpdate();
         }
@@ -117,7 +116,8 @@ export class ProfilComponent implements OnInit {
       });
     }
     if (this.fileToUploadCVCandidat != null) {
-      this.candidatService.uploadFile(this.fileToUploadCVCandidat, this.loggedUser.email, id).subscribe(result => {
+      this.candidatService.uploadFile(this.fileToUploadCVCandidat, this.loggedUser.email, id,
+        this.fileToUploadCVCandidat.type).subscribe(result => {
         if (result != null) {
           this.successUpdate();
         }

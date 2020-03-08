@@ -17,7 +17,7 @@
   </div>
 </div>
 <div style="width:100%; margin-top: 50px;">
-  <accordion [isAnimated]="true" *ngFor="let offre of myoffres; let i = index" >
+  <accordion [isAnimated]="true" *ngFor="let offre of myoffres; let i = index">
     <accordion-group class="acordion-group" [isOpen]="isOpen[i]" (click)="openOrClose(i)">
       <div accordion-heading style="width:100%;">
         <!-- <div style="display: inline-block;">
@@ -51,7 +51,7 @@
       <div style="display: block;">
         <h4>
           Domaine</h4>
-          {{offre.domaine.intitule}}.<br>
+        {{offre.domaine.intitule}}.<br>
         <hr>
       </div>
       <div style="display: block;">
@@ -140,7 +140,7 @@
               <td>
                 <span title="Accepter" class="fa fa-check" style="cursor: pointer; margin-right: 20px;color: green;"
                   (click)="showDeleteModal(deleteTemplate)"></span>
-                  <span title="Refuser" class="fa fa-close" style="cursor: pointer; margin-right: 20px;color: red;"
+                <span title="Refuser" class="fa fa-close" style="cursor: pointer; margin-right: 20px;color: red;"
                   (click)="showDeleteModal(deleteTemplate)"></span>
                 <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
                   (click)="showInfoModal(infoTemplate)"></span>
@@ -162,9 +162,9 @@
               <td class="py-1"><a href="#"><i class="fa fa-file-pdf-o"></i></a></td>
               <td>
                 <span title="Accepter" class="fa fa-check" style="cursor: pointer; margin-right: 20px;color: green;"
-                (click)="showDeleteModal(deleteTemplate)"></span>
+                  (click)="showDeleteModal(deleteTemplate)"></span>
                 <span title="Refuser" class="fa fa-close" style="cursor: pointer; margin-right: 20px;color: red;"
-                (click)="showDeleteModal(deleteTemplate)"></span>
+                  (click)="showDeleteModal(deleteTemplate)"></span>
                 <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
                   (click)="showInfoModal(infoTemplate)"></span>
               </td>
@@ -173,7 +173,9 @@
         </table>
       </div>
     </accordion-group>
-      <!---------------------------------------------------update modal*******************************-->
+  </accordion>
+</div>
+<!---------------------------------------------------update modal*******************************-->
 <ng-template #updateTemplate>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Modification de l'offre (Offre1)</h4>
@@ -182,8 +184,10 @@
     </button>
   </div>
   <div class="modal-body">
-    <input type="text" class="form-control form-control-sm" placeholder="Poste" aria-label="Poste" style="margin-bottom: 15px;">
-    <textarea class="form-control form-control-sm" placeholder="Description" rows="6" style="margin-bottom: 15px;"></textarea>
+    <input type="text" class="form-control form-control-sm" placeholder="Poste" aria-label="Poste"
+      style="margin-bottom: 15px;">
+    <textarea class="form-control form-control-sm" placeholder="Description" rows="6"
+      style="margin-bottom: 15px;"></textarea>
     <select class="form-control form-control-sm" style="margin-bottom: 15px;">
       <option selected disabled>Domaine</option>
       <option>Domaine1</option>
@@ -192,16 +196,20 @@
     </select>
     <ng-template #tolTemplateAddEtude>BAC + {{ etude }}</ng-template>
     <label>Niveau d'études demandé</label>
-      <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateAddEtude" triggers="focus" >
+    <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateAddEtude"
+      triggers="focus">
     <ng-template #tolTemplateAddHor>{{ heure}} Heure/Semaine</ng-template>
     <label>Horaire par semaine</label>
-      <input type="range" min="0" max="50" [(ngModel)]="heure" class="slider" id="myRange" [tooltip]="tolTemplateAddHor" triggers="focus" >
+    <input type="range" min="0" max="50" [(ngModel)]="heure" class="slider" id="myRange" [tooltip]="tolTemplateAddHor"
+      triggers="focus">
     <ng-template #tolTemplateAdd>{{ salaire }} DT</ng-template>
     <label>Salaire mensuel</label>
-      <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplateAdd" triggers="focus" >
+    <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplateAdd"
+      triggers="focus">
     <ng-template #tolTemplateExpAdd>{{ experience }} ans</ng-template>
     <label>Experience demandée</label><br>
-      <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange" [tooltip]="tolTemplateExpAdd" triggers="focus" >
+    <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange"
+      [tooltip]="tolTemplateExpAdd" triggers="focus">
     <label>Compétences techniques demandées</label><br>
     <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
       <b>CSS</b></div>
@@ -212,7 +220,7 @@
       <input type="text" class="form-control form-control-sm" placeholder="Compétence" aria-label="Min"
         style="width: 100%; margin-bottom: 10px;">
     </div>
-    <br/>
+    <br />
     <label>Langues</label><br>
     Français <rating [(ngModel)]="rateFr" [max]="max" [readonly]="isReadonly"></rating><br>
     Anglais <rating [(ngModel)]="rateAng" [max]="max" [readonly]="isReadonly"></rating>
@@ -247,8 +255,10 @@
     </button>
   </div>
   <div class="modal-body">
-    <input type="text" class="form-control form-control-sm" placeholder="Poste" aria-label="Poste" style="margin-bottom: 15px;">
-    <textarea class="form-control form-control-sm" placeholder="Description" rows="6" style="margin-bottom: 15px;"></textarea>
+    <input type="text" class="form-control form-control-sm" placeholder="Poste" aria-label="Poste"
+      style="margin-bottom: 15px;">
+    <textarea class="form-control form-control-sm" placeholder="Description" rows="6"
+      style="margin-bottom: 15px;"></textarea>
     <select class="form-control form-control-sm" style="margin-bottom: 15px;">
       <option selected disabled>Domaine</option>
       <option>Domaine1</option>
@@ -257,16 +267,20 @@
     </select>
     <ng-template #tolTemplateAddEtude>BAC + {{ etude }}</ng-template>
     <label>Niveau d'études demandé</label>
-      <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateAddEtude" triggers="focus" >
+    <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateAddEtude"
+      triggers="focus">
     <ng-template #tolTemplateAddHor>{{ heure}} Heure/Semaine</ng-template>
     <label>Horaire par semaine</label>
-      <input type="range" min="0" max="50" [(ngModel)]="heure" class="slider" id="myRange" [tooltip]="tolTemplateAddHor" triggers="focus" >
+    <input type="range" min="0" max="50" [(ngModel)]="heure" class="slider" id="myRange" [tooltip]="tolTemplateAddHor"
+      triggers="focus">
     <ng-template #tolTemplateAdd>{{ salaire }} DT</ng-template>
     <label>Salaire mensuel</label>
-      <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplateAdd" triggers="focus" >
+    <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplateAdd"
+      triggers="focus">
     <ng-template #tolTemplateExpAdd>{{ experience }} ans</ng-template>
     <label>Experience demandée</label><br>
-      <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange" [tooltip]="tolTemplateExpAdd" triggers="focus" >
+    <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange"
+      [tooltip]="tolTemplateExpAdd" triggers="focus">
     <label>Compétences techniques demandées</label><br>
     <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
       <b>CSS</b></div>
@@ -277,7 +291,7 @@
       <input type="text" class="form-control form-control-sm" placeholder="Compétence" aria-label="Min"
         style="width: 100%; margin-bottom: 10px;">
     </div>
-    <br/>
+    <br />
     <label>Langues</label><br>
     Français <rating [(ngModel)]="rateFr" [max]="max" [readonly]="isReadonly"></rating><br>
     Anglais <rating [(ngModel)]="rateAng" [max]="max" [readonly]="isReadonly"></rating>
@@ -343,15 +357,18 @@
     <hr>
     <ng-template #tolTemplateEtude>BAC + {{ etude }}</ng-template>
     <label>Etudes</label>
-      <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateEtude" triggers="focus" >
+    <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateEtude"
+      triggers="focus">
     <hr>
-      <ng-template #tolTemplate>{{ salaire }} DT</ng-template>
+    <ng-template #tolTemplate>{{ salaire }} DT</ng-template>
     <label>Salaire</label>
-      <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplate" triggers="focus" >
+    <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplate"
+      triggers="focus">
     <hr>
     <ng-template #tolTemplateExp>{{ experience }} ans</ng-template>
     <label>Experience</label><br>
-      <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange" [tooltip]="tolTemplateExp" triggers="focus" >
+    <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange" [tooltip]="tolTemplateExp"
+      triggers="focus">
     <hr>
     <label>Compétences techniques</label><br>
     <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
@@ -373,4 +390,4 @@
     <button type="button" class="btn btn-primary" (click)="submitSearch()">Filtrer</button>
     <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
   </div>
-
+  </ng-template>

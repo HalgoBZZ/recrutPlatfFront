@@ -35,4 +35,10 @@ export class OffreService {
     const options = { headers: this.headers };
     return this.http.get(this.uri + 'getCandidatures/' + id, options);
   }
+
+  saveOffre(offre) {
+    this.headers.append('Accept', 'application/json;charset=UTF-8');
+    const options = { headers: this.headers };
+    return this.http.post(this.uri + 'save', offre, options);
+  }
 }

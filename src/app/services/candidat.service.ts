@@ -42,4 +42,16 @@ export class CandidatService {
     const options = { headers: this.headers };
     return this.http.get(this.uri + 'getByLogin/'+login, options);
   }
+
+  updateCandidat(candidat) {
+    this.headers.append('Accept', 'application/json;charset=UTF-8');
+    const options = { headers: this.headers };
+    return this.http.put(this.uri + 'update', candidat, options);
+  }
+
+  getById(id) {
+    this.headers.append('Accept', 'application/json;charset=UTF-8');
+    const options = { headers: this.headers };
+    return this.http.get(this.uri + 'get/' + id, options);
+  }
 }

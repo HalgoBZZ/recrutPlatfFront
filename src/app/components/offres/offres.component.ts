@@ -209,7 +209,7 @@ export class OffresComponent implements OnInit {
     });
   }
   postuler(offre) {
-    const login = localStorage.getItem("login");
+    const login = localStorage.getItem('login');
     this.offreService.postuler(offre.id, login).subscribe(result => {
 
     }, error => {
@@ -218,7 +218,7 @@ export class OffresComponent implements OnInit {
   showPostulerButton(offre) {
     if (this.candidat) {
       for (let element of this.candidat.offres) {
-        if (element.id == offre.id) {
+        if (element.id === offre.id) {
           return false
         }
       }
