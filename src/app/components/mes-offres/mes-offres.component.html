@@ -87,6 +87,8 @@
       </div>
       <div style="display: block;">
         <h4>Liste des candidats</h4>
+        <button type="button" class="btn btn-primary" (click)="getCandidatures(offre)">Candidatures</button>
+
         <table class="table table-striped">
           <thead>
             <tr>
@@ -123,19 +125,22 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="py-1">
-                <img src="../../../assets/images/faces/face1.jpg" alt="image" class="zoom">
+            <tr *ngFor="let candidat of candidatures">
+              <td class="py-1" *ngIf="showPhoto">
+                <img *ngIf="candidat.photo" src="data:image/jpg;base64,{{ candidat.photo }}" alt="image" class="zoom">
+
+                <img *ngIf="!candidat.photo" src="../../../assets/images/faces/face1.jpg" alt="image" class="zoom">
+
               </td>
-              <td>Baazouzi</td>
-              <td>Hafedh</td>
-              <td>Ingénieur developpeur</td>
-              <td>Diplome d'ingénieur</td>
-              <td class="py-1">Cité el khadhra</td>
-              <td class="py-1">15-05-1990</td>
-              <td class="py-1">hafedh.baazouzi@gmail.com</td>
-              <td>+21656457898</td>
-              <td class="py-1">Tunisie</td>
+              <td>{{candidat.nom}}</td>
+              <td >{{candidat.prenom}}</td>
+              <td >{{candidat.titre}}</td>
+              <td >{{candidat.diplome}}</td>
+              <td class="py-1">{{candidat.adresse}}</td>
+              <td class="py-1" >{{candidat.dateNaissance}}</td>
+              <td class="py-1" >{{candidat.email}}</td>
+              <td >{{candidat.tel}}</td>
+              <td class="py-1" >{{candidat.nationalite}}</td>
               <td class="py-1"><a href="#"><i class="fa fa-file-pdf-o"></i></a></td>
               <td>
                 <span title="Accepter" class="fa fa-check" style="cursor: pointer; margin-right: 20px;color: green;"
@@ -146,29 +151,7 @@
                   (click)="showInfoModal(infoTemplate)"></span>
               </td>
             </tr>
-            <tr>
-              <td class="py-1">
-                <img src="../../../assets/images/faces/face2.jpg" alt="image" class="zoom">
-              </td>
-              <td>Baazouzi</td>
-              <td>Hafedh</td>
-              <td>Ingénieur developpeur</td>
-              <td>Diplome d'ingénieur</td>
-              <td class="py-1">Cité el khadhra</td>
-              <td class="py-1">15-05-1990</td>
-              <td class="py-1">hafedh.baazouzi@gmail.com</td>
-              <td>+21656457898</td>
-              <td class="py-1">Tunisie</td>
-              <td class="py-1"><a href="#"><i class="fa fa-file-pdf-o"></i></a></td>
-              <td>
-                <span title="Accepter" class="fa fa-check" style="cursor: pointer; margin-right: 20px;color: green;"
-                  (click)="showDeleteModal(deleteTemplate)"></span>
-                <span title="Refuser" class="fa fa-close" style="cursor: pointer; margin-right: 20px;color: red;"
-                  (click)="showDeleteModal(deleteTemplate)"></span>
-                <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
-                  (click)="showInfoModal(infoTemplate)"></span>
-              </td>
-            </tr>
+
           </tbody>
         </table>
       </div>
@@ -255,16 +238,15 @@
     </button>
   </div>
   <div class="modal-body">
-    <input type="text" class="form-control form-control-sm" placeholder="Poste" aria-label="Poste"
+    <input type="text" class="form-control form-control-sm" [(ngModel)]="poste" placeholder="Poste" aria-label="Poste"
       style="margin-bottom: 15px;">
-    <textarea class="form-control form-control-sm" placeholder="Description" rows="6"
+    <textarea class="form-control form-control-sm" [(ngModel)]="description" placeholder="Description" rows="6"
       style="margin-bottom: 15px;"></textarea>
-    <select class="form-control form-control-sm" style="margin-bottom: 15px;">
-      <option selected disabled>Domaine</option>
-      <option>Domaine1</option>
-      <option>Domaine2</option>
-      <option>domaine3</option>
-    </select>
+    <label>Domaines</label>
+    <ng-multiselect-dropdown [placeholder]="'Choisir Domaine'" [data]="listDomaines" [(ngModel)]="selectedItemsDomaines"
+      [settings]="dropdownSettingsDomaine" (onSelect)="onItemSelectDomaines($event)">
+    </ng-multiselect-dropdown>
+    <hr>
     <ng-template #tolTemplateAddEtude>BAC + {{ etude }}</ng-template>
     <label>Niveau d'études demandé</label>
     <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateAddEtude"
@@ -282,15 +264,11 @@
     <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange"
       [tooltip]="tolTemplateExpAdd" triggers="focus">
     <label>Compétences techniques demandées</label><br>
-    <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-      <b>CSS</b></div>
-    <br>
-    <div class="btn btn-success btn-rounded btn-fw" style="display: inline-block;" (click)="addCompetence()">
-      <span class="ti-plus"></span></div>
-    <div style="margin-left: 20px; display: inline-block;" *ngIf="addComp">
-      <input type="text" class="form-control form-control-sm" placeholder="Compétence" aria-label="Min"
-        style="width: 100%; margin-bottom: 10px;">
-    </div>
+
+    <ng-multiselect-dropdown [placeholder]="'Choisir Compétences'" [data]="listCompetences" [(ngModel)]="selectedItems"
+      [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+    </ng-multiselect-dropdown>
+    <hr>
     <br />
     <label>Langues</label><br>
     Français <rating [(ngModel)]="rateFr" [max]="max" [readonly]="isReadonly"></rating><br>
@@ -390,4 +368,4 @@
     <button type="button" class="btn btn-primary" (click)="submitSearch()">Filtrer</button>
     <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
   </div>
-  </ng-template>
+</ng-template>
