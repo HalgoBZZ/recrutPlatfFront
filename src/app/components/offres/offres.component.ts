@@ -121,6 +121,7 @@ export class OffresComponent implements OnInit {
   }
 
   submitSearch() { }
+  
   getAllCompetences() {
     this.competencesService.getAll().subscribe(result => {
       if (result != null) {
