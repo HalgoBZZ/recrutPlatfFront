@@ -231,8 +231,8 @@ export class InscriptionComponent implements OnInit {
   }
 
   verifInscriptionCandidat(candidat) {
-    return (this.verifRequired(candidat.nom) && this.verifRequired(candidat.prenom) && this.verifRequired(candidat.photo)
-    && this.verifRequired(candidat.dateNaissance) && this.verifRequired(candidat.diplome) && this.verifRequired(candidat.piece_jointe) &&
+    return (this.verifRequired(candidat.nom) && this.verifRequired(candidat.prenom) && this.fileToUpload
+    && this.verifRequired(candidat.dateNaissance) && this.verifRequired(candidat.diplome) && this.fileToUploadCVCandidat &&
     this.verifRequired(candidat.tel) && this.verifRequired(candidat.adresse) && this.verifRequired(candidat.titre) &&
     this.verifRequired(candidat.nationalite) && this.verifRequired(candidat.email) && this.verifRequired(candidat.password)  &&
     this.verifTelField(candidat.tel) && this.verifEmailField(candidat.email) && this.verifPassWordField(candidat.password) &&
