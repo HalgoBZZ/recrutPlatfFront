@@ -72,7 +72,7 @@ export class OffresComponent implements OnInit {
     };
   }
   getCandidat() {
-    this.login = localStorage.getItem("login");
+    this.login = localStorage.getItem('login');
     this.candidatService.getCandidatByLogin(this.login).subscribe(result => {
       this.candidat = result;
     }, error => {
@@ -121,7 +121,7 @@ export class OffresComponent implements OnInit {
   }
 
   submitSearch() { }
-  
+
   getAllCompetences() {
     this.competencesService.getAll().subscribe(result => {
       if (result != null) {
