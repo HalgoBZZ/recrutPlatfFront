@@ -107,12 +107,12 @@
           </a>
         </div>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" [routerLink]="['/login']"
-          data-toggle="dropdown">
+      <li class="nav-item dropdown" (click)="deconnexion()" style="cursor:pointer;">
+        <!-- <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" [routerLink]="['/login']"
+          data-toggle="dropdown"> -->
           <i class="ti-power-off"></i>
           <!-- <span class="count"></span> -->
-        </a>
+        <!-- </a> -->
       </li>
     </ul>
     <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"

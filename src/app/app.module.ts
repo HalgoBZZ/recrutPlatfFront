@@ -20,7 +20,7 @@ import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule, AccordionModule, RatingModule } from 'ngx-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 import { HighchartsChartModule } from 'highcharts-angular';
-import { ChartModule } from 'angular-highcharts';
+import {ChartModule} from 'primeng/chart';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { TooltipModule } from 'ngx-bootstrap';
@@ -52,6 +52,20 @@ import { FilterAjoutCategoriePipe } from './pipes/categorie/filter-ajout-categor
 import { FilterModifCategoriePipe } from './pipes/categorie/filter-modif-categorie.pipe';
 import { FilterNomEmployeurPipe } from './pipes/employeur/filter-nom-employeur.pipe';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { LanguesComponent } from './components/langues/langues.component';
+import { CompetencesComponent } from './components/competences/competences.component';
+import { FilterIntituleCompetencePipe } from './pipes/competences/filter-intitule-competence.pipe';
+import { FilterAjoutCompetencePipe } from './pipes/competences/filter-ajout-competence.pipe';
+import { FilterModifCompetencePipe } from './pipes/competences/filter-modif-competence.pipe';
+import { FilterCategorieCompetencePipe } from './pipes/competences/filter-categorie-competence.pipe';
+import { FilterCodeLanguePipe } from './pipes/langues/filter-code-langue.pipe';
+import { FilterLibelleLanguePipe } from './pipes/langues/filter-libelle-langue.pipe';
+import { FilterAjoutLanguePipe } from './pipes/langues/filter-ajout-langue.pipe';
+import { FilterModifLanguePipe } from './pipes/langues/filter-modif-langue.pipe';
+import { MesCompetencesComponent } from './components/mes-competences/mes-competences.component';
+import { MesFormationsComponent } from './components/mes-formations/mes-formations.component';
+import { MesLanguesComponent } from './components/mes-langues/mes-langues.component';
+import { MesExperiencesComponent } from './components/mes-experiences/mes-experiences.component';
 
 @NgModule({
   declarations: [
@@ -96,6 +110,20 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     FilterIntituleCategoriePipe,
     FilterAjoutCategoriePipe,
     FilterModifCategoriePipe,
+    LanguesComponent,
+    CompetencesComponent,
+    FilterIntituleCompetencePipe,
+    FilterAjoutCompetencePipe,
+    FilterModifCompetencePipe,
+    FilterCategorieCompetencePipe,
+    FilterCodeLanguePipe,
+    FilterLibelleLanguePipe,
+    FilterAjoutLanguePipe,
+    FilterModifLanguePipe,
+    MesCompetencesComponent,
+    MesFormationsComponent,
+    MesLanguesComponent,
+    MesExperiencesComponent,
    // HighchartsChartComponent
   ],
   imports: [

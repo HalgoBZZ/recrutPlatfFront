@@ -3,17 +3,13 @@
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <div style="float: right;">
-  <div style="display: inline-block; margin-right: 10px;">
+  <!-- <div style="display: inline-block; margin-right: 10px;">
     <input type="text" class="form-control form-control-md" placeholder="Recherche" aria-label="Recherche">
-  </div>
+  </div> -->
   <div style="display: inline-block; margin-right: 10px;">
     <button class="btn btn-secondary" (click)="showFilterModal(filterTemplate)">Filtre<span
         class="ti-filter"></span></button>
   </div>
-  <!-- <div style="display: inline-block; margin-right: 10px;">
-    <button class="btn btn-warning" (click)="changeSettings(reglageTemplate)">Réglage <span
-        class="ti-settings"></span></button>
-  </div> -->
   <div style="display: inline-block; ">
     <button class="btn btn-dark" (click)="openAll()">
       <span [ngClass]="{'ti-angle-double-down': !isAllOpen, 'ti-angle-double-up': isAllOpen}"></span>
@@ -22,11 +18,11 @@
 </div>
 
 <div style="width:100%; margin-top: 50px;">
-  <!-- <accordion [isAnimated]="true" *ngFor="let offre of listOffre">
-    <accordion-group class="acordion-group" (click)="openOrClose(0)">
-      <div accordion-heading style="width:100%;">
+  <accordion [isAnimated]="true" *ngFor="let offre of listOffre;  let i = index">
+    <accordion-group class="acordion-group" [isOpen]="isOpen[i]">
+      <div accordion-heading style="width:100%;" (click)="openOrClose(i)">
         <div style="display: inline-block;">
-          <img src='../../../assets/images/entreprises/e1.jpg' class='offre-pic' alt="">
+          <img src="data:image/jpg;base64,{{offre.employeur.photo}}" class='offre-pic' alt="">
         </div>
         <div style="display: inline-block; margin-left: 20px; vertical-align: middle;">
           <h6>{{offre.fonction}}</h6>
@@ -35,27 +31,29 @@
           </small>
         </div>
         <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
-          <span [ngClass]="{'ti-angle-up': isOpen[0], 'ti-angle-down': !isOpen[0]}"></span>
+          <span [ngClass]="{'ti-angle-up': isOpen[i], 'ti-angle-down': !isOpen[i]}"></span>
         </div>
       </div>
       <div style="display: block;">
         <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
-          <button type="button" class="btn btn-outline-primary btn-fw" *ngIf="showPostulerButton(offre)"
-           (click)="postuler(offre)">Postuler</button>
-           <button type="button" class="btn btn-outline-secondary btn-fw" *ngIf="!showPostulerButton(offre)" [disabled]="!showPostulerButton(offre)"
-           (click)="postuler(offre)">Postuler</button>
+          <button type="button" class="btn btn-outline-primary btn-fw"
+            *ngIf="showPostulerBtn[offre.id] || showPostulerBtn.length==0"
+            (click)="postuler(offre, candidat)">Postuler</button>
+          <button type="button" class="btn btn-outline-primary btn-fw"
+            *ngIf="!showPostulerBtn[offre.id] && showPostulerBtn.length>0"
+            (click)="annulerCandidature(offre, candidat)">Annuler la candidature</button>
         </div>
         <h2>{{offre.poste.intitule}}</h2>
         <hr>
       </div>
       <div style="display: block;">
         <h4>Correspondance avec votre profil</h4>
-        <div id="container" name="container"></div>
+        <p-chart type="pie" [data]="chartsData[offre.id]"></p-chart>
         <hr>
       </div>
       <div style="display: block;">
         <h4>Salaire</h4>
-        {{offre.salaire}}.<br>
+        {{offre.salaire}}DT<br>
         <hr>
         <h4>Horaire</h4>
         {{offre.horaire}}H/Semaine
@@ -76,13 +74,13 @@
       <div style="display: block;">
         <div style="display: block;">
           <h4>Niveau d’expérience</h4>
-          {{offre.niveauExperience}}.
+          {{offre.niveauExperience}} ans
           <hr>
         </div>
       </div>
       <div style="display: block;">
         <h4>Niveau d'études</h4>
-        {{offre.niveauEtude}}.
+        BAC+ {{offre.niveauEtude}}.
         <hr>
       </div>
       <div style="display: block;">
@@ -94,180 +92,13 @@
       </div>
       <div style="display: block;">
         <h4>Langues</h4>
-        <span *ngFor="let langue of offre.langues">
+        <span *ngFor="let langue of languesByOffres[offre.id]">
           {{langue.libelle}} &nbsp; <rating [(ngModel)]="langue.niveau" [max]="max" [readonly]="true"></rating><br>
         </span>
       </div>
     </accordion-group>
-  </accordion> -->
+  </accordion>
 
-  <accordion [isAnimated]="true">
-    <accordion-group class="acordion-group" [isOpen]="isOpen[0]" (click)="openOrClose(0)">
-      <div accordion-heading style="width:100%;">
-        <div style="display: inline-block;">
-          <img src='../../../assets/images/entreprises/e1.jpg' class='offre-pic'>
-        </div>
-        <div style="display: inline-block; margin-left: 20px; vertical-align: middle;">
-          <h6>Offre No 1</h6>
-          <small class="text-muted">
-            IHM Informatique
-          </small>
-        </div>
-        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
-          <span [ngClass]="{'ti-angle-up': isOpen[0], 'ti-angle-down': !isOpen[0]}"></span>
-        </div>
-      </div>
-      <div style="display: block;">
-        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
-          <button type="button" class="btn btn-outline-primary btn-fw">Postuler</button>
-        </div>
-        <h2>Aide soignant / Préposé aux bénéficiaires</h2>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Correspondance avec votre profil</h4>
-        <div id="container"></div>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Salaire</h4>
-        2500 DT.<br>
-        <hr>
-        <h4>Horaire</h4>
-        40H/Semaine
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>
-          Domaine</h4>
-        Secteur de santé.<br>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <div style="display: block;">
-          Lorem Ipsum is simply dummy text of the printing
-          and typesetting industry. Lorem Ipsum has been the industry's
-          standard dummy text ever since the 1500s, when an unknown printer took a
-          galley of type and scrambled it to make a type specimen book. It has survived not only five
-          centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was
-          popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br>
-          <hr>
-        </div>
-      </div>
-      <div style="display: block;">
-        <div style="display: block;">
-          <h4>Niveau d’expérience</h4>
-          2 ans.
-          <hr>
-        </div>
-      </div>
-      <div style="display: block;">
-        <h4>Niveau d'études</h4>
-        Bac + 2.
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Compétences techniques</h4>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>Java</b></div>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>JavaScript</b></div>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>HTML</b></div>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>CSS</b></div>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Langues</h4>
-        Anglais: <rating [(ngModel)]="fr" [max]="max" [readonly]="true"></rating><br>
-        Français: <rating [(ngModel)]="ang" [max]="max" [readonly]="true"></rating>
-      </div>
-    </accordion-group>
-    <accordion-group class="acordion-group" [isOpen]="isOpen[1]" (click)="openOrClose(1)">
-      <div accordion-heading style="width:100%;">
-        <div style="display: inline-block;">
-          <img src='../../../assets/images/entreprises/e3.jpg' class='offre-pic'>
-        </div>
-        <div style="display: inline-block; margin-left: 20px; vertical-align: middle;">
-          <h6>Offre No 1</h6>
-          <small class="text-muted">
-            IHM Informatique
-          </small>
-        </div>
-        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
-          <span [ngClass]="{'ti-angle-up': isOpen[1], 'ti-angle-down': !isOpen[1]}"></span>
-        </div>
-      </div>
-      <div style="display: block;">
-        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
-          <button type="button" class="btn btn-outline-primary btn-fw">Postuler</button>
-        </div>
-        <h2>Aide soignant / Préposé aux bénéficiaires</h2>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Correspondance avec votre profil</h4>
-        <div id="container1"></div>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Salaire</h4>
-        2500 DT.<br>
-        <hr>
-        <h4>Horaire</h4>
-        40H/Semaine
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>
-          Domaine</h4>
-        Secteur de santé.<br>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <div style="display: block;">
-          Lorem Ipsum is simply dummy text of the printing
-          and typesetting industry. Lorem Ipsum has been the industry's
-          standard dummy text ever since the 1500s, when an unknown printer took a
-          galley of type and scrambled it to make a type specimen book. It has survived not only five
-          centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was
-          popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br>
-          <hr>
-        </div>
-      </div>
-      <div style="display: block;">
-        <div style="display: block;">
-          <h4>Niveau d’expérience</h4>
-          2 ans.
-          <hr>
-        </div>
-      </div>
-      <div style="display: block;">
-        <h4>Niveau d'études</h4>
-        Bac + 2.
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Compétences techniques</h4>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>Java</b></div>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>JavaScript</b></div>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>HTML</b></div>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>CSS</b></div>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Langues</h4>
-        Anglais: <rating [(ngModel)]="fr" [max]="max" [readonly]="true"></rating><br>
-        Français: <rating [(ngModel)]="ang" [max]="max" [readonly]="true"></rating>
-      </div>
-      </accordion-group></accordion>
   <!--*******************************************filtre model**********************************-->
   <ng-template #filterTemplate>
     <div class="modal-header">
@@ -278,38 +109,29 @@
     </div>
     <div class="modal-body">
       <label>Domaines</label>
-      <ng-multiselect-dropdown [placeholder]="'Choisir Domaine'" [data]="listDomaines" [(ngModel)]="selectedItemsDomaines"
-        [settings]="dropdownSettingsDomaine" (onSelect)="onItemSelectDomaines($event)" (onSelectAll)="onSelectAllDomaines($event)">
+      <ng-multiselect-dropdown [placeholder]="'Choisir Domaine'" [data]="listDomaines"
+        [settings]="dropdownSettingsDomaine" (onSelect)="onItemSelectFilterDomaines($event)">
       </ng-multiselect-dropdown>
       <hr>
-      <ng-template #tolTemplate>{{ salaire }} DT</ng-template>
-      <label>Salaire</label>
-      <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplate"
-        triggers="focus">
-      <hr>
-      <ng-template #tolTemplateEtude>BAC + {{ etude }}</ng-template>
-      <label>Etudes</label>
-      <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateEtude"
-        triggers="focus">
-      <hr>
-      <ng-template #tolTemplateExp>{{ experience }} ans</ng-template>
-      <label>Experience</label><br>
-      <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange"
-        [tooltip]="tolTemplateExp" triggers="focus">
-      <hr>
-      <label>Compétences techniques</label><br>
-
-      <ng-multiselect-dropdown [placeholder]="'Choisir Compétences'" [data]="listCompetences" [(ngModel)]="selectedItems"
-        [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+      <ng-template #tolTemplateAddEtude>BAC + {{filterObject.etude}}</ng-template>
+      <label>Niveau d'études demandé</label>
+      <input type="range" min="0" max="8" [(ngModel)]="filterObject.etude" class="slider" id="myRange"
+        [tooltip]="tolTemplateAddEtude" triggers="focus">
+      <ng-template #tolTemplateAdd>{{filterObject.salaire}} DT</ng-template>
+      <label>Salaire mensuel</label>
+      <input type="range" min="0" max="50000" [(ngModel)]="filterObject.salaire" class="slider" id="myRange"
+        [tooltip]="tolTemplateAdd" triggers="focus">
+      <ng-template #tolTemplateExpAdd>{{ filterObject.experience }} ans</ng-template>
+      <label>Experience demandée</label><br>
+      <input type="range" min="0" max="30" [(ngModel)]="filterObject.experience" class="slider" id="myRange"
+        [tooltip]="tolTemplateExpAdd" triggers="focus">
+      <label>Compétences techniques demandées</label><br>
+      <ng-multiselect-dropdown [placeholder]="'Choisir Compétences'" [data]="listFilterCompetences"
+        [(ngModel)]="filterObject.competences" [settings]="dropdownSettings">
       </ng-multiselect-dropdown>
-
-      <hr>
-      <label>Langues</label><br>
-      Français <rating [(ngModel)]="rateFr" [max]="max" [readonly]="isReadonly"></rating><br>
-      Anglais <rating [(ngModel)]="rateAng" [max]="max" [readonly]="isReadonly"></rating>
-      <hr>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="submitSearch()">Filtrer</button>
+      <button type="button" class="btn btn-primary" (click)="submitSearch(listOffre)">Filtrer</button>
       <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
     </div>
+  </ng-template>

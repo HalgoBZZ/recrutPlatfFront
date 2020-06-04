@@ -1,0 +1,233 @@
+<h2>Vos experiences</h2>
+<div style="float: right;">
+  <div style="display: inline-block; margin-right: 10px;">
+    <button class="btn btn-success" (click)="showAddModal(addTemplate)">Ajouter Experience</button>
+  </div>
+</div>
+<div style="width:100%; margin-top: 50px;">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>description</th>
+        <th>Lieu</th>
+        <th>Employeur</th>
+        <th>Debut</th>
+        <th>Fin</th>
+        <th> Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cf of candidatExperiences">
+        <td>{{cf.experience.titre}}</td>
+        <td>{{cf.experience.description}}</td>
+        <td>{{cf.experience.lieu}}</td>
+        <td>{{cf.experience.employeur}}</td>
+        <td>{{cf.experience.debut}}</td>
+        <td>{{cf.experience.fin}}</td>
+        <td>
+          <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
+            (click)="showUpdateModal(updateTemplate, cf)"></span>
+          <span title="Supprimer" class="ti-trash" style="cursor: pointer;margin-right: 20px; color: red;"
+            (click)="showDeleteModal(deleteTemplate, cf)"></span>
+          <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
+            (click)="showInfoModal(infoTemplate,cf)"></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!--****************************************Add modal**********************************-->
+<ng-template #addTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Ajout d'une experience</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide(); tryToSubmit=false;">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input type="text" class="form-control form-control-sm" placeholder="Titre" [(ngModel)]="experienceToAdd.titre"
+      required #intitAdd="ngModel" style="margin-bottom: 15px;">
+    <div *ngIf="intitAdd.errors && (intitAdd.dirty || intitAdd.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <textarea rows="4" class="form-control form-control-sm" placeholder="Description"
+      [(ngModel)]="experienceToAdd.description" required #etabAdd="ngModel" style="margin-bottom: 15px;"></textarea>
+    <div *ngIf="etabAdd.errors && (etabAdd.dirty || etabAdd.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <input type="text" class="form-control form-control-sm" placeholder="Employeur"
+      [(ngModel)]="experienceToAdd.employeur" required #employeurAdd="ngModel" style="margin-bottom: 15px;">
+    <div *ngIf="employeurAdd.errors && (employeurAdd.dirty || employeurAdd.touched ||tryToSubmit)"
+      class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <input type="text" class="form-control form-control-sm" placeholder="Lieu" [(ngModel)]="experienceToAdd.lieu"
+      required #lieuAdd="ngModel" style="margin-bottom: 15px;">
+    <div *ngIf="lieuAdd.errors && (lieuAdd.dirty || lieuAdd.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <input type="text" onfocus="(this.type='date')" class="form-control form-control-sm" placeholder="Début"
+      [(ngModel)]="experienceToAdd.debut" required #debutAdd="ngModel" style="margin-bottom: 15px;">
+    <div
+      *ngIf="(debutAdd.errors || (experienceToAdd.fin && experienceToAdd.debut > experienceToAdd.fin) || !validDate(experienceToAdd.debut)) && (debutAdd.dirty || debutAdd.touched ||tryToSubmit)"
+      class="alert alert-danger">
+      <div *ngIf="debutAdd.errors">
+        Champ obligatoire!
+      </div>
+      <div *ngIf="experienceToAdd.fin && experienceToAdd.debut && experienceToAdd.debut > experienceToAdd.fin">
+        Date de debut doit étre inférieure à la date de fin!
+      </div>
+      <div *ngIf="experienceToAdd.debut && !validDate(experienceToAdd.debut)">
+        Date de debut doit étre inférieure à la date d'aujourd'hui!
+      </div>
+    </div>
+    <input type="text" onfocus="(this.type='date')" class="form-control form-control-sm" placeholder="Fin"
+      [(ngModel)]="experienceToAdd.fin" required #finAdd="ngModel" style="margin-bottom: 15px;">
+    <div
+      *ngIf="(finAdd.errors || (experienceToAdd.debut && experienceToAdd.debut > experienceToAdd.fin) || !validDate(experienceToAdd.fin)) && (finAdd.dirty || finAdd.touched ||tryToSubmit)"
+      class="alert alert-danger">
+      <div *ngIf="finAdd.errors">
+        Champ obligatoire!
+      </div>
+      <div *ngIf="experienceToAdd.fin && experienceToAdd.debut && experienceToAdd.debut > experienceToAdd.fin">
+        Date de fin doit étre supérieure à la date de début!
+      </div>
+      <div *ngIf="experienceToAdd.fin && !validDate(experienceToAdd.fin)">
+        Date de fin doit étre inférieure à la date d'aujourd'hui!
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="addExperience()">Ajouter</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide(); tryToSubmit=false;">Annuler</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------update modal*******************************-->
+<ng-template #updateTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modification de la experience {{experienceToUpdate.titre}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close"
+      (click)="bsModalRef.hide(); this.tryToSubmit = false">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input type="text" class="form-control form-control-sm" placeholder="Titre" [(ngModel)]="experienceToUpdate.titre"
+      required #intitUp="ngModel" style="margin-bottom: 15px;">
+    <div *ngIf="intitUp.errors && (intitUp.dirty || intitUp.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <textarea rows="4" class="form-control form-control-sm" placeholder="Description"
+      [(ngModel)]="experienceToUpdate.description" required #etabUp="ngModel" style="margin-bottom: 15px;"></textarea>
+    <div *ngIf="etabUp.errors && (etabUp.dirty || etabUp.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <input type="text" class="form-control form-control-sm" placeholder="Employeur"
+      [(ngModel)]="experienceToUpdate.employeur" required #employeurUp="ngModel" style="margin-bottom: 15px;">
+    <div *ngIf="employeurUp.errors && (employeurUp.dirty || employeurUp.touched ||tryToSubmit)"
+      class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <input type="text" class="form-control form-control-sm" placeholder="Lieu" [(ngModel)]="experienceToUpdate.lieu"
+      required #lieuUp="ngModel" style="margin-bottom: 15px;">
+    <div *ngIf="lieuUp.errors && (lieuUp.dirty || lieuUp.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <input type="text" onfocus="(this.type='date')" class="form-control form-control-sm" placeholder="Début"
+      [(ngModel)]="experienceToUpdate.debut" required #debutUp="ngModel" style="margin-bottom: 15px;">
+    <div
+      *ngIf="(debutUp.errors || (experienceToUpdate.fin && experienceToAdd.debut > experienceToUpdate.fin) || !validDate(experienceToUpdate.debut)) && (debutUp.dirty || debutUp.touched ||tryToSubmit)"
+      class="alert alert-danger">
+      <div *ngIf="debutUp.errors">
+        Champ obligatoire!
+      </div>
+      <div
+        *ngIf="experienceToUpdate.fin && experienceToUpdate.debut && experienceToUpdate.debut > experienceToUpdate.fin">
+        Date de debut doit étre inférieure à la date de fin!
+      </div>
+      <div *ngIf="experienceToAdd.debut && !validDate(experienceToAdd.debut)">
+        Date de debut doit étre inférieure à la date d'aujourd'hui!
+      </div>
+    </div>
+    <input type="text" onfocus="(this.type='date')" class="form-control form-control-sm" placeholder="Fin"
+      [(ngModel)]="experienceToUpdate.fin" required #finUp="ngModel" style="margin-bottom: 15px;">
+    <div
+      *ngIf="(finUp.errors || (experienceToUpdate.debut && experienceToUpdate.debut > experienceToUpdate.fin) || !validDate(experienceToUpdate.fin)) && (finUp.dirty || finUp.touched ||tryToSubmit)"
+      class="alert alert-danger">
+      <div *ngIf="finUp.errors">
+        Champ obligatoire!
+      </div>
+      <div
+        *ngIf="experienceToUpdate.fin && experienceToUpdate.debut && experienceToUpdate.debut > experienceToUpdate.fin">
+        Date de fin doit étre supérieure à la date de début!
+      </div>
+      <div *ngIf="experienceToUpdate.fin && !validDate(experienceToUpdate.fin)">
+        Date de fin doit étre inférieure à la date d'aujourd'hui!
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="updateExperience()">Modifier</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide(); tryToSubmit=false;">Annuler</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------delete modal*******************************-->
+<ng-template #deleteTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Suppression de la experience {{experienceToDelete.intitule}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Vous étes sure de supprimer la experience {{experienceToDelete.intitule}}?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="delete()">OUI</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">NON</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------info modal*******************************-->
+<ng-template #infoTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Détails de l'experience {{experienceToDisplay.titre}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container py-3" style="width:100%;">
+      <div class="card">
+        <div class="row ">
+          <div class="col-md-12 px-3">
+            <div class="card-block px-3">
+              <b>Titre: </b>{{experienceToDisplay.titre}}<br /><br />
+              <b>Description: </b>{{experienceToDisplay.description}}<br /><br />
+              <b>Lieu: </b>{{experienceToDisplay.lieu}}<br /><br />
+              <b>Employeur: </b>{{experienceToDisplay.employeur}}<br /><br />
+              <b>Debut: </b>{{experienceToDisplay.debut}}<br /><br />
+              <b>Fin: </b>{{experienceToDisplay.fin}}<br /><br />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

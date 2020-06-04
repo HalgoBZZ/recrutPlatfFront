@@ -7,7 +7,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 export class CategorieService {
 
 
-  private uri = 'http://localhost:8080/api/domaine/';
+  private uri = 'http://localhost:8085/api/domaine/';
   headers = new HttpHeaders();
 
   constructor(private http: HttpClient) { }

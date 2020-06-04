@@ -1,0 +1,86 @@
+<h2>Vos Langues</h2>
+<div style="float: right;">
+  <div style="display: inline-block; margin-right: 10px;">
+    <button class="btn btn-success" (click)="showAddModal(addTemplate)">Ajouter Langue</button>
+  </div>
+  <div style="display: inline-block; margin-right: 10px;">
+    <button class="btn btn-info" (click)="showUpdateModal(updateTemplate)">Mise à jour langues
+      <span title="Accepter" class="ti-pencil-alt"></span>
+    </button>
+  </div>
+</div>
+<div style="width:100%; margin-top: 50px;">
+  <ng-container *ngFor="let lg of candidatsLangues; let j=index">
+    {{lg.langue.libelle}} <rating [(ngModel)]="lg.niveau" [max]="max" [readonly]="true"></rating>
+    <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
+      (click)="showDeleteModal(deleteTemplate, lg)"></span><br>
+  </ng-container>
+</div>
+<!--****************************************Add modal**********************************-->
+<ng-template #addTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Ajout d'une langue</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide(); tryToSubmit=false;">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <select type="text" class="form-control form-control-sm" [(ngModel)]="langueToAdd.langue" required #lgAdd="ngModel"
+      style="margin-bottom: 15px;">
+      <ng-container *ngFor="let lg of langues">
+        <option [ngValue]="lg" *ngIf="!exist(lg, candidatsLangues)">{{lg.libelle}}</option>
+      </ng-container>
+    </select>
+    <div *ngIf="lgAdd.errors && (lgAdd.dirty || lgAdd.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <rating [(ngModel)]="langueToAdd.niveau" [max]="max" [readonly]="false"></rating>
+    <div *ngIf="!langueToAdd.niveau && tryToSubmit" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="addLangue()">Ajouter</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide(); tryToSubmit=false;">Annuler</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------update modal*******************************-->
+<ng-template #updateTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modification des langues</h4>
+    <button type="button" class="close pull-right" aria-label="Close"
+      (click)="bsModalRef.hide(); this.tryToSubmit = false">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ng-container *ngFor="let lg of candidatsLangues; let j=index">
+      {{lg.langue.libelle}} <rating [(ngModel)]="lg.niveau" [max]="max" [readonly]="false"></rating><br>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="updateLangue(candidatsLangues)">Modifier</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide(); tryToSubmit=false;">Annuler</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------delete modal*******************************-->
+<ng-template #deleteTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Suppression de la langue {{langueToDelete.langue.libelle}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Vous étes sure de supprimer la langue {{langueToDelete.langue.libelle}}?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="delete()">OUI</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">NON</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------info modal*******************************-->

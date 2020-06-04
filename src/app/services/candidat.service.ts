@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class CandidatService {
 
-  private uri = 'http://localhost:8080/api/candidat/';
+  private uri = 'http://localhost:8085/api/candidat/';
   headers = new HttpHeaders();
 
   constructor(private http: HttpClient) { }
@@ -17,9 +17,9 @@ export class CandidatService {
 
   uploadFile(file, mail, id, type) {
     this.headers.append('Accept', 'application/json;charset=UTF-8');
-    this.headers.append("Content-Type", "multipart/form-data");
+    this.headers.append('Content-Type', 'multipart/form-data');
     const options = { headers: this.headers };
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('file', file);
     formData.append('id', id);
     formData.append('mail', mail);

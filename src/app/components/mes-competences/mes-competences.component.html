@@ -1,0 +1,31 @@
+<h2>Vos competences</h2>
+<div style="float: right;">
+  <div style="display: inline-block; margin-right: 10px;">
+    <button class="btn btn-success" (click)="showAddModal(addTemplate)">Ajouter competences</button>
+  </div>
+</div>
+<div style="width:100%; margin-top: 50px;" *ngFor="let cmp of candidatCompetences; let i = index">
+  <div class="btn btn-dark btn-rounded btn-fw">{{cmp.competence.intitule}}   <span title="Supprimer" class="fa fa-close" (click)="delete(cmp)"></span></div>
+  <!-- <div class="btn btn-dark btn-rounded btn-fw" *ngIf="back(i)">{{cmp.competence.intitule}}   <span title="Supprimer" class="fa fa-close" (click)="delete(cmp)"></span></div><br/> -->
+</div>
+<!--****************************************Add modal**********************************-->
+<ng-template #addTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Ajout des compétences</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide(); tryToSubmit=false;">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ng-multiselect-dropdown [placeholder]="'Choisir Compétences'" [data]="listCompetences"
+    [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+    (onSelectAll)="onSelectAll($event)">
+  </ng-multiselect-dropdown>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="addCompetences()">Ajouter</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide(); tryToSubmit=false;">Annuler</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------reglage modal*******************************-->
+

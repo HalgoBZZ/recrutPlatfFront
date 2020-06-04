@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class UtilisateurService {
 
-  private uri = 'http://localhost:8080/api/utilisateur/';
+  private uri = 'http://localhost:8085/api/utilisateur/';
   headers = new HttpHeaders();
 
   constructor(private http: HttpClient) { }
@@ -39,6 +39,6 @@ getCode() {
 updateUser(user) {
   this.headers.append('Accept', 'application/json;charset=UTF-8');
   const options = { headers: this.headers };
-  return this.http.put('http://localhost:8080/api/utilisateur/update', user, options);
+  return this.http.put('http://localhost:8085/api/utilisateur/update', user, options);
 }
 }

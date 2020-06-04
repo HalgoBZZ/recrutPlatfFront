@@ -7,6 +7,12 @@ import { CompetenceService } from 'src/app/services/competence.service';
 import { DomaineService } from 'src/app/services/domaine.service';
 import { Candidat } from 'src/app/modals/Candidat';
 import { CandidatService } from 'src/app/services/candidat.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { OffreLanguePipePipe } from 'src/app/pipes/offre-langue-pipe.pipe';
+import { OffreLangueService } from 'src/app/services/offre-langue.service';
+import { CandidatureService } from 'src/app/services/candidature.service';
+import { Domaine } from 'src/app/modals/Domaine';
+import { CandidatExperienceService } from 'src/app/services/candidat-experience.service';
 
 @Component({
   selector: 'app-offres',
@@ -28,10 +34,10 @@ export class OffresComponent implements OnInit {
   ang = 3;
   pieChart;
   chartOptions;
-  data;
   listOffre;
   listCompetencesSearch = [];
   listCompetences;
+  listFilterCompetences;
   listDomainesSearch = [];
   listDomaines;
   dropdownList = [];
@@ -41,17 +47,42 @@ export class OffresComponent implements OnInit {
   candidat;
   dropdownSettingsDomaine: IDropdownSettings;
   login;
-  constructor(private modalService: BsModalService,
+  showPostulerBtn = [];
+  languesByOffres = [];
+  data;
+  filterObject = {
+    domaine: new Domaine(),
+    etude: 0,
+    salaire: 0,
+    experience: 0,
+    competences: []
+  };
+
+  chartsData = [];
+  constructor(private modalService: BsModalService, private spinner: NgxSpinnerService, private langueOffreService: OffreLangueService,
     private competencesService: CompetenceService, private offreService: OffreService, private domaineService: DomaineService,
-    private candidatService: CandidatService) {
-    this.pieChart = Highcharts;
+    private candidatService: CandidatService, private candidatureService: CandidatureService,
+    private candidatExperienceService: CandidatExperienceService) {
+    this.data = {
+      labels: ['A', 'B'],
+      datasets: [
+        {
+          data: [300, 100],
+          backgroundColor: [
+            '#32CD32',
+            '#FF0000'
+          ],
+          hoverBackgroundColor: [
+            '#32CD32',
+            '#FF0000'
+          ]
+        }]
+    };
   }
 
   ngOnInit() {
-    this.getCandidat();
+    this.spinner.show();
     this.getAll();
-    this.getAllDomaines();
-    this.getAllCompetences();
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
@@ -71,31 +102,102 @@ export class OffresComponent implements OnInit {
       allowSearchFilter: true
     };
   }
-  getCandidat() {
-    this.login = localStorage.getItem('login');
-    this.candidatService.getCandidatByLogin(this.login).subscribe(result => {
-      this.candidat = result;
+
+  initcharts(candidat, offres) {
+    this.candidatExperienceService.getByCandidat(candidat.id).subscribe(data => {
+      const experiences: any = data;
+      let nbAns = 0;
+      for (const exp of experiences) {
+        nbAns += this.countDuration(exp.experience.debut, exp.experience.fin);
+      }
+      for (const offre of offres) {
+        if (nbAns > offre.niveauExperience) {
+          this.chartsData[offre.id] = {
+            labels: ['Correspondance de votre profil', 'Non correspondance de votre profil'],
+            datasets: [
+              {
+                data: [100, 0],
+                backgroundColor: [
+                  '#32CD32',
+                  '#FF0000'
+                ],
+                hoverBackgroundColor: [
+                  '#32CD32',
+                  '#FF0000'
+                ]
+              }]
+          };
+        } else {
+          const pourcentage = nbAns * 100 / offre.niveauExperience;
+          this.chartsData[offre.id] = {
+            labels: ['Correspondance de votre profil', 'Non correspondance de votre profil'],
+            datasets: [
+              {
+                data: [pourcentage, 100 - pourcentage],
+                backgroundColor: [
+                  '#32CD32',
+                  '#FF0000'
+                ],
+                hoverBackgroundColor: [
+                  '#32CD32',
+                  '#FF0000'
+                ]
+              }]
+          };
+        }
+      }
     }, error => {
+      this.spinner.hide();
+      console.log('erreur lors de recuperations des experiences par candidat');
     });
   }
 
+  private countDuration(debut, fin) {
+    let diff = (new Date(fin).getTime() - new Date(debut).getTime()) / 1000;
+    diff /= (60 * 60 * 24);
+    return Math.abs(Math.round(diff / 365.25));
+  }
+
   getAll() {
+    this.showPostulerBtn = [];
     this.offreService.getAll().subscribe(result => {
-      if (result == null) {
-        this.data = false;
-      } else {
-        this.listOffre = result;
-        this.data = true;
-      }
+      this.listOffre = result;
+      this.login = localStorage.getItem('login');
+      this.candidatService.getCandidatByLogin(this.login).subscribe(cnd => {
+        this.candidat = cnd;
+        for (const offre of this.listOffre) {
+          this.showPostulerButton(offre, this.candidat);
+          this.langueOffreService.getByOffre(offre.id).subscribe(data => {
+            this.languesByOffres[offre.id] = data;
+          }, error => {
+            this.spinner.hide();
+            console.log('error when get langues by offres');
+          });
+        }
+        this.initcharts(this.candidat, this.listOffre);
+      }, error => {
+        this.spinner.hide();
+      });
+      this.spinner.hide();
     }, error => {
-      this.data = true;
+      this.spinner.hide();
+      console.log('erreur lors de recupération des offres');
     });
-    setTimeout(() => {
-      this.createChart();
-    }, 1000);
+  }
+
+  annulerCandidature(offre, candidat) {
+    this.spinner.show();
+    this.candidatureService.deleteByCandidatAndOffre(offre.id, candidat.id).subscribe(data => {
+      this.getAll();
+      this.spinner.hide();
+    }, error => {
+      this.spinner.hide();
+    });
   }
   openOrClose(index) {
-    this.isOpen[index] = !this.isOpen[index];
+    console.log('before:', this.isOpen[index]);
+    this.isOpen[index] = this.isOpen[index] ? false : true;
+    console.log('after:', this.isOpen[index]);
   }
 
   openAll() {
@@ -120,24 +222,16 @@ export class OffresComponent implements OnInit {
     this.bsModalRef = this.modalService.show(template, { class: 'modal-md' });
   }
 
-  submitSearch() { }
-
   getAllCompetences() {
     this.competencesService.getAll().subscribe(result => {
-      if (result != null) {
-        this.listCompetences = result;
-      }
+      this.listCompetences = result;
     }, error => {
-      this.data = true;
     });
   }
   getAllDomaines() {
     this.domaineService.getAll().subscribe(result => {
-      if (result != null) {
-        this.listDomaines = result;
-      }
+      this.listDomaines = result;
     }, error => {
-      this.data = true;
     });
   }
   onItemSelectDomaines(item) {
@@ -154,77 +248,68 @@ export class OffresComponent implements OnInit {
   onSelectAll(items: any) {
     console.log(items);
   }
-  createChart() {
-    Highcharts.chart('container', {
-      chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: 0,
-        plotShadow: false
-      },
-      title: {
-        // text: 'Correspondance<br/> de votre profil',
-        text: '',
-        align: 'center',
-        verticalAlign: 'middle',
-        y: 60
-      },
-      tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-      },
-      accessibility: {
-        point: {
-          valueSuffix: '%'
-        }
-      },
-      plotOptions: {
-        pie: {
-          dataLabels: {
-            enabled: true,
-            distance: -50,
-            style: {
-              fontWeight: 'bold',
-              color: 'white'
-            }
-          },
-          startAngle: -90,
-          endAngle: -90,
-          center: ['50%', '75%'],
-          size: '80%'
-        }
-      },
-      series: [{
-        type: 'pie',
-        name: 'Correspondance de votre profil',
-        innerSize: '50%',
-        data: [
-          ['', 58.9],
-          {
-            name: 'Other',
-            y: 7.61,
-            dataLabels: {
-              enabled: false
-            }
-          }
-        ]
-      }]
+
+  postuler(offre, candidat) {
+    this.spinner.show();
+    const candidature = {
+      offre,
+      candidat
+    };
+    this.candidatureService.save(candidature).subscribe(result => {
+      this.spinner.hide();
+      this.showPostulerButton(offre, candidat);
+    }, error => {
+      this.spinner.hide();
     });
   }
-  postuler(offre) {
-    const login = localStorage.getItem('login');
-    this.offreService.postuler(offre.id, login).subscribe(result => {
+  showPostulerButton(offre, candidat) {
+    this.candidatureService.getAll().subscribe(data => {
+      const candidatures: any = data;
+      for (const candidature of candidatures) {
+        if (candidature.offre.id === offre.id && candidature.candidat.id === candidat.id) {
+          return this.showPostulerBtn[offre.id] = false;
+        }
+      }
+    }, error => {
+      return this.showPostulerBtn[offre.id] = true;
+    });
+  }
 
+  submitSearch(myOffres) {
+    const filteredOffres = [];
+    for (const offre of myOffres) {
+      if ((this.filterObject.etude > 0 && offre.niveauEtude <= this.filterObject.etude) ||
+        (this.filterObject.experience > 0 && offre.niveauExperience <= this.filterObject.experience)
+        || offre.salaire >= this.filterObject.salaire || offre.domaine.id === this.filterObject.domaine.id
+        || this.containCompetence(offre.competences, this.filterObject.competences)) {
+        filteredOffres.push(offre);
+      }
+    }
+    this.listOffre = filteredOffres;
+    this.bsModalRef.hide();
+  }
+
+  onItemSelectFilterDomaines(event) {
+    this.filterObject.domaine = event;
+    this.getAllCompetencesByDomaine(this.filterObject.domaine);
+  }
+
+  getAllCompetencesByDomaine(item) {
+    this.competencesService.getByDomaine(item.id).subscribe(result => {
+      if (result != null) {
+        this.listFilterCompetences = result;
+      }
     }, error => {
     });
   }
-  showPostulerButton(offre) {
-    if (this.candidat) {
-      for (let element of this.candidat.offres) {
-        if (element.id === offre.id) {
-          return false
+
+  containCompetence(competences, competencesToFind) {
+    for (const ctf of competencesToFind) {
+      for (const c of competences) {
+        if (ctf.id === c.id) {
+          return true;
         }
       }
-      return true;
     }
-
   }
 }

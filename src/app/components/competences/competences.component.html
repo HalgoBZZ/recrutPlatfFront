@@ -1,0 +1,187 @@
+<h2>La liste des compétences</h2>
+<div style="float: right;">
+  <div style="display: inline-block; margin-right: 10px;">
+    <button class="btn btn-success" (click)="showAddModal(addTemplate)">Ajouter Compétence</button>
+  </div>
+  <div style="display: inline-block; margin-right: 10px;">
+    <button class="btn btn-secondary" (click)="showFilter()">Filtre<span class="ti-filter"></span></button>
+  </div>
+  <div style="display: inline-block;">
+    <button class="btn btn-warning" (click)="changeSettings(reglageTemplate)">Réglage<span
+        class="ti-settings"></span></button>
+  </div>
+</div>
+<div style="width:100%; margin-top: 50px;">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th *ngIf="showIntitule">
+          <ng-container *ngIf="!filter">Intitulé</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Intitulé" [(ngModel)]="intituleFilter"
+              [ngModelOptions]="{standalone: true}" #intit="ngModel"></ng-container>
+        </th>
+        <th *ngIf="showCategorie">
+          <ng-container *ngIf="!filter">Catégorie</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Catégorie" [(ngModel)]="categorieFilter"
+              [ngModelOptions]="{standalone: true}" #cat="ngModel"></ng-container>
+        </th>
+        <th *ngIf="showAjout">
+          <ng-container *ngIf="!filter">Date d'ajout</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Date d'ajout" [(ngModel)]="dateAjoutFilter"
+              [ngModelOptions]="{standalone: true}" #dtajout="ngModel"></ng-container>
+        </th>
+        <th *ngIf="showModification">
+          <ng-container *ngIf="!filter">Date de modification</ng-container>
+          <ng-container *ngIf="filter"><input type="text" placeholder="Date de modification" [(ngModel)]="dateFinFilter"
+              [ngModelOptions]="{standalone: true}" #dtmodif="ngModel"></ng-container>
+        </th>
+        <th> Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let competence of competences | filterIntituleCompetence:intituleFilter|filterAjoutCompetence:dateAjoutFilter|filterModifCompetence:dateFinFilter|filterCategorieCompetence:categorieFilter">
+        <td *ngIf="showIntitule">{{competence.intitule}}</td>
+        <td *ngIf="showCategorie">{{competence.domaine.intitule}}</td>
+        <td *ngIf="showAjout">{{competence.dateAjout}}</td>
+        <td *ngIf="showModification">{{competence.dateModif}}</td>
+        <td>
+          <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
+            (click)="showUpdateModal(updateTemplate, competence)"></span>
+          <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
+            (click)="showDeleteModal(deleteTemplate, competence)"></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!--****************************************Add modal**********************************-->
+<ng-template #addTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Ajout d'une compétence</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide(); tryToSubmit=false;">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-check form-check-primary">
+    <input type="text" class="form-control form-control-sm" placeholder="Intitulé" aria-label="Intitulé"
+      intitule="ngModel" [(ngModel)]="competenceToAdd.intitule" required #intitAdd="ngModel">
+    <div *ngIf="intitAdd.errors && (intitAdd.dirty || intitAdd.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    </div>
+    <div class="form-check form-check-primary">
+    <select class="form-control form-control-sm"
+      intitule="ngModel" [(ngModel)]="competenceToAdd.domaine" required #catAdd="ngModel">
+      <ng-container *ngFor="let categorie of categories" required>
+        <option [ngValue]="categorie">{{categorie.intitule}}</option>
+      </ng-container>
+      </select>
+    <div *ngIf="catAdd.errors && (catAdd.dirty || catAdd.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="addCompetence()">Ajouter</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide(); tryToSubmit=false;">Annuler</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------update modal*******************************-->
+<ng-template #updateTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modification de compétence {{competenceToUpdate.intitule}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close"
+      (click)="bsModalRef.hide(); this.tryToSubmit = false">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-check form-check-primary">
+    <input type="text" class="form-control form-control-sm" placeholder="Intitulé" aria-label="Intitulé"
+      [(ngModel)]="competenceToUpdate.intitule" required #intitUp="ngModel">
+    <div *ngIf="intitUp.errors && (intitUp.dirty || intitUp.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    </div>
+    <div class="form-check form-check-primary">
+    <select class="form-control form-control-sm"
+      [(ngModel)]="competenceToUpdate.domaine" required #catUp="ngModel">
+      <ng-container *ngFor="let categorie of categories" required>
+        <option [ngValue]="categorie">{{categorie.intitule}}</option>
+      </ng-container>
+      </select>
+    <div *ngIf="catUp.errors && (catUp.dirty || catUp.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="updateCompetence()">Modifier</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------delete modal*******************************-->
+<ng-template #deleteTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Suppression de compétence {{competenceToDelete.intitule}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Vous étes sure de supprimer de la compétence {{competenceToDelete.intitule}}?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="deleteCompetence()">OUI</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">NON</button>
+  </div>
+</ng-template>
+
+<!---------------------------------------------------reglage modal*******************************-->
+<ng-template #reglageTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Selectionnez les colonnes à afficher dans la table</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showIntitule"
+          [ngModelOptions]="{standalone: true}">
+        Intitulé
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showCategorie"
+          [ngModelOptions]="{standalone: true}">
+        Catégorie
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showAjout" [ngModelOptions]="{standalone: true}">
+        Date d'ajout
+        <i class="input-helper"></i></label>
+    </div>
+    <div class="form-check form-check-primary">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showModification"
+          [ngModelOptions]="{standalone: true}">
+        Date de modification
+        <i class="input-helper"></i></label>
+    </div>
+  </div>
+</ng-template>

@@ -2,110 +2,92 @@
   <ul class="nav">
 
     <!--************************************************menu pour admin*******************************-->
+    <ng-container *ngIf="connectedUser.role==='ADMIN'">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['categories']}}]">
+          <i class="ti-layers-alt menu-icon"></i>
+          <span class="menu-title">Domaines</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['candidats']}}]">
+          <i class="fa fa-users menu-icon"></i>
+          <span class="menu-title">Liste des candidats</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['employeurs']}}]">
+          <i class="ti-id-badge menu-icon"></i>
+          <span class="menu-title">Liste des employeurs</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['competences']}}]">
+          <i class="fa fa-plus menu-icon"></i>
+          <span class="menu-title">Compétences</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['langues']}}]">
+          <i class="fa fa-flag-o menu-icon"></i>
+          <span class="menu-title">Langues</span>
+        </a>
+      </li>
+    </ng-container>
+    <!--************************************************menu pour candidat*******************************-->
+    <ng-container *ngIf="connectedUser.role==='CANDIDAT'">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['offres']}}]">
+          <i class="ti-menu menu-icon"></i>
+          <span class="menu-title">Offres d'emploi</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['candidatures']}}]">
+          <i class="ti-files menu-icon"></i>
+          <span class="menu-title">Mes candidatures</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['mes-competences']}}]">
+          <i class="ti-list menu-icon"></i>
+          <span class="menu-title">Mes compétences</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['mes-formations']}}]">
+          <i class="ti-tag menu-icon"></i>
+          <span class="menu-title">Mes formations</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['mes-experiences']}}]">
+          <i class="ti-ruler menu-icon"></i>
+          <span class="menu-title">Mes experiences</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['mes-langues']}}]">
+          <i class="fa fa-flag-o menu-icon"></i>
+          <span class="menu-title">Mes langues</span>
+        </a>
+      </li>
+    </ng-container>
+    <!--************************************************menu pour Employeur*******************************-->
+    <ng-container *ngIf="connectedUser.role==='EMPLOYEUR'">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['mes-offres']}}]">
+          <i class="ti-list menu-icon"></i>
+          <span class="menu-title">Mes offres</span>
+        </a>
+      </li>
+    </ng-container>
+    <!--***********************************************munu commun**************************************-->
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['categories']}}]">
-        <i class="ti-layers-alt menu-icon"></i>
-        <span class="menu-title">Domaines</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['candidats']}}]">
-        <i class="fa fa-users menu-icon"></i>
-        <span class="menu-title">Liste des candidats</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['employeurs']}}]">
-        <i class="ti-id-badge menu-icon"></i>
-        <span class="menu-title">Liste des employeurs</span>
-      </a>
-    </li>
-<!--************************************************menu pour candidat*******************************-->
-<li class="nav-item">
-  <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['offres']}}]">
-    <i class="ti-menu menu-icon"></i>
-    <span class="menu-title">Offres d'emploi</span>
-  </a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['candidatures']}}]">
-    <i class="ti-files menu-icon"></i>
-    <span class="menu-title">Mes candidatures</span>
-  </a>
-</li>
-<!--************************************************menu pour Employeur*******************************-->
-<li class="nav-item">
-  <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['mes-offres']}}]">
-    <i class="ti-list menu-icon"></i>
-    <span class="menu-title">Mes offres</span>
-  </a>
-</li>
-<!--***********************************************munu commun**************************************-->
-<li class="nav-item">
-  <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['profil']}}]">
-    <i class="ti-user menu-icon"></i>
-    <span class="menu-title">Mon profil</span>
-  </a>
-</li>
-
-    <!-- <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-        <i class="ti-palette menu-icon"></i>
-        <span class="menu-title">UI Elements</span>
-        <i class="menu-arrow"></i>
-      </a>
-      <div class="collapse" id="ui-basic">
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="../../pages/ui-features/buttons.html">Buttons</a></li>
-          <li class="nav-item"> <a class="nav-link" href="../../pages/ui-features/typography.html">Typography</a></li>
-        </ul>
-      </div>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="../../pages/forms/basic_elements.html">
-        <i class="ti-layout-list-post menu-icon"></i>
-        <span class="menu-title">Form elements</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="../../pages/charts/chartjs.html">
-        <i class="ti-pie-chart menu-icon"></i>
-        <span class="menu-title">Charts</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="../../pages/tables/basic-table.html">
-        <i class="ti-view-list-alt menu-icon"></i>
-        <span class="menu-title">Tables</span>
-      </a>
-    </li>
-    <li class="nav-item active">
-      <a class="nav-link" href="../../pages/icons/themify.html">
-        <i class="ti-star menu-icon"></i>
-        <span class="menu-title">Icons</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="true" aria-controls="auth">
+      <a class="nav-link" [routerLink]="['/principal', {outlets: {child1: ['profil']}}]">
         <i class="ti-user menu-icon"></i>
-        <span class="menu-title">User Pages</span>
-        <i class="menu-arrow"></i>
+        <span class="menu-title">Mon profil</span>
       </a>
-      <div class="collapse show" id="auth">
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="../../pages/samples/login.html"> Login </a></li>
-          <li class="nav-item"> <a class="nav-link" href="../../pages/samples/login-2.html"> Login 2 </a></li>
-          <li class="nav-item"> <a class="nav-link" href="../../pages/samples/register.html"> Register </a></li>
-          <li class="nav-item"> <a class="nav-link" href="../../pages/samples/register-2.html"> Register 2 </a></li>
-          <li class="nav-item"> <a class="nav-link" href="../../pages/samples/lock-screen.html"> Lockscreen </a></li>
-        </ul>
-      </div>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" href="../../documentation/documentation.html">
-        <i class="ti-write menu-icon"></i>
-        <span class="menu-title">Documentation</span>
-      </a>
-    </li> -->
   </ul>
 </nav>

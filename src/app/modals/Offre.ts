@@ -1,3 +1,4 @@
+import { Poste } from './Poste';
 
 export class Offre {
     id;
@@ -9,8 +10,14 @@ export class Offre {
     dateAjout;
     dateModif;
     domaine;
-    langues ;
     competences;
-    poste;
-  employeur: any;
+    poste: Poste;
+    employeur: any;
+    constructor() {
+      this.poste = new Poste();
+      this.niveauEtude = 0;
+      this.niveauExperience = 0;
+      this.salaire = 0;
+      this.horaire = 0;
+    }
 }

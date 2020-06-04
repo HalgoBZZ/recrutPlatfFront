@@ -27,6 +27,7 @@ export class ProfilComponent implements OnInit {
   password = '';
   fileToUpload;
   fileToUploadEmployeur;
+  cvContent;
   paysList = [];
 
   constructor(private utilisateurService: UtilisateurService, private employeurService: EmployeurService,
@@ -37,12 +38,12 @@ export class ProfilComponent implements OnInit {
     this.spinner.show();
     this.getConnectedUser();
     this.getPays();
-
   }
 
   showFormUpdate() {
     this.update = true;
   }
+
 
   modifierMonCompteAdmin() {
     this.tryToSubmit = true;
@@ -54,6 +55,7 @@ export class ProfilComponent implements OnInit {
         this.loggedUser = data;
         this.update = false;
         this.spinner.hide();
+        location.reload();
       }, error => {
         this.errorUpdate();
         this.spinner.hide();
@@ -66,16 +68,11 @@ export class ProfilComponent implements OnInit {
       this.spinner.show();
       this.loggedUser.password = this.password;
       this.employeurService.updateEmployeur(this.loggedUser).subscribe(data => {
-        const res: any = data;
-        this.loggedUser = res;
-        if (data != null) {
-          this.saveImageEmployeur(res.id);
-          this.successUpdate();
-        } else {
-          this.errorUpdate();
-        }
+        this.loggedUser = data;
+        this.successUpdate();
         this.update = false;
         this.spinner.hide();
+        location.reload();
       }, error => {
         this.errorUpdate();
         this.spinner.hide();
@@ -89,52 +86,15 @@ export class ProfilComponent implements OnInit {
       this.spinner.show();
       this.loggedUser.password = this.password;
       this.candidatService.updateCandidat(this.loggedUser).subscribe(data => {
-        const res: any = data;
-        this.loggedUser = res;
-        if (data != null) {
-          this.saveImageCandidat(res.id);
-          this.successUpdate();
-        } else {
-          this.errorUpdate();
-        }
+        this.loggedUser = data;
+        this.successUpdate();
         this.update = false;
         this.spinner.hide();
+        location.reload();
       }, error => {
         this.spinner.hide();
       });
     }
-  }
-
-  saveImageCandidat(id) {
-    if (this.fileToUpload != null) {
-      this.candidatService.uploadFile(this.fileToUpload, this.loggedUser.email, id, this.fileToUpload.type).subscribe(result => {
-        if (result != null) {
-          this.successUpdate();
-        }
-      }, error => {
-        this.errorUpdate();
-      });
-    }
-    if (this.fileToUploadCVCandidat != null) {
-      this.candidatService.uploadFile(this.fileToUploadCVCandidat, this.loggedUser.email, id,
-        this.fileToUploadCVCandidat.type).subscribe(result => {
-        if (result != null) {
-          this.successUpdate();
-        }
-      }, error => {
-        this.errorUpdate();
-      });
-    }
-  }
-
-  saveImageEmployeur(id) {
-    this.employeurService.uploadFile(this.fileToUploadEmployeur, this.loggedUser.email, id).subscribe(result => {
-      if (result != null) {
-        this.successUpdate();
-      }
-    }, error => {
-      this.errorUpdate();
-    });
   }
 
   successUpdate() {
@@ -157,6 +117,7 @@ export class ProfilComponent implements OnInit {
         this.candidat = true;
         this.employeur = false;
         this.admin = false;
+        this.cvContent = 'data:application/octet-stream;base64,' + this.loggedUser.pieceJointe;
       }
       if (this.loggedUser.role === 'EMPLOYEUR') {
         this.employeur = true;
@@ -174,9 +135,6 @@ export class ProfilComponent implements OnInit {
     });
   }
 
-  handleCVCandidatInput(files: FileList) {
-    this.fileToUploadCVCandidat = files.item(0);
-  }
 
   checkUsedMail() {
     const login = localStorage.getItem('login');
@@ -205,10 +163,6 @@ export class ProfilComponent implements OnInit {
     } else {
       this.pwdConfirm = false;
     }
-  }
-
-  handleImageCandidatInput(files: FileList) {
-    this.fileToUpload = files.item(0);
   }
 
   verifRequired(field) {
@@ -247,10 +201,6 @@ export class ProfilComponent implements OnInit {
     return pattern.test(field);
   }
 
-  handleImageEmployeurInput(files: FileList) {
-    this.fileToUploadEmployeur = files.item(0);
-  }
-
   verifUpdateCandidat() {
     return (this.verifRequired(this.loggedUser.nom) && this.verifRequired(this.loggedUser.prenom) &&
       this.verifRequired(this.loggedUser.dateNaissance) &&
@@ -281,5 +231,54 @@ export class ProfilComponent implements OnInit {
 
   getPays() {
     this.paysList = this.paysService.getPaysList();
+  }
+
+  openPDF(pj) {
+    const linkSource = `data:application/pdf;base64,${pj}`;
+    const downloadLink = document.createElement('a');
+    const fileName = 'CV.pdf';
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName;
+    downloadLink.click();
+  }
+
+  handleImageEmployeurInput(event) {
+    const files = event.target.files;
+    if (files) {
+      const reader = new FileReader();
+      reader.onload = this.handleReaderLoadedEmpl.bind(this);
+      this.loggedUser.photo = reader.readAsBinaryString(files[0]);
+    }
+  }
+
+  handleReaderLoadedEmpl(readerEvt) {
+    const binaryString = readerEvt.target.result;
+    this.loggedUser.photo = btoa(binaryString);
+  }
+
+  handleCVCandidatInput(event) {
+    const files = event.target.files;
+    if (files) {
+      const reader = new FileReader();
+      reader.onload = this.handleReaderLoadedCandCV.bind(this);
+      this.loggedUser.pieceJointe = reader.readAsBinaryString(files[0]);
+    }
+  }
+  private handleReaderLoadedCandCV(readerEvt) {
+    const binaryString = readerEvt.target.result;
+    this.loggedUser.pieceJointe = btoa(binaryString);
+  }
+
+  handleImageCandidatInput(event) {
+    const files = event.target.files;
+    if (files) {
+      const reader = new FileReader();
+      reader.onload = this.handleReaderLoadedCandPic.bind(this);
+      this.loggedUser.photo = reader.readAsBinaryString(files[0]);
+    }
+  }
+  private handleReaderLoadedCandPic(readerEvt) {
+    const binaryString = readerEvt.target.result;
+    this.loggedUser.photo = btoa(binaryString);
   }
 }

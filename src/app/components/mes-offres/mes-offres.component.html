@@ -1,8 +1,8 @@
 <!-- <h2>La liste des employeurs</h2> -->
 <div style="float: right;">
-  <div style="display: inline-block; margin-right: 10px;">
+  <!-- <div style="display: inline-block; margin-right: 10px;">
     <input type="text" class="form-control form-control-md" placeholder="Recherche" aria-label="Recherche">
-  </div>
+  </div> -->
   <div style="display: inline-block; margin-right: 10px;">
     <button class="btn btn-secondary" (click)="showFilterModal(filterTemplate)">Filtre<span
         class="ti-filter"></span></button>
@@ -17,24 +17,24 @@
   </div>
 </div>
 <div style="width:100%; margin-top: 50px;">
-  <!-- <accordion [isAnimated]="true" *ngFor="let offre of myoffres; let i = index">
-    <accordion-group class="acordion-group" [isOpen]="isOpen[i]" (click)="openOrClose(i)">
-      <div accordion-heading style="width:100%;">
+  <accordion [isAnimated]="true" *ngFor="let offre of myoffres; let i = index">
+    <accordion-group class="acordion-group" [isOpen]="isOpen[i]">
+      <div accordion-heading style="width:100%;" (click)="openOrClose(i)">
         <div style="display: inline-block; margin-left: 20px; vertical-align: middle;">
-          <h6>Offre No {{offre.id}}</h6>
+          <h6>{{offre.poste.intitule}}</h6>
         </div>
         <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
-          <span [ngClass]="{'ti-angle-up': isOpen[0], 'ti-angle-down': !isOpen[0]}"></span>
+          <span [ngClass]="{'ti-angle-up': isOpen[i], 'ti-angle-down': !isOpen[i]}"></span>
         </div>
       </div>
       <div style="display: block;">
         <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
           <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
-            (click)="showUpdateModal(updateTemplate)"></span>
+            (click)="showUpdateModal(updateTemplate, offre)"></span>
           <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
-            (click)="showDeleteModal(deleteTemplate)"></span>
+            (click)="showDeleteModal(deleteTemplate, offre)"></span>
         </div>
-        <h2>Domaine : {{offre.domaine.intitule}} / Fonction : {{offre.fonction}}</h2>
+        <h2>{{offre.domaine.intitule}} / {{offre.poste.intitule}}</h2>
         <hr>
       </div>
       <div style="display: block;">
@@ -48,12 +48,12 @@
       <div style="display: block;">
         <h4>
           Domaine</h4>
-        {{offre.domaine.intitule}}.<br>
+        {{offre.domaine.intitule}}<br>
         <hr>
       </div>
       <div style="display: block;">
         <div style="display: block;">
-          {{offre.poste.description}}.<br>
+          {{offre.poste.description}}<br>
           <hr>
         </div>
       </div>
@@ -66,7 +66,7 @@
       </div>
       <div style="display: block;">
         <h4>Niveau d'études</h4>
-        {{offre.niveauEtude}}.
+        BAC + {{offre.niveauEtude}}
         <hr>
       </div>
       <div style="display: block;">
@@ -77,15 +77,14 @@
         <hr>
       </div>
       <div style="display: block;">
-        <span *ngFor="let langue of offre.langues">
-          {{langue.libelle}} &nbsp; <rating [(ngModel)]="langue.niveau" [max]="max" [readonly]="true"></rating><br>
+        <h4>Langues</h4>
+        <span *ngFor="let lg of languesByOffres[offre.id]">
+          {{lg.langue.libelle}} &nbsp; <rating [(ngModel)]="lg.niveau" [max]="max" [readonly]="true"></rating><br>
         </span>
         <hr>
       </div>
       <div style="display: block;">
         <h4>Liste des candidats</h4>
-        <button type="button" class="btn btn-primary" (click)="getCandidatures(offre)">Candidatures</button>
-
         <table class="table table-striped">
           <thead>
             <tr>
@@ -118,353 +117,158 @@
               </th>
               <th>CV
               </th>
-              <th> Action</th>
+              <th style="width: 8%;">
+                Etat
+              </th>
+              <th style="width:10%;"> Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let candidat of candidatures">
-              <td class="py-1" *ngIf="showPhoto">
-                <img *ngIf="candidat.photo" src="data:image/jpg;base64,{{ candidat.photo }}" alt="image" class="zoom">
-
-                <img *ngIf="!candidat.photo" src="../../../assets/images/faces/face1.jpg" alt="image" class="zoom">
-
-              </td>
-              <td>{{candidat.nom}}</td>
-              <td >{{candidat.prenom}}</td>
-              <td >{{candidat.titre}}</td>
-              <td >{{candidat.diplome}}</td>
-              <td class="py-1">{{candidat.adresse}}</td>
-              <td class="py-1" >{{candidat.dateNaissance}}</td>
-              <td class="py-1" >{{candidat.email}}</td>
-              <td >{{candidat.tel}}</td>
-              <td class="py-1" >{{candidat.nationalite}}</td>
-              <td class="py-1"><a href="#"><i class="fa fa-file-pdf-o"></i></a></td>
-              <td>
-                <span title="Accepter" class="fa fa-check" style="cursor: pointer; margin-right: 20px;color: green;"
-                  (click)="showDeleteModal(deleteTemplate)"></span>
-                <span title="Refuser" class="fa fa-close" style="cursor: pointer; margin-right: 20px;color: red;"
-                  (click)="showDeleteModal(deleteTemplate)"></span>
-                <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
-                  (click)="showInfoModal(infoTemplate)"></span>
-              </td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
-    </accordion-group>
-  </accordion> -->
-  <accordion [isAnimated]="true">
-    <accordion-group class="acordion-group" [isOpen]="isOpen[0]" (click)="openOrClose(0)">
-      <div accordion-heading style="width:100%;">
-        <!-- <div style="display: inline-block;">
-          <img src='../../../assets/images/entreprises/e1.jpg' class='offre-pic'>
-        </div> -->
-        <div style="display: inline-block; margin-left: 20px; vertical-align: middle;">
-          <h6>Offre No 1</h6>
-        </div>
-        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
-          <span [ngClass]="{'ti-angle-up': isOpen[0], 'ti-angle-down': !isOpen[0]}"></span>
-        </div>
-      </div>
-      <div style="display: block;">
-        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
-          <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
-            (click)="showUpdateModal(updateTemplate)"></span>
-          <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
-            (click)="showDeleteModal(deleteTemplate)"></span>
-        </div>
-        <h2>Aide soignant / Préposé aux bénéficiaires</h2>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Salaire</h4>
-        2500 DT.<br>
-        <hr>
-        <h4>Horaire</h4>
-        40H/Semaine
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>
-          Domaine</h4>
-        Secteur de santé.<br>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <div style="display: block;">
-          Lorem Ipsum is simply dummy text of the printing
-          and typesetting industry. Lorem Ipsum has been the industry's
-          standard dummy text ever since the 1500s, when an unknown printer took a
-          galley of type and scrambled it to make a type specimen book. It has survived not only five
-          centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was
-          popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br>
-          <hr>
-        </div>
-      </div>
-      <div style="display: block;">
-        <div style="display: block;">
-          <h4>Niveau d’expérience</h4>
-          2 ans.
-          <hr>
-        </div>
-      </div>
-      <div style="display: block;">
-        <h4>Niveau d'études</h4>
-        Bac + 2.
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Compétences techniques</h4>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>Java</b></div>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>JavaScript</b></div>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>HTML</b></div>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>CSS</b></div>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Langues</h4>
-        Anglais: <rating [(ngModel)]="fr" [max]="max" [readonly]="true"></rating><br>
-        Français: <rating [(ngModel)]="ang" [max]="max" [readonly]="true"></rating>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Liste des candidats</h4>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>
-                <ng-container>Photo</ng-container>
-              </th>
-              <th>
-                Nom
-              </th>
-              <th>Prénom
-              </th>
-              <th>
-                Titre
-              </th>
-              <th>
-                Diplome
-              </th>
-              <th>Adresse
-              </th>
-              <th>Date de naissance
-              </th>
-              <th>
-                Email
-              </th>
-              <th>
-                Numéro de telephone
-              </th>
-              <th>
-                Nationalité
-              </th>
-              <th>CV
-              </th>
-              <th> Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
+            <tr *ngFor="let candidature of candidats[offre.id]">
               <td class="py-1">
-                <img src="../../../assets/images/faces/face1.jpg" alt="image" class="zoom">
+                <img *ngIf="candidature.candidat.photo" src="data:image/jpg;base64,{{ candidature.candidat.photo }}"
+                  alt="image" class="zoom">
+                <img *ngIf="!candidature.candidat.photo" src="../../../assets/images/faces/face1.jpg" alt="image"
+                  class="zoom">
               </td>
-              <td>Baazouzi</td>
-              <td>Hafedh</td>
-              <td>Ingénieur developpeur</td>
-              <td>Diplome d'ingénieur</td>
-              <td class="py-1">Cité el khadhra</td>
-              <td class="py-1">15-05-1990</td>
-              <td class="py-1">hafedh.baazouzi@gmail.com</td>
-              <td>+21656457898</td>
-              <td class="py-1">Tunisie</td>
-              <td class="py-1"><a href="#"><i class="fa fa-file-pdf-o"></i></a></td>
-              <td>
-                <span title="Accepter" class="fa fa-check" style="cursor: pointer; margin-right: 20px;color: green;"
-                  (click)="showDeleteModal(deleteTemplate)"></span>
-                  <span title="Refuser" class="fa fa-close" style="cursor: pointer; margin-right: 20px;color: red;"
-                  (click)="showDeleteModal(deleteTemplate)"></span>
-                <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
-                  (click)="showInfoModal(infoTemplate)"></span>
-              </td>
-            </tr>
-            <tr>
+              <td>{{candidature.candidat.nom}}</td>
+              <td>{{candidature.candidat.prenom}}</td>
+              <td>{{candidature.candidat.titre}}</td>
+              <td>{{candidature.candidat.diplome}}</td>
+              <td class="py-1">{{candidature.candidat.adresse}}</td>
+              <td class="py-1">{{candidature.candidat.dateNaissance}}</td>
+              <td class="py-1">{{candidature.candidat.email}}</td>
+              <td>{{candidature.candidat.tel}}</td>
+              <td class="py-1">{{candidature.candidat.nationalite}}</td>
+              <td class="py-1"><i class="fa fa-file-pdf-o" (click)="openPDF(candidature.candidat.pieceJointe)"
+                  style="cursor: pointer;"></i></td>
               <td class="py-1">
-                <img src="../../../assets/images/faces/face2.jpg" alt="image" class="zoom">
+                <label *ngIf="candidature.etat==='ACCEPTE'" class="badge badge-success"><b>Accepté</b></label>
+                <label *ngIf="candidature.etat==='REFUSE'" class="badge badge-danger"><b>Non
+                    retenu</b></label>
+                <label *ngIf="candidature.etat==='EN_ATTENTE'" class="badge badge-warning"><b>En attente</b></label>
               </td>
-              <td>Baazouzi</td>
-              <td>Hafedh</td>
-              <td>Ingénieur developpeur</td>
-              <td>Diplome d'ingénieur</td>
-              <td class="py-1">Cité el khadhra</td>
-              <td class="py-1">15-05-1990</td>
-              <td class="py-1">hafedh.baazouzi@gmail.com</td>
-              <td>+21656457898</td>
-              <td class="py-1">Tunisie</td>
-              <td class="py-1"><a href="#"><i class="fa fa-file-pdf-o"></i></a></td>
-              <td>
-                <span title="Accepter" class="fa fa-check" style="cursor: pointer; margin-right: 20px;color: green;"
-                (click)="showDeleteModal(deleteTemplate)"></span>
-                <span title="Refuser" class="fa fa-close" style="cursor: pointer; margin-right: 20px;color: red;"
-                (click)="showDeleteModal(deleteTemplate)"></span>
+              <td class="py-1">
+                <span title="Accepter" class="fa fa-check" style="cursor: pointer; margin-right:10px;color: green;"
+                  (click)="accepter(candidature)" *ngIf="candidature.etat==='EN_ATTENTE'"></span>
+                <span title="Refuser" class="fa fa-close" style="cursor: pointer; margin-right:10px;color: red;"
+                  (click)="refuser(candidature)" *ngIf="candidature.etat==='EN_ATTENTE'"></span>
                 <span title="Détails" class="ti-info-alt" style="cursor: pointer; color: blue;"
-                  (click)="showInfoModal(infoTemplate)"></span>
+                  (click)="showInfoModal(infoTemplate, candidature)"></span>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </accordion-group>
-    <accordion-group class="acordion-group" [isOpen]="isOpen[1]" (click)="openOrClose(1)">
-      <div accordion-heading style="width:100%;">
-        <!-- <div style="display: inline-block;">
-          <img src='../../../assets/images/entreprises/e3.jpg' class='offre-pic'>
-        </div> -->
-        <div style="display: inline-block; margin-left: 20px; vertical-align: middle;">
-          <h6>Offre No 1</h6>
-        </div>
-        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
-          <span [ngClass]="{'ti-angle-up': isOpen[1], 'ti-angle-down': !isOpen[1]}"></span>
-        </div>
-      </div>
-      <div style="display: block;">
-        <div style="display: inline-block; margin-left: 20px; vertical-align: middle; float: right;">
-          <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
-            (click)="showUpdateModal(updateTemplate)"></span>
-          <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
-            (click)="showDeleteModal(deleteTemplate)"></span>
-        </div>
-        <h2>Aide soignant / Préposé aux bénéficiaires</h2>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Salaire</h4>
-        2500 DT.<br>
-        <hr>
-        <h4>Horaire</h4>
-        40H/Semaine
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>
-          Domaine</h4>
-        Secteur de santé.<br>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <div style="display: block;">
-          Lorem Ipsum is simply dummy text of the printing
-          and typesetting industry. Lorem Ipsum has been the industry's
-          standard dummy text ever since the 1500s, when an unknown printer took a
-          galley of type and scrambled it to make a type specimen book. It has survived not only five
-          centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was
-          popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br>
-          <hr>
-        </div>
-      </div>
-      <div style="display: block;">
-        <div style="display: block;">
-          <h4>Niveau d’expérience</h4>
-          2 ans.
-          <hr>
-        </div>
-      </div>
-      <div style="display: block;">
-        <h4>Niveau d'études</h4>
-        Bac + 2.
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Compétences techniques</h4>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>Java</b></div>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>JavaScript</b></div>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>HTML</b></div>
-        <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-          <b>CSS</b></div>
-        <hr>
-      </div>
-      <div style="display: block;">
-        <h4>Langues</h4>
-        Anglais: <rating [(ngModel)]="fr" [max]="max" [readonly]="true"></rating><br>
-        Français: <rating [(ngModel)]="ang" [max]="max" [readonly]="true"></rating>
-      </div>
-      </accordion-group></accordion>
+  </accordion>
 </div>
 <!---------------------------------------------------update modal*******************************-->
 <ng-template #updateTemplate>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Modification de l'offre (Offre1)</h4>
+    <h4 class="modal-title pull-left">Modification de l'offre {{offreToUpdate.poste.intitule}}</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <input type="text" class="form-control form-control-sm" placeholder="Poste" aria-label="Poste"
-      style="margin-bottom: 15px;">
-    <textarea class="form-control form-control-sm" placeholder="Description" rows="6"
-      style="margin-bottom: 15px;"></textarea>
-    <select class="form-control form-control-sm" style="margin-bottom: 15px;">
-      <option selected disabled>Domaine</option>
-      <option>Domaine1</option>
-      <option>Domaine2</option>
-      <option>domaine3</option>
-    </select>
-    <ng-template #tolTemplateAddEtude>BAC + {{ etude }}</ng-template>
-    <label>Niveau d'études demandé</label>
-    <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateAddEtude"
-      triggers="focus">
-    <ng-template #tolTemplateAddHor>{{ heure}} Heure/Semaine</ng-template>
-    <label>Horaire par semaine</label>
-    <input type="range" min="0" max="50" [(ngModel)]="heure" class="slider" id="myRange" [tooltip]="tolTemplateAddHor"
-      triggers="focus">
-    <ng-template #tolTemplateAdd>{{ salaire }} DT</ng-template>
-    <label>Salaire mensuel</label>
-    <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplateAdd"
-      triggers="focus">
-    <ng-template #tolTemplateExpAdd>{{ experience }} ans</ng-template>
-    <label>Experience demandée</label><br>
-    <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange"
-      [tooltip]="tolTemplateExpAdd" triggers="focus">
-    <label>Compétences techniques demandées</label><br>
-    <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-      <b>CSS</b></div>
-    <br>
-    <div class="btn btn-success btn-rounded btn-fw" style="display: inline-block;" (click)="addCompetence()">
-      <span class="ti-plus"></span></div>
-    <div style="margin-left: 20px; display: inline-block;" *ngIf="addComp">
-      <input type="text" class="form-control form-control-sm" placeholder="Compétence" aria-label="Min"
-        style="width: 100%; margin-bottom: 10px;">
+    <input type="text" class="form-control form-control-sm" [(ngModel)]="offreToUpdate.poste.intitule"
+      placeholder="Poste" aria-label="Poste" style="margin-bottom: 15px;" #poste="ngModel" required>
+    <div *ngIf="poste.errors && (poste.dirty || poste.touched ||tryToSubmitForm)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
     </div>
+    <textarea class="form-control form-control-sm" [(ngModel)]="offreToUpdate.poste.description"
+      placeholder="Description" rows="6" style="margin-bottom: 15px;" #desc="ngModel" required></textarea>
+    <div *ngIf="desc.errors && (desc.dirty || desc.touched ||tryToSubmitForm)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <label>Domaine</label>
+    <!-- <ng-multiselect-dropdown [placeholder]="'Choisir Domaine'" [data]="listDomaines" [(ngModel)]="offreToUpdate.domaine"
+      [settings]="dropdownSettingsDomaine" (onSelect)="onItemSelectUpDomaines($event)">
+    </ng-multiselect-dropdown> -->
+    <select class="form-control form-control-sm" [compareWith]="byId" [(ngModel)]="offreToUpdate.domaine"
+      (change)="onItemSelectUpDomaines()">
+      <option *ngFor="let domaine of listDomaines" [ngValue]="domaine"
+        [selected]="domaine.id === offreToUpdate.domaine.id">{{domaine.intitule}}</option>
+    </select>
+    <div *ngIf="!offreToUpdate.domaine && tryToSubmitForm" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <hr>
+    <ng-template #tolTemplateAddEtude>BAC + {{offreToUpdate.niveauEtude}}</ng-template>
+    <label>Niveau d'études demandé</label>
+    <input type="range" min="0" max="8" [(ngModel)]="offreToUpdate.niveauEtude" class="slider" id="myRange"
+      [tooltip]="tolTemplateAddEtude" triggers="focus">
+    <div *ngIf="tryToSubmitForm && offreToUpdate.niveauEtude==0" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <ng-template #tolTemplateAddHor>{{offreToUpdate.horaire}} Heure/Semaine</ng-template>
+    <label>Horaire par semaine</label>
+    <input type="range" min="0" max="50" [(ngModel)]="offreToUpdate.horaire" class="slider" id="myRange"
+      [tooltip]="tolTemplateAddHor" triggers="focus">
+    <div *ngIf="tryToSubmitForm && offreToAdd.horaire==0" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <ng-template #tolTemplateAdd>{{offreToUpdate.salaire}} DT</ng-template>
+    <label>Salaire mensuel</label>
+    <input type="range" min="0" max="50000" [(ngModel)]="offreToUpdate.salaire" class="slider" id="myRange"
+      [tooltip]="tolTemplateAdd" triggers="focus">
+    <div *ngIf="tryToSubmitForm && offreToUpdate.salaire==0" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <ng-template #tolTemplateExpAdd>{{ offreToUpdate.niveauExperience }} ans</ng-template>
+    <label>Experience demandée</label><br>
+    <input type="range" min="0" max="30" [(ngModel)]="offreToUpdate.niveauExperience" class="slider" id="myRange"
+      [tooltip]="tolTemplateExpAdd" triggers="focus">
+    <div *ngIf="tryToSubmitForm && offreToAdd.niveauExperience==0" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <label>Compétences techniques demandées</label><br>
+    <ng-multiselect-dropdown [placeholder]="'Choisir Compétences'" [data]="listCompetences"
+      [(ngModel)]="offreToUpdate.competences" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+      (onSelectAll)="onSelectAll($event)">
+    </ng-multiselect-dropdown>
+    <div *ngIf="tryToSubmitForm && !offreToUpdate.competences" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <hr>
     <br />
     <label>Langues</label><br>
-    Français <rating [(ngModel)]="rateFr" [max]="max" [readonly]="isReadonly"></rating><br>
-    Anglais <rating [(ngModel)]="rateAng" [max]="max" [readonly]="isReadonly"></rating>
+    <ng-container *ngFor="let lg of langues; let j=index">
+      {{lg.libelle}} <rating [(ngModel)]="languesOffres[j].niveau" [max]="max" [readonly]="isReadonly"></rating><br>
+    </ng-container>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="updateOffre()">Modifier</button>
+    <button type="button" class="btn btn-primary" (click)="updateOffre(languesOffres)">Modifier</button>
     <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
   </div>
 </ng-template>
 <!---------------------------------------------------delete modal*******************************-->
 <ng-template #deleteTemplate>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Suppression de l'offre (offre1)</h4>
+    <h4 class="modal-title pull-left">Suppression de l'offre {{offreToDelete.poste.intitule}}</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    Vous étes sure de supprimer l'offre (Offre 1)?
+    Vous étes sure de supprimer l'offre {{offreToDelete.poste.intitule}}?
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="deleteOffre()">OUI</button>
@@ -480,51 +284,96 @@
     </button>
   </div>
   <div class="modal-body">
-    <input type="text" class="form-control form-control-sm" [(ngModel)]="poste" placeholder="Poste" aria-label="Poste"
-      style="margin-bottom: 15px;">
-    <textarea class="form-control form-control-sm" [(ngModel)]="description" placeholder="Description" rows="6"
-      style="margin-bottom: 15px;"></textarea>
-    <label>Domaines</label>
-    <ng-multiselect-dropdown [placeholder]="'Choisir Domaine'" [data]="listDomaines" [(ngModel)]="selectedItemsDomaines"
+    <input type="text" class="form-control form-control-sm" [(ngModel)]="offreToAdd.poste.intitule" placeholder="Poste"
+      aria-label="Poste" style="margin-bottom: 15px;" #poste="ngModel" required>
+    <div *ngIf="poste.errors && (poste.dirty || poste.touched ||tryToSubmitForm)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <textarea class="form-control form-control-sm" [(ngModel)]="offreToAdd.poste.description" placeholder="Description"
+      rows="6" style="margin-bottom: 15px;" #desc="ngModel" required></textarea>
+    <div *ngIf="desc.errors && (desc.dirty || desc.touched ||tryToSubmitForm)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <label>Domaine</label>
+    <!-- <ng-multiselect-dropdown [placeholder]="'Choisir Domaine'" [data]="listDomaines"
       [settings]="dropdownSettingsDomaine" (onSelect)="onItemSelectDomaines($event)">
-    </ng-multiselect-dropdown>
+    </ng-multiselect-dropdown> -->
+    <select class="form-control form-control-sm" [(ngModel)]="offreToAdd.domaine" (change)="onItemSelectDomaines()">
+      <option *ngFor="let domaine of listDomaines" [ngValue]="domaine">{{domaine.intitule}}</option>
+    </select>
+    <div *ngIf="!offreToAdd.domaine && tryToSubmitForm" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
     <hr>
-    <ng-template #tolTemplateAddEtude>BAC + {{ etude }}</ng-template>
+    <ng-template #tolTemplateAddEtude>BAC + {{offreToAdd.niveauEtude}}</ng-template>
     <label>Niveau d'études demandé</label>
-    <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateAddEtude"
-      triggers="focus">
-    <ng-template #tolTemplateAddHor>{{ heure}} Heure/Semaine</ng-template>
+    <input type="range" min="0" max="8" [(ngModel)]="offreToAdd.niveauEtude" class="slider" id="myRange"
+      [tooltip]="tolTemplateAddEtude" triggers="focus">
+    <div *ngIf="tryToSubmitForm && offreToAdd.niveauEtude==0" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <ng-template #tolTemplateAddHor>{{offreToAdd.horaire}} Heure/Semaine</ng-template>
     <label>Horaire par semaine</label>
-    <input type="range" min="0" max="50" [(ngModel)]="heure" class="slider" id="myRange" [tooltip]="tolTemplateAddHor"
-      triggers="focus">
-    <ng-template #tolTemplateAdd>{{ salaire }} DT</ng-template>
+    <input type="range" min="0" max="50" [(ngModel)]="offreToAdd.horaire" class="slider" id="myRange"
+      [tooltip]="tolTemplateAddHor" triggers="focus">
+    <div *ngIf="tryToSubmitForm && offreToAdd.horaire==0" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <ng-template #tolTemplateAdd>{{offreToAdd.salaire}} DT</ng-template>
     <label>Salaire mensuel</label>
-    <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplateAdd"
-      triggers="focus">
-    <ng-template #tolTemplateExpAdd>{{ experience }} ans</ng-template>
+    <input type="range" min="0" max="50000" [(ngModel)]="offreToAdd.salaire" class="slider" id="myRange"
+      [tooltip]="tolTemplateAdd" triggers="focus">
+    <div *ngIf="tryToSubmitForm && offreToAdd.salaire==0" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <ng-template #tolTemplateExpAdd>{{ offreToAdd.niveauExperience }} ans</ng-template>
     <label>Experience demandée</label><br>
-    <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange"
+    <input type="range" min="0" max="30" [(ngModel)]="offreToAdd.niveauExperience" class="slider" id="myRange"
       [tooltip]="tolTemplateExpAdd" triggers="focus">
+    <div *ngIf="tryToSubmitForm && offreToAdd.niveauExperience==0" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
     <label>Compétences techniques demandées</label><br>
-
-    <ng-multiselect-dropdown [placeholder]="'Choisir Compétences'" [data]="listCompetences" [(ngModel)]="selectedItems"
-      [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+    <ng-multiselect-dropdown [placeholder]="'Choisir Compétences'" [data]="listCompetences"
+      [(ngModel)]="offreToAdd.competences" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+      (onSelectAll)="onSelectAll($event)">
     </ng-multiselect-dropdown>
+    <div *ngIf="tryToSubmitForm && !offreToAdd.competences" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
     <hr>
     <br />
     <label>Langues</label><br>
-    Français <rating [(ngModel)]="rateFr" [max]="max" [readonly]="isReadonly"></rating><br>
-    Anglais <rating [(ngModel)]="rateAng" [max]="max" [readonly]="isReadonly"></rating>
+    <ng-container *ngFor="let lg of langues; let j=index">
+      {{lg.libelle}} <rating [(ngModel)]="languesOffres[j].niveau" [max]="max" [readonly]="isReadonly"></rating><br>
+    </ng-container>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="addOffre()">Ajouter</button>
+    <button type="button" class="btn btn-primary" (click)="addOffre(languesOffres)">Ajouter</button>
     <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
   </div>
 </ng-template>
 <!---------------------------------------------------info modal*******************************-->
 <ng-template #infoTemplate>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Détails de Candidat Hafedh Baazouzi</h4>
+    <h4 class="modal-title pull-left">Détails de candidature du candidat {{candidatureDetails.candidat.prenom}}
+      {{candidatureDetails.candidat.nom}}</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -534,23 +383,70 @@
       <div class="card">
         <div class="row ">
           <div class="col-md-5">
-            <img src="../../../assets/images/faces/face10.jpg" class="w-100" style="height: 100%;">
+            <img src="data:image/jpg;base64,{{ candidatureDetails.candidat.photo }}" class="w-100" style="width: 100%;">
           </div>
           <div class="col-md-7 px-3">
             <div class="card-block px-3">
-              <b>Nom: </b>Baazouzi<br>
-              <b>Prénom: </b>Hafedh<br>
-              <b>Titre: </b>Ingénieur<br>
-              <b>Diplome: </b>Ingénieur<br>
-              <b>Adresse: </b>Tunis cité el khadhra<br>
-              <b>Numéro de telephone: </b>+201625353654<br>
-              <b>Date de naissance: </b>15-05-1999<br>
-              <b>Email: </b>hafedh.baazouzi@gmail.com<br>
-              <b>Nationalité: </b>Tunisie<br>
-              <b>Ajouté le: </b>12-12-2019<br>
-              <b>Dérniére modification: </b>12-01-2020<br>
-              <b>CV: </b><a href="#"><i class="fa fa-file-pdf-o"></i></a><br>
+              <b>Nom: </b>{{candidatureDetails.candidat.nom}}<br>
+              <b>Prénom: </b>{{candidatureDetails.candidat.prenom}}<br>
+              <b>Titre: </b>{{candidatureDetails.candidat.titre}}<br>
+              <b>Diplome: </b>{{candidatureDetails.candidat.diplome}}<br>
+              <b>Adresse: </b>{{candidatureDetails.candidat.adresse}}<br>
+              <b>Numéro de telephone: </b>{{candidatureDetails.candidat.tel}}<br>
+              <b>Date de naissance: </b>{{candidatureDetails.candidat.dateNaissance}}<br>
+              <b>Email: </b>{{candidatureDetails.candidat.email}}<br>
+              <b>Nationalité: </b>{{candidatureDetails.candidat.nationalite}}<br>
+              <b>Ajouté le: </b>{{candidatureDetails.candidat.dateAjout}}<br>
+              <b>Dérniére modification: </b>{{candidatureDetails.candidat.dateModif}}<br>
+              <b>CV: </b><i class="fa fa-file-pdf-o" (click)="openPDF(candidatureDetails.candidat.pieceJointe)"
+                style="cursor: pointer;"></i><br>
+              <b>Etat: </b>
+              <label *ngIf="candidatureDetails.etat==='ACCEPTE'" class="badge badge-success"><b>Accepté</b></label>
+              <label *ngIf="candidatureDetails.etat==='REFUSE'" class="badge badge-danger"><b>Non retenu</b></label>
+              <label *ngIf="candidatureDetails.etat==='EN_ATTENTE'" class="badge badge-warning"><b>En
+                  attente</b></label>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="padding-bottom: 50px; padding-top: 20px;padding-left: 20px;">
+        <div class="row ">
+          <div class="col-md-12">
+            <h5>Competences</h5>
+            <ng-container *ngFor="let cmp of candidatCompetences[candidatureDetails.candidat.id]">
+              <div class="btn btn-dark btn-rounded btn-fw" style="margin-right: 5px;">{{cmp.competence.intitule}} </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="padding-bottom: 50px; padding-top: 20px;padding-left: 20px;">
+        <div class="row ">
+          <div class="col-md-12">
+            <h5>Experiences</h5>
+            <ng-container *ngFor="let exp of candidatExperience[candidatureDetails.candidat.id]">
+              <div style="display: block;">
+                <span style="font-weight: bold;">[{{exp.experience.debut | date:'dd/MM/yyyy'}} -
+                  {{exp.experience.fin | date:'dd/MM/yyyy'}}]</span> :
+                  <span style="font-weight:lighter;">{{exp.experience.titre}}</span> chez
+                  <span style="font-weight:lighter;">{{exp.experience.employeur}}</span> à
+                  <span style="font-weight:lighter;">{{exp.experience.lieu}}</span>
+                  <br/>
+                  <span style="font-weight:lighter;">{{exp.experience.description}}</span>
+                </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="padding-bottom: 50px; padding-top: 20px;padding-left: 20px;">
+        <div class="row ">
+          <div class="col-md-12">
+            <h5>Langues</h5>
+            <ng-container *ngFor="let lg of candidatLangues[candidatureDetails.candidat.id]">
+              <div style="display: block;">
+                <span style="font-weight: bold; margin-right: 10px;">{{lg.langue.libelle}}</span>
+                <rating [(ngModel)]="lg.niveau" [max]="5" [readonly]="true"></rating>
+                </div>
+            </ng-container>
           </div>
         </div>
       </div>
@@ -568,46 +464,29 @@
   </div>
   <div class="modal-body">
     <label>Domaines</label>
-    <select class="form-control form-control-sm">
-      <option>Tous</option>
-      <option>Domaine1</option>
-      <option>Domaine2</option>
-      <option>domaine3</option>
-    </select>
+    <ng-multiselect-dropdown [placeholder]="'Choisir Domaine'" [data]="listDomaines"
+      [settings]="dropdownSettingsDomaine" (onSelect)="onItemSelectFilterDomaines($event)">
+    </ng-multiselect-dropdown>
     <hr>
-    <ng-template #tolTemplateEtude>BAC + {{ etude }}</ng-template>
-    <label>Etudes</label>
-    <input type="range" min="0" max="8" [(ngModel)]="etude" class="slider" id="myRange" [tooltip]="tolTemplateEtude"
-      triggers="focus">
-    <hr>
-    <ng-template #tolTemplate>{{ salaire }} DT</ng-template>
-    <label>Salaire</label>
-    <input type="range" min="0" max="50000" [(ngModel)]="salaire" class="slider" id="myRange" [tooltip]="tolTemplate"
-      triggers="focus">
-    <hr>
-    <ng-template #tolTemplateExp>{{ experience }} ans</ng-template>
-    <label>Experience</label><br>
-    <input type="range" min="0" max="30" [(ngModel)]="experience" class="slider" id="myRange" [tooltip]="tolTemplateExp"
-      triggers="focus">
-    <hr>
-    <label>Compétences techniques</label><br>
-    <div class="btn btn-light btn-rounded btn-fw" style="background-color: #a3a4a5; display: inline-block;">
-      <b>CSS</b></div>
-    <br>
-    <div class="btn btn-success btn-rounded btn-fw" style="display: inline-block;" (click)="addCompetence()">
-      <span class="ti-plus"></span></div>
-    <div style="margin-left: 20px; display: inline-block;" *ngIf="addComp">
-      <input type="text" class="form-control form-control-sm" placeholder="Compétence" aria-label="Min"
-        style="width: 100%; margin-bottom: 10px;">
-    </div>
-    <hr>
-    <label>Langues</label><br>
-    Français <rating [(ngModel)]="rateFr" [max]="max" [readonly]="isReadonly"></rating><br>
-    Anglais <rating [(ngModel)]="rateAng" [max]="max" [readonly]="isReadonly"></rating>
-    <hr>
+    <ng-template #tolTemplateAddEtude>BAC + {{filterObject.etude}}</ng-template>
+    <label>Niveau d'études demandé</label>
+    <input type="range" min="0" max="8" [(ngModel)]="filterObject.etude" class="slider" id="myRange"
+      [tooltip]="tolTemplateAddEtude" triggers="focus">
+    <ng-template #tolTemplateAdd>{{filterObject.salaire}} DT</ng-template>
+    <label>Salaire mensuel</label>
+    <input type="range" min="0" max="50000" [(ngModel)]="filterObject.salaire" class="slider" id="myRange"
+      [tooltip]="tolTemplateAdd" triggers="focus">
+    <ng-template #tolTemplateExpAdd>{{ filterObject.experience }} ans</ng-template>
+    <label>Experience demandée</label><br>
+    <input type="range" min="0" max="30" [(ngModel)]="filterObject.experience" class="slider" id="myRange"
+      [tooltip]="tolTemplateExpAdd" triggers="focus">
+    <label>Compétences techniques demandées</label><br>
+    <ng-multiselect-dropdown [placeholder]="'Choisir Compétences'" [data]="listCompetences"
+      [(ngModel)]="filterObject.competences" [settings]="dropdownSettings">
+    </ng-multiselect-dropdown>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="submitSearch()">Filtrer</button>
+    <button type="button" class="btn btn-primary" (click)="submitSearch(myoffres)">Filtrer</button>
     <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Annuler</button>
   </div>
 </ng-template>
