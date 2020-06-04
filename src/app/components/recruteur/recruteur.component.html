@@ -71,7 +71,8 @@
       |filterTailleEmployeur:tailleFilter|filterAdresseEmployeur:adresseFilter|filterTypeEmployeur:typeFilter|filterEmailEmployeur:emailFilter
       |filterFondationEmployeur:fondationFilter|filterPaysEmployeur:paysFilter|filterModificationEmployeur:modifFilter|filterAjoutEmployeur:ajoutFilter">
         <td class="py-1" *ngIf="showLogo">
-          <img src="../../../assets/images/entreprises/e1.jpg" class="zoom">
+          <img src="data:image/jpg;base64,{{employeur.photo}}" class="zoom" *ngIf="employeur && employeur.photo">
+          <img src="../../../assets/images/entreprises/e1.jpg" class="zoom" *ngIf="!employeur || !employeur.photo">
         </td>
         <td *ngIf="showNom">{{employeur.nom}}</td>
         <td *ngIf="showPresentation">{{employeur.presentation}}</td>
@@ -125,7 +126,8 @@
       <div class="card">
         <div class="row ">
           <div class="col-md-5">
-            <img src="../../../assets/images/entreprises/e1.jpg" class="w-100" style="height: 100%;">
+            <img *ngIf="employeurToDisplayDetails.photo"  src="data:image/jpg;base64,{{employeurToDisplayDetails.photo}}" style="width:100%;">
+            <img *ngIf="!employeurToDisplayDetails.photo"  src="../../../assets/images/faces/face21.jpg" style="width:100%;">
           </div>
           <div class="col-md-7 px-3">
             <div class="card-block px-3">

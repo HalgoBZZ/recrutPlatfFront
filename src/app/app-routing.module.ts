@@ -12,6 +12,12 @@ import { MesOffresComponent } from './components/mes-offres/mes-offres.component
 import { ProfilComponent } from './components/profil/profil.component';
 import { NewPassComponent } from './components/new-pass/new-pass.component';
 import { VerifCodeComponent } from './components/verif-code/verif-code.component';
+import { LanguesComponent } from './components/langues/langues.component';
+import { CompetencesComponent } from './components/competences/competences.component';
+import { MesCompetencesComponent } from './components/mes-competences/mes-competences.component';
+import { MesFormationsComponent } from './components/mes-formations/mes-formations.component';
+import { MesLanguesComponent } from './components/mes-langues/mes-langues.component';
+import { MesExperiencesComponent } from './components/mes-experiences/mes-experiences.component';
 
 
 const routes: Routes = [
@@ -28,7 +34,13 @@ const routes: Routes = [
       { path: 'offres', component: OffresComponent, outlet: 'child1' },
       { path: 'candidatures', component: CandidaturesComponent, outlet: 'child1' },
       { path: 'mes-offres', component: MesOffresComponent, outlet: 'child1' },
-      { path: 'profil', component: ProfilComponent, outlet: 'child1' }
+      { path: 'profil', component: ProfilComponent, outlet: 'child1' },
+      { path: 'langues', component: LanguesComponent, outlet: 'child1' },
+      { path: 'competences', component: CompetencesComponent, outlet: 'child1' },
+      { path: 'mes-competences', component: MesCompetencesComponent, outlet: 'child1' },
+      { path: 'mes-formations', component: MesFormationsComponent, outlet: 'child1' },
+      { path: 'mes-langues', component: MesLanguesComponent, outlet: 'child1' },
+      { path: 'mes-experiences', component: MesExperiencesComponent, outlet: 'child1' }
     ]
   }
 ];

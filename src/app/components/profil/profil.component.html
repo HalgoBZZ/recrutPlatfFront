@@ -10,7 +10,8 @@
     <div class="card" style="box-shadow: none; ">
       <div class="row" style="background-color: #dddce1;">
         <div class="col-md-4">
-          <img src="../../../assets/images/faces/face10.jpg" class="w-100" style="border-radius: 15px;">
+          <img src="data:image/jpg;base64,{{loggedUser.photo}}" class="w-100" style="border-radius: 15px;" *ngIf="loggedUser && loggedUser.photo">
+          <img src="../../../assets/images/faces/face21.jpg" class="w-100" style="border-radius: 15px;" *ngIf="!loggedUser || !loggedUser.photo">
         </div>
         <div class="col-md-7 px-3">
           <div class="card-block px-3">
@@ -25,7 +26,6 @@
             <b>Nationalité: </b>{{loggedUser.pays}}<br>
             <b>Ajouté le: </b>{{loggedUser.dateAjout}}<br>
             <b>Dérniére modification: </b>{{loggedUser.dateModif}}<br>
-            <b>CV: </b><a href="#"><i class="fa fa-file-pdf-o"></i></a><br>
           </div>
         </div>
       </div>
@@ -134,7 +134,7 @@
       caractére majiscule et un caractére spécial)!
     </div>
   </div>
-  <input id="confirmation" type="confirmation" name="form-password" placeholder="Confirmation mot de passe"
+  <input id="confirmation" type="password" name="form-password" placeholder="Confirmation mot de passe"
     class="form-password form-control" style="margin-bottom: 15px;" required #confirmation="ngModel"
     [(ngModel)]="pwdConfirmation" [ngModelOptions]="{standalone: true}">
   <div *ngIf="tryToSubmit && !verifConfirmationPassword(password, pwdConfirmation)" class="alert alert-danger">
@@ -143,7 +143,7 @@
     </div>
   </div>
   <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo"
-    accept="image/x-png,image/gif,image/jpeg" required (change)="handleImageEmployeurInput($event.target.files)"
+    accept="image/x-png,image/gif,image/jpeg" required (change)="handleImageEmployeurInput($event)"
     class="form-password form-control" style="display: none;">
   <label id="upload-photo-label" for="photo">LOGO</label>
   <button type="submit" class="btn btn-success form-control" style="margin-bottom: 15px;"
@@ -160,7 +160,8 @@
     <div class="card" style="box-shadow: none; ">
       <div class="row" style="background-color: #dddce1;">
         <div class="col-md-4">
-          <img src="../../../assets/images/faces/face10.jpg" class="w-100" style="border-radius: 15px;">
+          <img src="data:image/jpg;base64,{{loggedUser.photo}}" class="w-100" style="border-radius: 15px;" *ngIf="loggedUser && loggedUser.photo">
+          <img src="../../../assets/images/faces/face21.jpg" class="w-100" style="border-radius: 15px;" *ngIf="!loggedUser || !loggedUser.photo">
         </div>
         <div class="col-md-7 px-3">
           <div class="card-block px-3">
@@ -175,7 +176,8 @@
             <b>Nationalité: </b>{{loggedUser.nationalite}}<br>
             <b>Ajouté le: </b>{{loggedUser.dateAjout}}<br>
             <b>Dérniére modification: </b>{{loggedUser.dateModif}}<br>
-            <b>CV: </b><a href="#"><i class="fa fa-file-pdf-o"></i></a><br>
+            <!-- <b>CV: </b><a id="cv_downloder"><i class="fa fa-file-pdf-o"></i></a><br> -->
+            <b>CV: </b><i class="fa fa-file-pdf-o" (click)="openPDF(loggedUser.pieceJointe)" style="cursor: pointer;"></i><br>
           </div>
         </div>
       </div>
@@ -239,8 +241,8 @@
       Champ obligatoire!
     </div>
   </div>
-  <input id="pj" type="file" name="pj" placeholder="CV" class="form-password form-control"
-    style="display: none; margin-bottom: 15px;" (change)="handleCVCandidatInput($event.target.files)"
+  <input id="pj" type="file" name="pj" placeholder="CV" class="form-password form-control" accept="application/pdf"
+    style="display: none; margin-bottom: 15px;" (change)="handleCVCandidatInput($event)"
     style="display: none;">
   <label id="upload-photo-label" for="pj">CV en piéce jointe</label>
   <input id="titre" type="text" name="titre" placeholder="Titre" class="form-username form-control"
@@ -291,7 +293,7 @@
       caractére majiscule et un caractére spécial)!
     </div>
   </div>
-  <input id="confirmation" type="confirmation" name="form-password" placeholder="Confirmation mot de passe"
+  <input id="confirmation" type="password" name="form-password" placeholder="Confirmation mot de passe"
     class="form-password form-control" style="margin-bottom: 15px;" required #confirmationc="ngModel"
     [(ngModel)]="pwdConfirmation" (change)="checkPwdConfirmation()">
   <div *ngIf="tryToSubmit && !verifConfirmationPassword(password, pwdConfirmation)" class="alert alert-danger">
@@ -301,7 +303,7 @@
   </div>
   <input id="photo" type="file" accept="image/*" name="photo" placeholder="Photo" class="form-password form-control"
     style="display: none; margin-bottom: 15px;" required
-    (change)="handleImageCandidatInput($event.target.files)" accept="image/x-png,image/gif,image/jpeg">
+    (change)="handleImageCandidatInput($event)" accept="image/x-png,image/gif,image/jpeg">
   <label id="upload-photo-label" for="photo">PHOTO</label>
 
   <button type="submit" class="btn btn-success form-control" style="margin-bottom: 15px;"

@@ -84,7 +84,7 @@
         <td class="py-1" *ngIf="showEmail">h{{candidat.email}}</td>
         <td *ngIf="showTel">{{candidat.tel}}</td>
         <td class="py-1" *ngIf="showNationalite">{{candidat.nationalite}}</td>
-        <td class="py-1" *ngIf="showCV"><a title="Télécharger le fichier" (click)="downLoadFile(candidat.piece_jointe,candidat.nom)"><i class="fa fa-file-pdf-o"></i>{{candidat.piece_jointe}}</a></td>
+        <td class="py-1" *ngIf="showCV"><i class="fa fa-file-pdf-o" (click)="openPDF(candidat.pieceJointe)" style="cursor: pointer;"></i></td>
         <td *ngIf="showAjout">{{candidat.dateAjout}}</td>
         <td *ngIf="showModification">{{candidat.dateModif}}</td>
         <td>
@@ -128,8 +128,8 @@
       <div class="card">
         <div class="row ">
           <div class="col-md-5">
-            <img *ngIf="candidatDetail.photo"  src="data:image/jpg;base64,{{candidatDetail.photo}}">
-            <img *ngIf="!candidatDetail.photo"  src="../../../assets/images/faces/face21.jpg" style="width:30px; height:30px;">
+            <img *ngIf="candidatDetail.photo"  src="data:image/jpg;base64,{{candidatDetail.photo}}" style="width:100%;">
+            <img *ngIf="!candidatDetail.photo"  src="../../../assets/images/faces/face21.jpg" style="width:100%;">
           </div>
           <div class="col-md-7 px-3">
             <div class="card-block px-3">
@@ -142,7 +142,7 @@
               <b>Date de naissance: </b>{{candidatDetail.dateNaissance}}<br>
               <b>Email: </b>{{candidatDetail.email}}<br>
               <b>Nationalité: </b>{{candidatDetail.nationalite}}<br>
-              <b>CV: </b><a title="Télécharger le fichier" (click)="downLoadFile(candidatDetail.piece_jointe,candidatDetail.nom)"><i class="fa fa-file-pdf-o"></i></a><br>
+              <b>CV: </b><i class="fa fa-file-pdf-o" (click)="openPDF(candidatDetail.pieceJointe)" style="cursor: pointer;"></i><br>
             </div>
           </div>
         </div>

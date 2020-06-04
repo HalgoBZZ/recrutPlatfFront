@@ -1,0 +1,168 @@
+<h2>Vos formations</h2>
+<div style="float: right;">
+  <div style="display: inline-block; margin-right: 10px;">
+    <button class="btn btn-success" (click)="showAddModal(addTemplate)">Ajouter Formation</button>
+  </div>
+</div>
+<div style="width:100%; margin-top: 50px;">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Etablissement</th>
+        <th>Debut</th>
+        <th>Fin</th>
+        <th> Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cf of candidatFormations">
+        <td>{{cf.formation.titre}}</td>
+        <td>{{cf.formation.etablissement}}</td>
+        <td>{{cf.formation.debut}}</td>
+        <td>{{cf.formation.fin}}</td>
+        <td>
+          <span title="Modifier" class="ti-pencil-alt" style="cursor: pointer; margin-right: 20px;color:green"
+            (click)="showUpdateModal(updateTemplate, cf)"></span>
+          <span title="Supprimer" class="ti-trash" style="cursor: pointer; color: red;"
+            (click)="showDeleteModal(deleteTemplate, cf)"></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!--****************************************Add modal**********************************-->
+<ng-template #addTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Ajout d'une formation</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide(); tryToSubmit=false;">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input type="text" class="form-control form-control-sm" placeholder="Titre" [(ngModel)]="formationToAdd.titre"
+      required #intitAdd="ngModel" style="margin-bottom: 15px;">
+    <div *ngIf="intitAdd.errors && (intitAdd.dirty || intitAdd.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <input type="text" class="form-control form-control-sm" placeholder="Etablissement"
+      [(ngModel)]="formationToAdd.etablissement" required #etabAdd="ngModel" style="margin-bottom: 15px;">
+    <div *ngIf="etabAdd.errors && (etabAdd.dirty || etabAdd.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <input type="text" onfocus="(this.type='date')" class="form-control form-control-sm" placeholder="Début"
+      [(ngModel)]="formationToAdd.debut" required #debutAdd="ngModel" style="margin-bottom: 15px;">
+    <div
+      *ngIf="(debutAdd.errors || (formationToAdd.fin && formationToAdd.debut > formationToAdd.fin) || !validDate(formationToAdd.debut)) && (debutAdd.dirty || debutAdd.touched ||tryToSubmit)"
+      class="alert alert-danger">
+      <div *ngIf="debutAdd.errors">
+        Champ obligatoire!
+      </div>
+      <div *ngIf="formationToAdd.fin && formationToAdd.debut && formationToAdd.debut > formationToAdd.fin">
+        Date de debut doit étre inférieure à la date de fin!
+      </div>
+      <div *ngIf="formationToAdd.debut && !validDate(formationToAdd.debut)">
+        Date de debut doit étre inférieure à la date d'aujourd'hui!
+      </div>
+    </div>
+    <input type="text" onfocus="(this.type='date')" class="form-control form-control-sm" placeholder="Fin"
+      [(ngModel)]="formationToAdd.fin" required #finAdd="ngModel" style="margin-bottom: 15px;">
+    <div
+      *ngIf="(finAdd.errors || (formationToAdd.debut && formationToAdd.debut > formationToAdd.fin) || !validDate(formationToAdd.fin)) && (finAdd.dirty || finAdd.touched ||tryToSubmit)"
+      class="alert alert-danger">
+      <div *ngIf="finAdd.errors">
+        Champ obligatoire!
+      </div>
+      <div *ngIf="formationToAdd.fin && formationToAdd.debut && formationToAdd.debut > formationToAdd.fin">
+        Date de fin doit étre supérieure à la date de début!
+      </div>
+      <div *ngIf="formationToAdd.fin && !validDate(formationToAdd.fin)">
+        Date de fin doit étre inférieure à la date d'aujourd'hui!
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="addFormation()">Ajouter</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide(); tryToSubmit=false;">Annuler</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------update modal*******************************-->
+<ng-template #updateTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modification de la formation {{formationToUpdate.titre}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close"
+      (click)="bsModalRef.hide(); this.tryToSubmit = false">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input type="text" class="form-control form-control-sm" placeholder="Titre" [(ngModel)]="formationToUpdate.titre"
+      required #intitUp="ngModel" style="margin-bottom: 15px;">
+    <div *ngIf="intitUp.errors && (intitUp.dirty || intitUp.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <input type="text" class="form-control form-control-sm" placeholder="Etablissement"
+      [(ngModel)]="formationToUpdate.etablissement" required #etabUp="ngModel" style="margin-bottom: 15px;">
+    <div *ngIf="etabUp.errors && (etabUp.dirty || etabUp.touched ||tryToSubmit)" class="alert alert-danger">
+      <div>
+        Champ obligatoire!
+      </div>
+    </div>
+    <input type="text" onfocus="(this.type='date')" class="form-control form-control-sm" placeholder="Début"
+      [(ngModel)]="formationToUpdate.debut" required #debutUp="ngModel" style="margin-bottom: 15px;">
+    <div
+      *ngIf="(debutUp.errors || (formationToUpdate.fin && formationToAdd.debut > formationToUpdate.fin) || !validDate(formationToUpdate.debut)) && (debutUp.dirty || debutUp.touched ||tryToSubmit)"
+      class="alert alert-danger">
+      <div *ngIf="debutUp.errors">
+        Champ obligatoire!
+      </div>
+      <div *ngIf="formationToUpdate.fin && formationToUpdate.debut && formationToUpdate.debut > formationToUpdate.fin">
+        Date de debut doit étre inférieure à la date de fin!
+      </div>
+      <div *ngIf="formationToAdd.debut && !validDate(formationToAdd.debut)">
+        Date de debut doit étre inférieure à la date d'aujourd'hui!
+      </div>
+    </div>
+    <input type="text" onfocus="(this.type='date')" class="form-control form-control-sm" placeholder="Fin"
+      [(ngModel)]="formationToUpdate.fin" required #finUp="ngModel" style="margin-bottom: 15px;">
+    <div
+      *ngIf="(finUp.errors || (formationToUpdate.debut && formationToUpdate.debut > formationToUpdate.fin) || !validDate(formationToUpdate.fin)) && (finUp.dirty || finUp.touched ||tryToSubmit)"
+      class="alert alert-danger">
+      <div *ngIf="finUp.errors">
+        Champ obligatoire!
+      </div>
+      <div *ngIf="formationToUpdate.fin && formationToUpdate.debut && formationToUpdate.debut > formationToUpdate.fin">
+        Date de fin doit étre supérieure à la date de début!
+      </div>
+      <div *ngIf="formationToUpdate.fin && !validDate(formationToUpdate.fin)">
+        Date de fin doit étre inférieure à la date d'aujourd'hui!
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="updateFormation()">Modifier</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide(); tryToSubmit=false;">Annuler</button>
+  </div>
+</ng-template>
+<!---------------------------------------------------delete modal*******************************-->
+<ng-template #deleteTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Suppression de la formation {{formationToDelete.intitule}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Vous étes sure de supprimer la formation {{formationToDelete.intitule}}?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="delete()">OUI</button>
+    <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">NON</button>
+  </div>
+</ng-template>

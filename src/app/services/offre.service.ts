@@ -8,7 +8,7 @@ export class OffreService {
 
 
 
-  private uri = 'http://localhost:8080/api/offre/';
+  private uri = 'http://localhost:8085/api/offre/';
   headers = new HttpHeaders();
   constructor(private http: HttpClient) { }
 
@@ -20,7 +20,7 @@ export class OffreService {
   postuler(id: string, login: string) {
     this.headers.append('Accept', 'application/json;charset=UTF-8');
     const options = { headers: this.headers };
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('login', login);
     formData.append('id', id);
     return this.http.post(this.uri + 'postuler/', formData, options);
@@ -40,5 +40,11 @@ export class OffreService {
     this.headers.append('Accept', 'application/json;charset=UTF-8');
     const options = { headers: this.headers };
     return this.http.post(this.uri + 'save', offre, options);
+  }
+
+  deleteOffre(id) {
+    this.headers.append('Accept', 'application/json;charset=UTF-8');
+    const options = { headers: this.headers };
+    return this.http.delete(this.uri + 'delete/' + id, options);
   }
 }

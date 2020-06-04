@@ -29,4 +29,10 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['/login']);
     });
   }
+
+  deconnexion() {
+    localStorage.removeItem('connected');
+    localStorage.removeItem('login');
+    this.router.navigate(['/login']);
+  }
 }

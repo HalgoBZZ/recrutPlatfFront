@@ -1,7 +1,7 @@
-export class Poste  {
-	id;
-    intitule;
-    description;
-	dateAjout;
-	dateModif;
+export class Poste {
+  id;
+  intitule;
+  description;
+  dateAjout;
+  dateModif;
 }

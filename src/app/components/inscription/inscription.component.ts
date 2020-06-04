@@ -27,14 +27,10 @@ export class InscriptionComponent implements OnInit {
   pwdConfirm = false;
   usedMail = false;
   savedFile;
-  fileToUpload: File = null;
   pathfile;
-  data;
   paysList = [];
-  fileToUploadCVCandidat: File = null;
-  fileToUploadEmployeur: File = null;
   constructor(private router: Router, private toastr: ToastrService, private utilisateurService: UtilisateurService,
-              private employeurService: EmployeurService, private candidatService: CandidatService, private paysService: PaysService) { }
+    private employeurService: EmployeurService, private candidatService: CandidatService, private paysService: PaysService) { }
 
   ngOnInit() {
     this.getPays();
@@ -58,29 +54,29 @@ export class InscriptionComponent implements OnInit {
     if (this.cmptCandidat) {
       if (this.verifInscriptionCandidat(this.candidat)) {
         this.candidatService.inscription(this.candidat).subscribe(result => {
-          this.data = result;
-          if (result != null) {
-            this.saveImageCandidat(this.data.id);
-            this.successInscritpion();
-          } else {
-            this.errorInscription();
-          }
+          // this.data = result;
+          this.successInscritpion();
+          // if (result != null) {
+          //   this.saveImageCandidat(this.data.id);
+          //   this.successInscritpion();
+          // } else {
+          //   this.errorInscription();
+          // }
         }, error => {
           console.log('this.errorInscription');
-
           this.errorInscription();
         });
       }
     } else if (this.cmptEmployeur) {
       if (this.verifInscriptionEmployeur(this.employeur)) {
         this.employeurService.inscription(this.employeur).subscribe(result => {
-          this.data = result;
-          if (result != null) {
-            this.saveImageEmployeur(this.data.id);
-            this.successInscritpion();
-          } else {
-            this.errorInscription();
-          }
+          this.successInscritpion();
+          // if (result != null) {
+          //   this.saveImageEmployeur(this.data.id);
+          //   this.successInscritpion();
+          // } else {
+          //   this.errorInscription();
+          // }
         }, error => {
           this.errorInscription();
         });
@@ -123,8 +119,8 @@ export class InscriptionComponent implements OnInit {
       } else {
         this.pwdConfirm = false;
       }
+    }
   }
-}
   back() {
     this.tryToSubmit = false;
     this.pwdConfirmation = '';
@@ -135,62 +131,44 @@ export class InscriptionComponent implements OnInit {
       this.choose = false;
     }
   }
-  handleImageCandidatInput(files: FileList) {
-    this.fileToUpload = files.item(0);
+  handleImageCandidatInput(event) {
+    const files = event.target.files;
+    if (files) {
+      const reader = new FileReader();
+      reader.onload = this.handleReaderLoadedCandPic.bind(this);
+      this.candidat.photo = reader.readAsBinaryString(files[0]);
+    }
   }
-  handleImageEmployeurInput(files: FileList) {
-    this.fileToUploadEmployeur = files.item(0);
+  private handleReaderLoadedCandPic(readerEvt) {
+    const binaryString = readerEvt.target.result;
+    this.candidat.photo = btoa(binaryString);
   }
 
-  handleCVCandidatInput(files: FileList) {
-    this.fileToUploadCVCandidat = files.item(0);
-  }
-  saveImageCandidat(id) {
-    if (this.fileToUpload != null) {
-      this.candidatService.uploadFile(this.fileToUpload, this.candidat.email, id, this.fileToUpload.type).subscribe(result => {
-        if (result != null) {
-          this.pathfile = result;
-          this.savedFile = true;
-          this.successInscritpion();
-        }
-      }, error => {
-        this.pathfile = null;
-        this.savedFile = false;
-        this.errorInscription();
-      });
-    } else {
-      this.savedFile = true;
-    }
-    if (this.fileToUploadCVCandidat != null) {
-      this.candidatService.uploadFile(this.fileToUploadCVCandidat, this.candidat.email, id, this.fileToUploadEmployeur.type)
-      .subscribe(result => {
-        if (result != null) {
-          this.pathfile = result;
-          this.savedFile = true;
-          this.successInscritpion();
-        }
-      }, error => {
-        this.pathfile = null;
-        this.savedFile = false;
-        this.errorInscription();
-      });
-    } else {
-      this.savedFile = true;
+  handleImageEmployeurInput(event) {
+    const files = event.target.files;
+    if (files) {
+      const reader = new FileReader();
+      reader.onload = this.handleReaderLoadedEmpl.bind(this);
+      this.employeur.photo = reader.readAsBinaryString(files[0]);
     }
   }
 
-  saveImageEmployeur(id) {
-    this.employeurService.uploadFile(this.fileToUploadEmployeur, this.employeur.email, id).subscribe(result => {
-      if (result != null) {
-        this.pathfile = result;
-        this.savedFile = true;
-        this.successInscritpion();
-      }
-    }, error => {
-      this.pathfile = null;
-      this.savedFile = false;
-      this.errorInscription();
-    });
+  handleReaderLoadedEmpl(readerEvt) {
+    const binaryString = readerEvt.target.result;
+    this.employeur.photo = btoa(binaryString);
+  }
+
+  handleCVCandidatInput(event) {
+    const files = event.target.files;
+    if (files) {
+      const reader = new FileReader();
+      reader.onload = this.handleReaderLoadedCandCV.bind(this);
+      this.candidat.pieceJointe = reader.readAsBinaryString(files[0]);
+    }
+  }
+  private handleReaderLoadedCandCV(readerEvt) {
+    const binaryString = readerEvt.target.result;
+    this.candidat.pieceJointe = btoa(binaryString);
   }
 
   verifRequired(field) {
@@ -231,21 +209,21 @@ export class InscriptionComponent implements OnInit {
   }
 
   verifInscriptionCandidat(candidat) {
-    return (this.verifRequired(candidat.nom) && this.verifRequired(candidat.prenom) && this.fileToUpload
-    && this.verifRequired(candidat.dateNaissance) && this.verifRequired(candidat.diplome) && this.fileToUploadCVCandidat &&
-    this.verifRequired(candidat.tel) && this.verifRequired(candidat.adresse) && this.verifRequired(candidat.titre) &&
-    this.verifRequired(candidat.nationalite) && this.verifRequired(candidat.email) && this.verifRequired(candidat.password)  &&
-    this.verifTelField(candidat.tel) && this.verifEmailField(candidat.email) && this.verifPassWordField(candidat.password) &&
-    this.verifConfirmationPassword(candidat.password, this.pwdConfirmation) && !this.usedMail);
+    return (this.verifRequired(candidat.nom) && this.verifRequired(candidat.prenom) && this.candidat.photo
+      && this.verifRequired(candidat.dateNaissance) && this.verifRequired(candidat.diplome) && this.candidat.pieceJointe &&
+      this.verifRequired(candidat.tel) && this.verifRequired(candidat.adresse) && this.verifRequired(candidat.titre) &&
+      this.verifRequired(candidat.nationalite) && this.verifRequired(candidat.email) && this.verifRequired(candidat.password) &&
+      this.verifTelField(candidat.tel) && this.verifEmailField(candidat.email) && this.verifPassWordField(candidat.password) &&
+      this.verifConfirmationPassword(candidat.password, this.pwdConfirmation) && !this.usedMail);
   }
 
   verifInscriptionEmployeur(employeur) {
     return (this.verifRequired(employeur.nom) && this.verifRequired(employeur.presentation) && this.verifRequired(employeur.photo)
-    && this.verifRequired(employeur.site) && this.verifRequired(employeur.taille) && this.verifRequired(employeur.type) &&
-    this.verifRequired(employeur.fondation) && this.verifRequired(employeur.adresse) && this.verifRequired(employeur.pays) &&
-    this.verifRequired(employeur.email) && this.verifRequired(employeur.password)  &&
-    this.verifUrlField(employeur.site) && this.verifEmailField(employeur.email) && this.verifPassWordField(employeur.password) &&
-    this.verifConfirmationPassword(employeur.password, this.pwdConfirmation) && !this.usedMail);
+      && this.verifRequired(employeur.site) && this.verifRequired(employeur.taille) && this.verifRequired(employeur.type) &&
+      this.verifRequired(employeur.fondation) && this.verifRequired(employeur.adresse) && this.verifRequired(employeur.pays) &&
+      this.verifRequired(employeur.email) && this.verifRequired(employeur.password) &&
+      this.verifUrlField(employeur.site) && this.verifEmailField(employeur.email) && this.verifPassWordField(employeur.password) &&
+      this.verifConfirmationPassword(employeur.password, this.pwdConfirmation) && !this.usedMail);
   }
 
 

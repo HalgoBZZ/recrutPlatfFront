@@ -4,12 +4,10 @@ export class Candidat extends Utilisateur {
     nom;
     prenom;
     photoPath;
-    photo = File;
-
+    photo;
     dateNaissance;
     diplome;
-    piece_jointePath;
-    piece_jointe = File;
+    pieceJointe;
     tel;
     titre;
     adresse;
