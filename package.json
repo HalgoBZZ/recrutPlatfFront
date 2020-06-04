@@ -34,7 +34,7 @@
     "highcharts-angular": "^2.4.0",
     "igniteui-angular": "^8.2.16",
     "ion-rangeslider": "^2.3.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "ng-multiselect-dropdown": "^0.2.10",
     "ng2-ion-range-slider": "^2.0.0",
     "ngx-bootstrap": "^5.3.2",
