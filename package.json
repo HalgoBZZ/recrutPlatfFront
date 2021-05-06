@@ -30,7 +30,7 @@
     "d3": "^5.15.0",
     "file-saver": "^2.0.2",
     "flag-icon-css": "^3.4.5",
-    "highcharts": "^8.0.0",
+    "highcharts": "^9.0.0",
     "highcharts-angular": "^2.4.0",
     "igniteui-angular": "^8.2.16",
     "ion-rangeslider": "^2.3.1",
