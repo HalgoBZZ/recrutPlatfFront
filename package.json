@@ -27,7 +27,7 @@
     "angular-highcharts": "^8.0.3",
     "bootstrap": "^4.4.1",
     "chart.js": "2.7.2",
-    "d3": "^5.15.0",
+    "d3": "^7.6.1",
     "file-saver": "^2.0.2",
     "flag-icon-css": "^3.4.5",
     "highcharts": "^8.0.0",
